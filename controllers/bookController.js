@@ -1,16 +1,16 @@
 const bookModel = require('../models/bookModel');
 
-exports.list = (req, res, next) => {
+exports.list = async(req, res, next) => {
     // Get books from model
-    const books = bookModel.list();
+    const books = await bookModel.list();
     // Pass data to view to display list of books
     res.render('books/list', {books});
 };
 
-exports.detail=(req, res, next) =>
+exports.detail=async (req, res, next) =>
 {
-    const books = bookModel.list();
-    const tt= bookModel.get(parseInt(req.params.id));
+    const books = await bookModel.list();
+    const tt= await bookModel.get(req.params.id);
     const title=tt.title;
     const basePrice=tt.basePrice;
     const detail=tt.detail;

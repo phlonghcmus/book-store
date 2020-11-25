@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
 const app = express();
+require('./database/database');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
