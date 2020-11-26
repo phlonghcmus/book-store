@@ -2657,6 +2657,11 @@ h4.link:hover
     cursor: pointer;
 }
 
+.paginate-center
+{
+    display: flex;
+    justify-content: center;
+}
 
 
 

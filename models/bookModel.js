@@ -39,6 +39,11 @@ exports.list = async () => {
     return books;
 };
 
+exports.listPerPage = async (currentPage) => {
+    const bookCollection=db().collection('books');
+    books=await bookCollection.find().limit(6).skip((currentPage-1)*6).toArray();
+    return books;
+};
 exports.get=async(id)=>{
     const bookCollection=db().collection('books');
     const book= await bookCollection.findOne({_id:ObjectId(id)});
