@@ -29,7 +29,7 @@
                   <option value="4">Best Selling</option>
                 </select>
                                 </div>
-                                <p>Showing all 4 results</p>
+                                <p>Showing all {{count}} results</p>
                             </div>
                             <div class="col-12 col-sm-4 text-center text-sm-right">
                                 <ul class="nav nav-tabs ml-auto">
@@ -119,8 +119,8 @@
         <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
                     <div class="product-categori">
                         <div class="search-product">
-                            <form action="#">
-                                <input class="form-control" placeholder="Search here..." type="text">
+                            <form action="/books" method="get">
+                                <input class="form-control" placeholder="Search here..." type="text" name="keyword">
                                 <button type="submit"> <i class="fa fa-search"></i> </button>
                             </form>
                         </div>
@@ -129,20 +129,24 @@
                                 <h3>Categories</h3>
                             </div>
                             <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
-                                <div class="list-group-collapse sub-men">
-                                    <a class="list-group-item list-group-item-action" href="#sub-men1" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1"> Tiểu Thuyết <small class="text-muted">(100)</small>
-                </a>
-                                    <div class="collapse show" id="sub-men1" data-parent="#list-group-men">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item list-group-item-action active">Phiêu lưu <small class="text-muted">(50)</small></a>
-                                            <a href="#" class="list-group-item list-group-item-action">Giả tưởng <small class="text-muted">(10)</small></a>
-                                            <a href="#" class="list-group-item list-group-item-action">Tình cảm <small class="text-muted">(10)</small></a>
-                                            <a href="#" class="list-group-item list-group-item-action">Hành động <small class="text-muted">(10)</small></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="#" class="list-group-item list-group-item-action"> Trẻ em  <small class="text-muted">(150) </small></a>
+<!--                                <div class="list-group-collapse sub-men">-->
+<!--                                    <a class="list-group-item list-group-item-action" href="#sub-men1" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1"> Tiểu Thuyết <small class="text-muted">(100)</small>-->
+<!--                </a>-->
+<!--                                    <div class="collapse show" id="sub-men1" data-parent="#list-group-men">-->
+<!--                                        <div class="list-group">-->
+<!--                                            <a href="#" class="list-group-item list-group-item-action active">Phiêu lưu <small class="text-muted">(50)</small></a>-->
+<!--                                            <a href="#" class="list-group-item list-group-item-action">Giả tưởng <small class="text-muted">(10)</small></a>-->
+<!--                                            <a href="#" class="list-group-item list-group-item-action">Tình cảm <small class="text-muted">(10)</small></a>-->
+<!--                                            <a href="#" class="list-group-item list-group-item-action">Hành động <small class="text-muted">(10)</small></a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <a href="#" class="list-group-item list-group-item-action"> Kĩ năng sống  <small class="text-muted">(150) </small></a>
+                                <a href="#" class="list-group-item list-group-item-action"> Kinh tế  <small class="text-muted">(150) </small></a>
+                                <a href="#" class="list-group-item list-group-item-action"> Manga - Comic  <small class="text-muted">(150) </small></a>
+                                <a href="#" class="list-group-item list-group-item-action"> Thiếu nhi  <small class="text-muted">(150) </small></a>
                                 <a href="#" class="list-group-item list-group-item-action"> Giáo dục <small class="text-muted">(11)</small></a>
+                                <a href="#" class="list-group-item list-group-item-action"> Trinh thám <small class="text-muted">(11)</small></a>
                             </div>
                         </div>
                         <div class="filter-price-left">
@@ -166,21 +170,34 @@
 <div class="paginate-center">
     <ul>
         {{#paginate pagination type="first"}}
-            <li {{#if disabled}}class="disabled" {{/if}}style="float:left; padding-left: 30px;"><a href="?p={{n}}">First</a></li>
+            <li {{#if disabled}}class="li-paginate" {{/if}} style="float:left;"class="li-paginate" >
+                <a  href="?{{../query}}p={{n}}"><<</a>
+            </li>
         {{/paginate}}
         {{#paginate pagination type="previous"}}
-            <li {{#if disabled}}class="disabled" {{/if}}style="float:left;padding-left: 30px"><a href="?p={{n}}">Prev</a></li>
+            <li {{#if disabled}}class="li-paginate" {{/if}}style="float:left;" class="li-paginate">
+                <a href="?{{../query}}p={{n}}"><</a>
+            </li>
         {{/paginate}}
-        {{#paginate pagination type="middle" limit="2"}}
-            <li {{#if active}}class="active" {{/if}}style="float:left;padding-left: 30px"><a href="?p={{n}}">{{n}}</a></li>
+        {{#paginate pagination type="middle" limit="5"}}
+            <li {{#if active}} class=" activate" {{/if}} style="float:left;" class="li-paginate" >
+                <a href="?{{../query}}p={{n}}">{{n}}</a>
+            </li>
         {{/paginate}}
         {{#paginate pagination type="next"}}
-            <li {{#if disabled}}class="disabled"   {{/if}}style="float:left;padding-left: 30px"><a href="?p={{n}}">Next</a></li>
+            <li {{#if disabled}}class="li-paginate"   {{/if}}style="float:left;" class="li-paginate">
+                <a href="?{{../query}}p={{n}}">>
+                </a>
+            </li>
         {{/paginate}}
         {{#paginate pagination type="last"}}
-            <li {{#if disabled}}class="disabled"  {{/if}}style="float:left;padding-left: 30px"><a href="?p={{n}}">Last</a></li>
+            <li {{#if disabled}}class="li-paginate"  {{/if}}style="float:left;"class="li-paginate">
+                <a  href="?{{../query}}p={{n}}">>></a>
+            </li>
         {{/paginate}}
     </ul>
 </div>
+
+
 
 
