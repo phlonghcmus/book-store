@@ -65,7 +65,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="why-text">
-                                                    <a href="/books/{{_id}}">
+                                                    <a href="/books/detail/{{_id}}">
                                                     <h4 class="link" >{{title}}</h4>
                                                     </a>
                                                     <h5>{{basePrice}}</h5>
@@ -100,7 +100,7 @@
                                             </div>
                                             <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                                 <div class="why-text full-width">
-                                                    <a href="/books/{{_id}}">
+                                                    <a href="/books/detail/{{_id}}">
                                                         <h4 class="link" >{{title}}</h4>
                                                     </a>
                                                     <h5>{{basePrice}}</h5>
@@ -119,9 +119,9 @@
         <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
                     <div class="product-categori">
                         <div class="search-product">
-                            <form action="/books" method="get">
+                            <form action="books/search" method="get" id="search-form" onsubmit="return formSubmit(this)">
                                 <input class="form-control" placeholder="Search here..." type="text" name="keyword">
-                                <button type="submit"> <i class="fa fa-search"></i> </button>
+                                <button type="submit" > <i class="fa fa-search"></i> </button>
                             </form>
                         </div>
                         <div class="filter-sidebar-left">
@@ -141,12 +141,14 @@
 <!--                                        </div>-->
 <!--                                    </div>-->
 <!--                                </div>-->
-                                <a href="#" class="list-group-item list-group-item-action"> Kĩ năng sống  <small class="text-muted">(150) </small></a>
-                                <a href="#" class="list-group-item list-group-item-action"> Kinh tế  <small class="text-muted">(150) </small></a>
-                                <a href="#" class="list-group-item list-group-item-action"> Manga - Comic  <small class="text-muted">(150) </small></a>
-                                <a href="#" class="list-group-item list-group-item-action"> Thiếu nhi  <small class="text-muted">(150) </small></a>
-                                <a href="#" class="list-group-item list-group-item-action"> Giáo dục <small class="text-muted">(11)</small></a>
-                                <a href="#" class="list-group-item list-group-item-action"> Trinh thám <small class="text-muted">(11)</small></a>
+                                {{#each categories}}
+                                <a href="/books/category/{{_id}}" class="list-group-item list-group-item-action"> {{category_name}}  </a>
+<!--                                <a href="#" class="list-group-item list-group-item-action"> Kinh tế </a>-->
+<!--                                <a href="#" class="list-group-item list-group-item-action"> Manga - Comic </a>-->
+<!--                                <a href="#" class="list-group-item list-group-item-action"> Thiếu nhi </a>-->
+<!--                                <a href="#" class="list-group-item list-group-item-action"> Giáo dục</a>-->
+<!--                                <a href="#" class="list-group-item list-group-item-action"> Trinh thám</a>-->
+                                {{/each}}
                             </div>
                         </div>
                         <div class="filter-price-left">
@@ -198,6 +200,8 @@
     </ul>
 </div>
 
+<script>
 
+</script>
 
 
