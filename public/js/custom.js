@@ -233,3 +233,25 @@ function formSubmit(form) {
   // alert(form.action);
   return true;
 }
+
+
+$(document).ready(function() {
+
+
+	const readURL = function(input) {
+		if (input.files && input.files[0]) {
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('.avatar').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+
+	$(".file-upload").on('change', function(){
+		readURL(this);
+	});
+});

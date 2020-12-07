@@ -1,6 +1,6 @@
 const bookModel = require('../models/bookModel');
 const toQS = require('querystring').stringify;
-const category=require('../models/category');
+const category=require('../models/categoryModel');
 
 exports.list = async(req, res, next) => {
 

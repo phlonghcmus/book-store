@@ -1,2 +1,73 @@
 
 /** ADD YOUR AWESOME CODES HERE **/
+h4.link{
+    color:black;
+
+}
+
+h4.link:hover
+{
+    color: #1F4696;
+    cursor: pointer;
+}
+
+.paginate-center
+{
+    display: flex;
+    justify-content: center;
+}
+
+.activate
+{
+    background-color: #189EFF;
+
+}
+
+.activate
+{
+    font-weight: 400;
+    background: rgb(24, 158, 255);
+    margin: 0px 5px;
+    border-radius: 50%;
+    width: 27px;
+    height: 27px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 15px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+.activate a
+{
+    color: rgb(255, 255, 255);
+}
+.li-paginate
+{
+    font-weight: 400;
+    color: rgb(255, 255, 255);
+    margin: 0px 5px;
+    border-radius: 50%;
+    width: 27px;
+    height: 27px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 15px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+.li-paginate:hover
+{
+    font-weight: 400;
+    color: rgb(255, 255, 255);
+    margin: 0px 5px;
+    border-radius: 50%;
+    width: 27px;
+    height: 27px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 15px;
+    background-color: #C3E7FE;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+

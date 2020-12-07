@@ -33,7 +33,7 @@ exports.searchPerPage=async(str,page)=>
          books=await bookCollection.find(
              {$and:[
                 {"remove": false},
-                {"non-accent title": {"$regex": str, "$options": "i"}}
+                {"nonAccentTitle": {"$regex": str, "$options": "i"}}
                      
              ]}).limit(6).skip((page-1)*6).toArray();
     return books;
@@ -63,7 +63,7 @@ exports.pageCountSearch=async(str)=>
         count=await bookCollection.find({
             $and:[
                     {"remove": false},
-                    {"non-accent title": {"$regex": str, "$options": "i"}}
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
                 
             ]}).count();
     return count/6;
@@ -86,11 +86,7 @@ exports.categoryPerPage=async(id,page)=>
 {
      const bookCollection= db().collection('books');
     let  books=await bookCollection.find(
-        {$and:[
-                {"remove": false},
-                {"categoryID": ObjectId(id)}
-                
-            ]}).limit(6).skip((page-1)*6).toArray();
+        {$and:[{"remove": false},{"categoryID": ObjectId(id)}]}).limit(6).skip((page-1)*6).toArray();
 
     return books;
 }
@@ -113,7 +109,7 @@ exports.pageCountCategorySearch=async(id,str,page)=>
             {$and:[
                     {"remove": false},
                     {"categoryID": ObjectId(id)},
-                    {"non-accent title": {"$regex": str, "$options": "i"}}
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
             ]}).count();
     return count/6;
 }
@@ -135,7 +131,7 @@ exports.categorySearchPerPage=async(id,str,page)=>
             {$and:[
                     {"remove": false},
                     {"categoryID": ObjectId(id)},
-                    {"non-accent title": {"$regex": str, "$options": "i"}}
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
                     
                 ]}).limit(6).skip((page-1)*6).toArray();
     return books;

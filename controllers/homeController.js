@@ -20,3 +20,5 @@ exports.about = (req, res, next) => {
     // Pass data to view to display list of books
     res.render('index/about',{});
 };
+
+
