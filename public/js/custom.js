@@ -1,8 +1,8 @@
 (function($) {
     "use strict";
-	
+
 	/* ..............................................
-	   Loader 
+	   Loader
 	   ................................................. */
 	$(window).on('load', function() {
 		$('.preloader').fadeOut();
@@ -211,8 +211,8 @@
 	$(".brand-box").niceScroll({
 		cursorcolor: "#9b9b9c",
 	});
-	
-	
+
+
 }(jQuery));
 
 function formSubmit(form) {
@@ -229,7 +229,7 @@ function formSubmit(form) {
 	url=slice;
 }
 		form.action = url+ "/search";
-	
+
   // alert(form.action);
   return true;
 }
@@ -255,3 +255,159 @@ $(document).ready(function() {
 		readURL(this);
 	});
 });
+
+
+function validation(form)
+{
+  const username=document.getElementById("username-signup").value;
+  const phone=document.getElementById("phone-signup").value;
+  const email=document.getElementById("email-signup").value;
+  const password=document.getElementById("pass-signup").value;
+  const re_password=document.getElementById("re-pass-signup").value;
+  if(username.length==0)
+  {
+  	document.getElementById("username-signup-error").innerHTML="Bạn phải nhập tên tài khoản";
+  	return false;
+  }
+
+
+  if(phone.length==0)
+  {
+  	document.getElementById("username-signup-error").innerHTML="";
+  	document.getElementById("phone-signup-error").innerHTML="Bạn phải nhập số điện thoại";
+  	return false;
+  }
+
+
+   if(email.length==0)
+  {
+  	document.getElementById("username-signup-error").innerHTML="";
+  	document.getElementById("phone-signup-error").innerHTML="";
+  	document.getElementById("email-signup-error").innerHTML="Bạn phải nhập email ";
+  	return false;
+  }
+
+   if(password.length==0)
+  {
+  	document.getElementById("username-signup-error").innerHTML="";
+  	document.getElementById("phone-signup-error").innerHTML="";
+  	document.getElementById("email-signup-error").innerHTML="";
+  	document.getElementById("password-signup-error").innerHTML="Bạn phải nhập mật khẩu";
+  	return false;
+  }
+
+  if(re_password.length==0)
+  {
+  	document.getElementById("username-signup-error").innerHTML="";
+  	document.getElementById("phone-signup-error").innerHTML="";
+  	document.getElementById("email-signup-error").innerHTML="";
+  	document.getElementById("password-signup-error").innerHTML="";
+  	document.getElementById("re-password-signup-error").innerHTML="Bạn phải nhập lại mật khẩu";
+  	return false;
+  }
+
+   	if(password.length<7)
+	{
+  		document.getElementById("username-signup-error").innerHTML="";
+  		document.getElementById("phone-signup-error").innerHTML="";
+  		document.getElementById("email-signup-error").innerHTML="";
+  		document.getElementById("password-signup-error").innerHTML="";
+  		document.getElementById("re-password-signup-error").innerHTML="";
+  		document.getElementById("password-signup-error").innerHTML="Mật khẩu phải dài hơn 6 kí tự";
+  		return false;
+  	}
+  	if(checkUserNameExist(username))
+	{
+  		document.getElementById("signup-error").innerHTML="Hãy nhập một tên đăng nhập khác";
+  		return false;
+	}
+
+	if(checkEmailExist(email))
+	{
+		document.getElementById("signup-error").innerHTML="Hãy nhập một email khác";
+  		return false;
+	}
+
+  if(password.localeCompare(re_password)!=0)
+  {
+  	document.getElementById("username-signup-error").innerHTML="";
+  	document.getElementById("phone-signup-error").innerHTML="";
+  	document.getElementById("email-signup-error").innerHTML="";
+  	document.getElementById("password-signup-error").innerHTML="";
+  	document.getElementById("re-password-signup-error").innerHTML="";
+  	document.getElementById("password-signup-error").innerHTML="";
+    document.getElementById("signup-error").innerHTML="Mật khẩu nhập lại không khớp";
+    return false;
+  }
+
+  console.log("success");
+  return true;
+}
+
+function checkUserNameExist(username)
+{
+
+	let mydata;
+	$.ajax({
+  	url: '/api/users/username-is-exist',
+  	async: false,
+	dataType: 'json',
+	data: {username},
+  	success: function (json) {
+   	 mydata = json;
+  	}
+	});
+
+		if(mydata)
+		{
+			$('#username-signup-error').addClass('error').removeClass('success').html('Tên đăng nhập này đã tồn tại');
+			return true;
+		}
+		else
+		{
+			$('#username-signup-error').addClass('success').removeClass('error').html('Bạn có thể dùng tên đăng nhập này');
+			return false;
+		}	
+}
+
+
+function checkPhone(value)
+{
+	if(value=="")
+	{
+		$('#phone-signup-error').addClass('error').removeClass('success').html('Hãy nhập số điện thoại');
+		return false;
+	}
+	if(value.length!=10 && value.length!=11)
+	{
+		$('#phone-signup-error').addClass('error').removeClass('success').html('Số điện thoại không hợp lệ');
+		return false;
+	}
+	$('#phone-signup-error').addClass('error').removeClass('success').html('');
+	return true;
+}
+
+function checkEmailExist(email)
+{
+	let mydata;
+	$.ajax({
+  	url: '/api/users/email-is-exist',
+  	async: false,
+	dataType: 'json',
+	data: {email},
+  	success: function (json) {
+   	 mydata = json;
+  	}
+	});
+
+		if(mydata)
+		{
+			$('#email-signup-error').addClass('error').removeClass('success').html('Email đã có người sử dụng');
+			return true;
+		}
+		else
+		{
+			$('#email-signup-error').addClass('success').removeClass('error').html('Bạn có thể dùng email này');
+			return false;
+		}	
+}

@@ -1,5 +1,60 @@
 
-/** ADD YOUR AWESOME CODES HERE **/
+button.login-button
+{
+    background-color: #1e7e34;color: white;cursor: pointer;
+    border: none;
+    margin-bottom: 10px;
+}
+
+button.login-button:hover
+{
+    background-color: #0b2e13;
+}
+
+button.facebook-button
+{
+    background-color:#3B5998;color: white;cursor: pointer;
+    border: none;
+}
+
+button.facebook-button:hover  {
+    background-color:#1F4696;
+}
+
+button.google-button
+{
+    background-color:#DD4B39;color: white;cursor: pointer;
+    border: none;
+}
+
+button.google-button:hover
+{
+    background-color:#dd2e18;
+}
+
+button
+{
+    width: 100px;
+    height: 40px;
+    margin-right: 20px;
+}
+
+.login-signup-center
+{
+    text-align: center;
+}
+
+.login-signup-center-error
+{
+
+    text-align: center; margin-bottom: 10px;
+}
+
+.login-signup-button-center
+{
+    display: flex;justify-content:center;
+}
+
 h4.link{
     color:black;
 
@@ -69,5 +124,16 @@ h4.link:hover
     font-size: 15px;
     background-color: #C3E7FE;
     font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+.error
+{
+    display: inline-block; color:red;
+}
+
+.success
+{
+    display: inline-block; color:green;
 }
 

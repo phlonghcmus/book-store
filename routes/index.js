@@ -8,5 +8,5 @@ router.get('/login', userController.login);
 router.get('/signup', userController.signup);
 router.get('/contact', homeController.contact);
 router.get('/about', homeController.about);
-
+router.post('/signup/success',userController.signupSuccess);
 module.exports = router;
