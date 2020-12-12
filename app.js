@@ -5,15 +5,18 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const hbs = require('hbs');
 
+const flash = require('connect-flash');
+const session = require("express-session"),
+  bodyParser = require("body-parser");
 
-
+const passport = require('./middleware/passport/passport');
 // Routes variables
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
 
 // Api routes variables
-const userApiRouter=require('./routes/api/users');
+const userApiRouter = require('./routes/api/users');
 const app = express();
 require('./database/database');
 
@@ -27,6 +30,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public/')));
 
+// Login
+
+app.use(session({ secret: "cats" }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+app.use(function(req,res,next){
+  res.locals.user=req.user;
+  next();
+})
 //routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -34,15 +48,15 @@ app.use('/books', booksRouter);
 
 
 //api routes
-app.use('/api/users',userApiRouter);
+app.use('/api/users', userApiRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -55,7 +69,7 @@ app.use(function(err, req, res, next) {
 const paginate = require('handlebars-paginate');
 
 hbs.handlebars.registerHelper('paginate', paginate);
-hbs.registerHelper('json', function(context) {
+hbs.registerHelper('json', function (context) {
   return JSON.stringify(context);
 });
 module.exports = app;

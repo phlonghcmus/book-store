@@ -39,16 +39,16 @@
                 </div>
 
 
-                <div class="login-signup-center"><input type="password" name="password" id="pass-signup" placeholder="Password" style="width: 500px"></div>
+                <div class="login-signup-center"><input type="password" name="password" id="pass-signup" placeholder="Password" style="width: 500px" onchange="checkPassword(this.value)"></div>
 
                 <div class="login-signup-center-error">
-                  <p style="display: inline-block; color:red" id="password-signup-error"></p>
+                  <p class="error" id="password-signup-error"></p>
                 </div>
 
-                <div class="login-signup-center"><input type="password" name="re-password" id="re-pass-signup" placeholder="Re-enter password" style="width: 500px"></div>
+                <div class="login-signup-center"><input type="password" name="re-password" id="re-pass-signup" placeholder="Re-enter password" style="width: 500px" onchange="checkRePassword(this.value)"></div>
 
                 <div class="login-signup-center-error">
-                  <p style="display: inline-block; color:red" id="re-password-signup-error"></p>
+                  <p class="error" id="re-password-signup-error"></p>
                 </div>
 
                 <div class="login-signup-center" style="margin-bottom:30px">

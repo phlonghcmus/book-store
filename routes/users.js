@@ -14,4 +14,5 @@ const upload = multer({ dest: 'public/uploads/' ,fileFilter: function (req, file
 router.get('/profile',userController.profile);
 router.post('/profile/update',upload.single('file-avatar'),userController.profileUpdate);
 router.get('/verification/:id',userController.verification);
+router.get('/logout',userController.logout);
 module.exports = router;

@@ -1,69 +1,78 @@
-const {db}=require('../database/database');
-const ObjectId= require('mongodb').ObjectId;
+const { db } = require('../database/database');
+const ObjectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 
-exports.get=async(id)=>{
-    const userCollection= db().collection('user');
+exports.get = async (id) => {
+    const userCollection = db().collection('user');
 
-    const user= await userCollection.findOne({_id:ObjectId(id)});
+    const user = await userCollection.findOne({ _id: ObjectId(id) });
     return user;
 }
 
-exports.update=async(data)=>
-{
-    const userCollection= db().collection('user');
+exports.update = async (id,data) => {
+    const userCollection = db().collection('user');
 
-    const user= await userCollection.updateOne({ _id: ObjectId("5fcdac391cd7911bf4fc4687") }, {$set: data}, function (err, results) {});
+    const user = await userCollection.updateOne({ _id: ObjectId(id) }, { $set: data }, function (err, results) { });
     return user;
 }
 
-exports.add=async(data)=>
-{
+exports.add = async (data) => {
 
-	const userCollection= db().collection('user');
-	const salt=await bcrypt.genSalt(saltRounds);
-	data.password= await bcrypt.hash(myPlaintextPassword, salt);
-	const user=await  userCollection.insertOne(data);
-	return user;
-}
-
-exports.getByUserName=async(username)=>
-{
-    const userCollection= db().collection('user');
-
-    const user= await userCollection.findOne({account:username});
+    const userCollection = db().collection('user');
+    const salt = await bcrypt.genSalt(saltRounds);
+    data.password = await bcrypt.hash(data.password, salt);
+    const user = await userCollection.insertOne(data);
     return user;
 }
 
-exports.verificationEmail=async(id)=>
-{
-    const userCollection= db().collection('user');
-    const data={active:true};
-    const user= await userCollection.updateOne({ _id: ObjectId(id) }, {$set: data}, function (err, results) {});
+exports.getByUserName = async (username) => {
+    const userCollection = db().collection('user');
+
+    const user = await userCollection.findOne({ account: username });
     return user;
 }
 
-exports.checkUsernameExist=async(username)=>
-{
-    const userCollection= db().collection('user');
+exports.verificationEmail = async (id) => {
+    const userCollection = db().collection('user');
+    const data = { active: true };
+    const user = await userCollection.updateOne({ _id: ObjectId(id) }, { $set: data }, function (err, results) { });
+    return user;
+}
 
-    const count= await userCollection.find({account:username}).count();
-    if(count>=1)
+exports.checkUsernameExist = async (username) => {
+    const userCollection = db().collection('user');
+
+    const count = await userCollection.find({ account: username }).count();
+    if (count >= 1)
         return true;
     else
         return false;
 }
 
-exports.checkEmailExist=async(email)=>
-{
-    const userCollection= db().collection('user');
+exports.checkEmailExist = async (email) => {
+    const userCollection = db().collection('user');
 
-    const count= await userCollection.find({email:email}).count();
-    if(count>=1)
+    const count = await userCollection.find({ email: email }).count();
+    if (count >= 1)
         return true;
     else
         return false;
+}
+
+exports.checkCredential = async (username, password) => {
+    const userCollection = db().collection('user');
+    const isUsername = await userCollection.findOne({ account: username });
+    if (!isUsername) {
+        return false;
+    }
+    console.log(isUsername);
+    let checkPassword = await bcrypt.compare(password, isUsername.password);
+    console.log(password);
+    console.log(checkPassword);
+    if (checkPassword)
+        return isUsername;
+    return false;
 }

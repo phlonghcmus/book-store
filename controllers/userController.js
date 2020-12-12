@@ -10,13 +10,14 @@ exports.signup=(req,res,next) =>
 
 exports.login=(req,res,next) =>
 {
-    res.render('user/login');
+   const message=req.flash('error');
+    res.render('user/login',{message});
 }
 
 
 exports.profile=async (req,res,next)=>
 {
-    const user=await userModel.get();
+    const user=req.user;
     res.render('user/profile',{
         firstName:user.firstName,
         lastName: user.lastName,
@@ -32,7 +33,8 @@ exports.profileUpdate=async (req,res,next)=>
 {
     let cover;
     let data;
-    const user=await userModel.get();
+    const user=await userModel.get(req.user._id);
+    console.log(req.body);
     if(req.file)
     {
         
@@ -49,29 +51,27 @@ exports.profileUpdate=async (req,res,next)=>
         const path2="/";
         cover=path2.concat(path);
         data={
-            firstName:user.firstName,
-            lastName: user.lastName,
-            password:user.password,
-            mobile:user.mobile,
-            phone:user.phone,
-            location:user.location,
-            email:user.email,
+            firstName:req.body.firstName,
+            lastName: req.body.lastName,
+            mobile:req.body.mobile,
+            phone:req.body.phone,
+            location:req.body.location,
+            email:req.body.email,
             cover:cover
         };
     }
     else
     {
         data={
-            firstName:user.firstName,
-            lastName: user.lastName,
-            password:user.password,
-            mobile:user.mobile,
-            phone:user.phone,
-            location:user.location,
-            email:user.email,
+            firstName:req.body.firstName,
+            lastName: req.body.lastName,
+            mobile:req.body.mobile,
+            phone:req.body.phone,
+            location:req.body.location,
+           
         };
     }
-    await userModel.update(data);
+    await userModel.update(req.user._id,data);
     res.redirect('/users/profile');
 }
 
@@ -79,6 +79,8 @@ exports.profileUpdate=async (req,res,next)=>
 exports.signupSuccess=async (req,res,next)=>
 {
     const data={
+        firstName:"",
+        lastName:"",
         account:req.body.username,
         password:req.body.password,
         email:req.body.email,
@@ -105,4 +107,10 @@ exports.verification=async (req,res,next)=>
     await userModel.verificationEmail(req.params.id);
     const user=await userModel.get(req.params.id);
     res.render("user/verificationSuccess", {account: user.account,email: user.email});
+}
+
+exports.logout=async (req,res,next)=>
+{
+    req.logout();
+    res.redirect('/login');
 }
