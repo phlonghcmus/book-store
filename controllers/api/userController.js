@@ -12,3 +12,10 @@ exports.emailIsExist=async(req,res,next)=>
 
 }
 
+exports.passwordIsExist=async(req,res,next)=>
+{
+   const user=req.user;
+   const checkPassword=await userModel.checkPassword(user,req.query.password);
+   res.json(checkPassword);
+}
+

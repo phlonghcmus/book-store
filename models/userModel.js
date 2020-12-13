@@ -19,11 +19,16 @@ exports.update = async (id,data) => {
     return user;
 }
 
+exports.bcryptPassword=async(password)=>
+{
+    const salt = await bcrypt.genSalt(saltRounds);
+    const newPassword = await bcrypt.hash(password, salt);
+    return newPassword;
+}
 exports.add = async (data) => {
 
     const userCollection = db().collection('user');
-    const salt = await bcrypt.genSalt(saltRounds);
-    data.password = await bcrypt.hash(data.password, salt);
+   data.password=await this.bcryptPassword(data.password);
     const user = await userCollection.insertOne(data);
     return user;
 }
@@ -75,4 +80,11 @@ exports.checkCredential = async (username, password) => {
     if (checkPassword)
         return isUsername;
     return false;
+}
+
+exports.checkPassword=async  (user,password)=>
+{
+    let checkPassword = await bcrypt.compare(password, user.password);
+    return checkPassword;
+        
 }

@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const userController = require('../../controllers/api/userController');
+const userApiController = require('../../controllers/api/userController');
 
-router.get("/username-is-exist", userController.usernameIsExist);
-router.get("/email-is-exist", userController.emailIsExist);
+router.get("/username-is-exist", userApiController.usernameIsExist);
+router.get("/email-is-exist", userApiController.emailIsExist);
+
+router.get("/password-is-exist", userApiController.passwordIsExist);
 module.exports = router;

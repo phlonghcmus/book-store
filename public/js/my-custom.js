@@ -231,3 +231,74 @@ function checkRePassword(value)
     $('#re-password-signup-error').addClass('error').removeClass('success').html('');
     return true;
 }
+
+function checkPasswordExist(password)
+{
+	let mydata;
+	$.ajax({
+  	url: '/api/users/password-is-exist',
+  	async: false,
+	dataType: 'json',
+	data: {password},
+  	success: function (json) {
+   	 mydata = json;
+  	}
+	});
+
+		if(mydata)
+		{
+			$('#change-error').addClass('error').removeClass('success').html('');
+			return true;
+		}
+		else
+		{
+			$('#change-error').addClass('error').removeClass('success').html('Mật khẩu cũ không đúng');
+			return false;
+		}	
+}
+
+function checkPasswordChange(value)
+{
+	var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+    if(value.length<7)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu phải dài hơn 7 kí tự');
+		return false;
+    }
+
+    if(value.length>20)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu không được quá 16 kí tự');
+		return false;
+    }
+
+    if(!value.match(passw))
+    {
+        $('#change-error').addClass('error').removeClass('success').html('Mật khẩu chứa ít nhất 1 kí tự thường, 1 kí tự hoa và 1 kí tự số');
+		return false;
+    }
+    $('#change-error').addClass('success').removeClass('error').html('');
+    return true;
+}
+
+function checkPasswordChangeForm(form)
+{
+	const password=document.getElementById("old-pass").value;
+	const newPassword=document.getElementById("new-pass").value;
+	
+	if(!checkPasswordExist(password))
+	{
+
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu cũ không đúng');
+		return false;
+	}
+	
+	const check=checkPasswordChange(newPassword);
+	if(!check)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu mới không hợp lệ');
+		return false;
+	}
+
+	return true;
+}
