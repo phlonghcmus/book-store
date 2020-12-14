@@ -174,3 +174,14 @@ h4.link:hover
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color:#000000;}
+
+
+.login-recover-signup
+{
+    float:left;color: #1e7e34; font-size:16px; font-weight: 700;
+}
+
+.login-recover-signup:hover
+{
+    color: #0b2e13;
+}

@@ -302,3 +302,92 @@ function checkPasswordChangeForm(form)
 
 	return true;
 }
+
+
+function validateEmail(email)
+{
+	let mydata;
+	$.ajax({
+  	url: '/api/users/email-is-exist',
+  	async: false,
+	dataType: 'json',
+	data: {email},
+  	success: function (json) {
+   	 mydata = json;
+  	}
+	});
+
+		if(mydata)
+		{
+			$('#change-error').addClass('error').removeClass('success').html('');
+			return true;
+		}
+		else
+		{
+			$('#change-error').addClass('error').removeClass('success').html('Email này không tồn tại');
+			return false;
+		}	
+		
+}
+
+function onsubmitRecoverForm(form)
+{
+	const email=document.getElementById('your-email').value;
+	if(validateEmail(email))
+	{
+		return true;
+	}
+	else
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Email này không tồn tại');
+			return false;
+	}
+}
+
+function recoverPasswordValidation(id,password)
+{
+	let mydata;
+	$.ajax
+	({
+  		url: '/api/users/recover-password-is-exist',
+  		async: false,
+		dataType: 'json',
+		data: {id,password},
+  		success: function (json) {
+			mydata = json;
+		}
+	});
+
+	if(mydata)
+		{
+			$('#change-error').addClass('error').removeClass('success').html('');
+			return true;
+		}
+		else
+		{
+			$('#change-error').addClass('error').removeClass('success').html('Mật khẩu cũ không đúng');
+			return false;
+		}	
+}
+
+function onsubmitRecoverPasswordValidation(form,id)
+{
+	const oldPassword=document.getElementById("old-pass").value;
+	const newPassword=document.getElementById("new-pass").value;
+	if(!recoverPasswordValidation(id,oldPassword))
+	{
+
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu cũ không đúng');
+		return false;
+	}
+	
+	const check=checkPasswordChange(newPassword);
+	if(!check)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu mới không hợp lệ');
+		return false;
+	}
+
+	return true;
+
+}

@@ -17,4 +17,7 @@ router.get('/verification/:id',userController.verification);
 router.get('/logout',userController.logout);
 router.get('/change-pasword',userController.changePasswordPage);
 router.post('/change-password',userController.changePassword)
+router.post('/recover',userController.sendRecoverMail);
+router.get('/recover/:id',userController.recoverPasswordPage);
+router.post('/recover/:id',userController.recover);
 module.exports = router;

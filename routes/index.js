@@ -15,4 +15,6 @@ router.post('/auth/login',
                                    failureRedirect: '/login',
                                    failureFlash: true })
 );
+
+router.get('/recover-account',userController.recoverPage);
 module.exports = router;

@@ -7,4 +7,5 @@ router.get("/username-is-exist", userApiController.usernameIsExist);
 router.get("/email-is-exist", userApiController.emailIsExist);
 
 router.get("/password-is-exist", userApiController.passwordIsExist);
+router.get("/recover-password-is-exist",userApiController.recoverPasswordIsExist)
 module.exports = router;

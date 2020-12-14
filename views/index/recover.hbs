@@ -1,5 +1,8 @@
-<body style="width:100% !important;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;">
-    <table cellpadding="0" cellspacing="0" border="0" id="backgroundTable" style="margin:0; padding:0; width:100% !important; line-height: 100% !important; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+
+  <div class="cart-box-main" style="background-color: #111111">
+        <div style=" background-color: #111111;display: flex;justify-content:center">
+            
+    <table cellpadding="0" cellspacing="0" border="0" id="backgroundTable" style="margin:0px; padding:0; width:100% !important; line-height: 100% !important; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; "
     width="100%">
       <tr>
         <td width="10" valign="top">&nbsp;</td>
@@ -11,6 +14,7 @@
                 <![endif]-->
                 <table cellpadding="0" cellspacing="0" border="0" align="center" style="width: 100%; max-width: 600px; background-color: #FFF; border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;"
                 id="contentTable">
+                <form action='/users/recover' method='post' onsubmit="return onsubmitRecoverForm(this)">
                   <tr>
                     <td width="600" valign="top" align="center" style="border-collapse:collapse;">
                       <table align='center' border='0' cellpadding='0' cellspacing='0' style='border: 1px solid #E0E4E8;'
@@ -22,7 +26,20 @@
                         </tr>
                         <tr>
                           <td align='left' style='padding: 0 56px 28px 56px;' valign='top'>
-                            <div style='font-family: "lato", "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 28px;font-size: 18px; color: #333;'>Bạn đã xác thực thành công email <strong>{{email}}</strong>. Hãy nhấp vào đây để tiếp tục đến trang đăng nhập</div>
+                              
+                            <div>
+                                <label for="old-pass"><h4>Email của bạn:  </h4></label>
+                                <input type='text' id='your-email' name='email' style="margin-left: 38px; width:50%" onchange="validateEmail(this.value)" >
+                            </div>
+                            {{#if notification}}
+                            <div>
+                                <p class="success" id="change-error">{{notification}}</p>
+                            </div>
+                            {{else}}
+                               <div>
+                                <p class="error" id="change-error"></p>
+                            </div>
+                            {{/if}}
                           </td>
                         </tr>
                         <tr>
@@ -35,8 +52,8 @@
                                 fillcolor="#E15718">
                                   <w:anchorlock/>
                                 <![endif]-->
-                                <a style="background-color:#E15718;border-radius:50px;color:#ffffff;display:inline-block;font-family: &#39;lato&#39;, &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif;font-size:18px;line-height:44px;text-align:center;text-decoration:none;width:250px;-webkit-text-size-adjust:none;"
-                                href="/login">Đăng nhập</a>
+                                <button style="background-color:#B0B435;border-radius:50px;color:#ffffff;display:inline-block;font-family: &#39;lato&#39;, &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif;font-size:18px;line-height:44px;text-align:center;text-decoration:none;width:250px;-webkit-text-size-adjust:none;cursor:pointer"
+                                type='submit'>Khôi phục</button>
                                 <!--[if mso]>
                                 </v:roundrect>
                               <![endif]-->
@@ -49,7 +66,10 @@
                       </table>
                       <table align='center' border='0' cellpadding='0' cellspacing='0' width='100%'>
                         <tr>
-                          
+                          <td align='center' style='padding: 30px 56px 28px 56px;' valign='middle'>
+<span style='font-family: "lato", "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 28px;font-size: 16px; color: #A7ADB5; vertical-align: middle;'>Nếu bị vấn đề gì khi khôi phục <a href="mailto:myshopuser123@gmail.com">hãy liên lạc với chúng tôi</a>!</span>
+
+                          </td>
                         </tr>
                         <tr>
                           <td align='center' style='padding: 0 56px 28px 56px;' valign='middle'>
@@ -62,6 +82,7 @@
                       </table>
                     </td>
                   </tr>
+                  </form>
                 </table>
                 <!--[if (gte mso 9)|(IE)]>
                 </td>
@@ -72,5 +93,9 @@
         <td width="10" valign="top">&nbsp;</td>
       </tr>
     </table>
+  
+    </div>
+    </div>
+
     
-  </body>
+

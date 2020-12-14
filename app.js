@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, '/public/')));
 // Login
 
 app.use(session({ secret: "cats" }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

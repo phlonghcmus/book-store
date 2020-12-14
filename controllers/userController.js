@@ -1,16 +1,16 @@
 const userModel = require('../models/userModel');
 const fs = require('fs');
 const url = require('url');
-const mailer = require('../utils/mailer');
+const mailer = require('../utils/mailer/mailer');
 const { isBuffer } = require('util');
 
 exports.signup = (req, res, next) => {
-    res.render('user/signup');
+    res.render('index/signup');
 }
 
 exports.login = (req, res, next) => {
     const message = req.flash('error');
-    res.render('user/login', { message });
+    res.render('index/login', { message });
 }
 
 
@@ -100,17 +100,17 @@ exports.signupSuccess = async (req, res, next) => {
     const to = req.body.email;
     const subject = "Xác nhận email";
     //    const body= '<p>Bấm <a href="http://' + url + '">vào đây</a> để xác thực email của bạn</p>'
-    const htmlfile = await fs.readFileSync(__dirname + "/../utils/emailTemplate.html", { encoding: "utf-8" });
+    const htmlfile = await fs.readFileSync(__dirname + "/../utils/mailer/emailTemplate.html", { encoding: "utf-8" });
     const body = await mailer.readHTML(htmlfile, req.body.username, req.body.email, url);
     await mailer.sendMail(to, subject, body);
 
-    res.render("user/verificationEmail", { account: req.body.username, email: req.body.email });
+    res.render("user/verification-email", { account: req.body.username, email: req.body.email });
 }
 
 exports.verification = async (req, res, next) => {
     await userModel.verificationEmail(req.params.id);
     const user = await userModel.get(req.params.id);
-    res.render("user/verificationSuccess", { account: user.account, email: user.email });
+    res.render("user/verification-success", { account: user.account, email: user.email });
 }
 
 exports.logout = async (req, res, next) => {
@@ -125,7 +125,7 @@ exports.logout = async (req, res, next) => {
 
 exports.changePasswordPage = async (req, res, next) => {
     if (req.user)
-        res.render('user/changePassword');
+        res.render('user/change-password');
     else
         res.redirect('/');
 }
@@ -145,3 +145,42 @@ exports.changePassword = async (req, res, next) => {
     else
         res.redirect('/');
 }
+
+exports.recoverPage = async (req, res, next) =>
+{
+    res.render("index/recover");
+}
+
+exports.sendRecoverMail = async (req, res, next) =>
+{
+    const user = await userModel.getByEmail(req.body.email);
+    const url = req.headers.host + "/users/recover/" + user._id;
+    const to = req.body.email;
+    const subject = "Khôi phục tài khoản";
+    
+    const htmlfile = await fs.readFileSync(__dirname + "/../utils/mailer/recoverTemplate.html", { encoding: "utf-8" });
+    const body = await mailer.readHTML(htmlfile, user.account, user.email, url);
+    await mailer.sendMail(to, subject, body);
+    res.render("index/recover",{notification: "Đã gửi email khôi phục thành công"});
+}
+
+exports.recoverPasswordPage= async (req, res, next) =>
+{
+    const id= req.params.id;
+    const user=await userModel.get(id);
+    res.render("user/recover-password",{id:id,account:user.account});
+}
+
+exports.recover= async (req, res, next) =>
+{
+    const id=req.params.id;
+    const password=req.body.newPassword;
+    const newPassword= await userModel.bcryptPassword(password);
+    const data =
+    {
+        password: newPassword
+    };
+    await userModel.update(id, data);
+    res.redirect('/login');
+}
+

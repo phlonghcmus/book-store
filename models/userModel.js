@@ -5,6 +5,8 @@ const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 
+
+// Get service
 exports.get = async (id) => {
     const userCollection = db().collection('user');
 
@@ -12,6 +14,24 @@ exports.get = async (id) => {
     return user;
 }
 
+exports.getByUserName = async (username) => {
+    const userCollection = db().collection('user');
+
+    const user = await userCollection.findOne({ account: username });
+    return user;
+}
+
+
+exports.getByEmail=async (Uemail) => {
+    const userCollection = db().collection('user');
+
+    const user = await userCollection.findOne({ email: Uemail });
+    return user;
+}
+//----------------------------
+
+
+//update service
 exports.update = async (id,data) => {
     const userCollection = db().collection('user');
 
@@ -33,12 +53,7 @@ exports.add = async (data) => {
     return user;
 }
 
-exports.getByUserName = async (username) => {
-    const userCollection = db().collection('user');
 
-    const user = await userCollection.findOne({ account: username });
-    return user;
-}
 
 exports.verificationEmail = async (id) => {
     const userCollection = db().collection('user');
