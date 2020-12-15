@@ -17,6 +17,10 @@ const booksRouter = require('./routes/books');
 
 // Api routes variables
 const userApiRouter = require('./routes/api/users');
+const bookApiRouter=require('./routes/api/books');
+
+
+
 const app = express();
 require('./database/database');
 
@@ -49,6 +53,9 @@ app.use('/books', booksRouter);
 
 //api routes
 app.use('/api/users', userApiRouter);
+app.use('/api/books',bookApiRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
