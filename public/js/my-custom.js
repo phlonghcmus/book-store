@@ -346,55 +346,235 @@ function onsubmitRecoverPasswordValidation(form, id) {
 
 }
 
+function replaceTotal(products) {
+	const template = Handlebars.compile($('#count-template').html());
+	const count = { count: products.length };
+	const productsHtml = template(count);
+	$('#count').html(productsHtml);
+	return count;
+}
+
 function replaceProduct(products) {
 	const template = Handlebars.compile($('#product-list-template').html());
-	const books={books: products};
-	console.log(books);
+	const books = { books: products };
 	const productsHtml = template(books);
-	$('#products').html(productsHtml);
+	$('#products').fadeOut("slow", function () {
+		$('#products').html(productsHtml)
+		$('#products').fadeIn("slow");
+
+	});
 }
+
+
 
 function getProductPage(page) {
-	let mydata;
 	$.ajax({
 		url: '/api/books/list',
-		async: false,
+
 		dataType: 'json',
 		data: { page },
+		cache: true,
 		success: function (json) {
-			mydata = json;
+			replaceTotal(json);
+			replaceProduct(json);
 		}
 	});
-	return mydata;
+
+}
+
+function getProductSearchPage(keyword, categoryID, page) {
+	let mydata;
+	if (categoryID.length > 0) {
+		mydata = { keyword, categoryID, page };
+	}
+	else 
+	{
+		mydata={keyword,page};
+	}
+	$.ajax({
+		url: '/api/books/search-list',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceTotal(json);
+			replaceProduct(json);
+		},
+		error : function(e) {
+			console.info("Error");
+		},
+		done : function(e) {
+			console.info("DONE");
+		}
+	});
+}
+function countAllProduct(page) {
+	let mydata;
+	$.ajax({
+		url: '/api/books/page-count',
+
+		dataType: 'json',
+		success: function (json) {
+			replacePage(page, json);
+		}
+	});
+
+}
+
+function countSearchProduct(keyword,categoryID,page)
+{
+	let mydata;
+	if (categoryID.length > 0) {
+		mydata = { keyword, categoryID, page };
+	}
+	else 
+	{
+		mydata={keyword,page};
+	}
+	$.ajax({
+		url: '/api/books/search-list-count',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replacePage(page, json);
+		},
+		error : function(e) {
+			console.info("Error");
+		},
+		done : function(e) {
+			console.info("DONE");
+		}
+	});
+}
+function countCategoryProduct(categoryID, page) {
+
+	$.ajax({
+		url: '/api/books/category-page-count',
+		dataType: 'json',
+		data: { categoryID },
+		success: function (json) {
+			replacePage(page, json);
+		}
+	});
+
+}
+function getCategoryProductPage(categoryID, page) {
+
+	$.ajax({
+		url: '/api/books/category-list',
+		dataType: 'json',
+		data: { page, categoryID },
+		success: function (json) {
+			replaceProduct(json);
+			replaceTotal(json);
+		}
+
+	});
 }
 
 
 
-
-
-function replacePage(page) {
+function replacePage(page, count) {
 	let mydata;
 	$.ajax({
-		type:'get',
+		type: 'get',
 		url: '/api/books/pagination',
-		async: false,
 		dataType: 'json',
-		data: { page },
+		data: { page, count },
 		success: function (html) {
-			mydata = html;
+			$('html, body').animate({ scrollTop: $('#products').position().top }, 'slow');
+			// $('#pagination').fadeOut("slow", function(){
+			$('#pagination').html(html);
+			// $('#pagination').fadeIn("slow");
+
 		},
-		error:function()
-		{
+		error: function () {
 			console.log("error");
 		}
 	});
-	$('#pagination').html(mydata);
 }
 
-function pagination(page)
-{
-	const product=getProductPage(page);
-	replacePage(page);
-	replaceProduct(product);
+function pagination(page) {
+	let product;
+	let count;
+	let keyword;
+	if (window.location.href.indexOf("category") > -1) {
+		if (window.location.href.indexOf("search") > -1) {
+			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+			const segment_array = segment_str.split('/');
+			const search = segment_array.pop();
+			const categoryID = segment_array.pop();
+			keyword = getParameterByName('keyword', window.location.href);
+			product = getProductSearchPage(keyword, categoryID, page);
+			count = countSearchProduct(keyword,categoryID,page);
+		}
+		else {
+			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+			const segment_array = segment_str.split('/');
+			const categoryID = segment_array.pop();
+			product = getCategoryProductPage(categoryID, page);
+			count = countCategoryProduct(categoryID, page);
+		}
+	}
+	else {
+		if (window.location.href.indexOf("search") > -1) {
+			keyword = getParameterByName('keyword', window.location.href);
+			product = getProductSearchPage(keyword, "", page);
+			count = countSearchProduct(keyword,"",page);
+		}
+		else {
+			product = getProductPage(page);
+			count = countAllProduct(page);
+		}
+	}
+
+
+	if (window.location.href.indexOf("search") > -1) {
+		if (history.pushState) {
+			var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?keyword=' + keyword + '&p=' + page;
+			window.history.pushState({ path: newurl }, '', newurl);
+		}
+	}
+	else {
+		if (history.pushState) {
+			var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
+			window.history.pushState({ path: newurl }, '', newurl);
+		}
+	}
+	return false;
 }
 
+function getParameterByName(name, url = window.location.href) {
+	name = name.replace(/[\[\]]/g, '\\$&');
+	var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return '';
+	return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function updateUrlParameter(uri, key, value) {
+	// remove the hash part before operating on the uri
+	var i = uri.indexOf('#');
+	var hash = i === -1 ? '' : uri.substr(i);
+	uri = i === -1 ? uri : uri.substr(0, i);
+
+	var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+	var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+
+	if (!value) {
+		// remove key-value pair if value is empty
+		uri = uri.replace(new RegExp("([?&]?)" + key + "=[^&]*", "i"), '');
+		if (uri.slice(-1) === '?') {
+			uri = uri.slice(0, -1);
+		}
+		// replace first occurrence of & by ? if no ? is present
+		if (uri.indexOf('?') === -1) uri = uri.replace(/&/, '?');
+	} else if (uri.match(re)) {
+		uri = uri.replace(re, '$1' + key + "=" + value + '$2');
+	} else {
+		uri = uri + separator + key + "=" + value;
+	}
+	return uri + hash;
+}

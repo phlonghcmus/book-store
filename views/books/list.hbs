@@ -30,7 +30,9 @@
                   <option value="4">Best Selling</option>
                 </select>
                                 </div>
+                                <div id="count">
                                 <p>Showing all {{count}} results</p>
+                                </div>
                             </div>
                             <div class="col-12 col-sm-4 text-center text-sm-right">
                                 <ul class="nav nav-tabs ml-auto">
@@ -177,40 +179,42 @@
         {{#paginate pagination type="first"}}
             <li {{#if disabled}}class="li-paginate" {{/if}} style="float:left;"class="li-paginate" >
                 {{!-- <a  href="?{{../query}}p={{n}}"><<</a> --}}
-                 <a href="#!"onclick="pagination({{json n}})"><<</a>
+                 <a href="#"onclick="return pagination({{json n}})"><<</a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="previous"}}
             <li {{#if disabled}}class="li-paginate" {{/if}}style="float:left;" class="li-paginate">
                 {{!-- <a href="?{{../query}}p={{n}}"><</a> --}}
-                <a  href="#!"onclick="pagination({{json n}})"><</a>
+                <a  href="#"onclick="return pagination({{json n}})"><</a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="middle" limit="5"}}
             <li {{#if active}} class=" activate" {{/if}} style="float:left;" class="li-paginate" >
                 {{!-- <a href="?{{../query}}p={{n}}">{{n}}</a> --}}
-                <a  href="#!"onclick="pagination({{json n}})">{{n}}</a>
+                <a  href="#"onclick="return pagination({{json n}})">{{n}}</a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="next"}}
             <li {{#if disabled}}class="li-paginate"   {{/if}}style="float:left;" class="li-paginate">
                 {{!-- <a href="?{{../query}}p={{n}}">> </a> --}}
-                <a  href="#!"onclick="pagination({{json n}})">></a>
+                <a  href="#"onclick="return pagination({{json n}})">></a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="last"}}
             <li {{#if disabled}}class="li-paginate"  {{/if}}style="float:left;"class="li-paginate">
                 {{!-- <a  href="?{{../query}}p={{n}}">>></a> --}}
-                <a  href="#!" onclick="pagination({{json n}})">>></a>
+                <a  href="#" onclick="return pagination({{json n}})">>></a>
             </li>
         {{/paginate}}
     </ul>
 </div>
 
 
-
-
-
+<script type="text/x-handlebars-template" id="count-template">
+  <div >
+    <p>Showing all \{{count}} results</p>
+ </div>
+</script>
 
 <script type="text/x-handlebars-template" id="product-list-template">
   <div class="product-categorie-box" >
