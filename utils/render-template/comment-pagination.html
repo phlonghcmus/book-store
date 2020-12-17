@@ -1,0 +1,34 @@
+<div class="paginate-center" id="pagination-comment">
+    <ul>
+        {{#paginate pagination type="first"}}
+            <li {{#if disabled}}class="li-paginate" {{/if}} style="float:left;"class="li-paginate" >
+                {{!-- <a  href="?{{../query}}p={{n}}"><<</a> --}}
+                 <a href="#"onclick="return commentPagination({{json n}},{{json ../user}})"><<</a>
+            </li>
+        {{/paginate}}
+        {{#paginate pagination type="previous"}}
+            <li {{#if disabled}}class="li-paginate" {{/if}}style="float:left;" class="li-paginate">
+                {{!-- <a href="?{{../query}}p={{n}}"><</a> --}}
+                <a  href="#"onclick="return commentPagination({{json n}},{{json ../user}})"><</a>
+            </li>
+        {{/paginate}}
+        {{#paginate pagination type="middle" limit="5"}}
+            <li {{#if active}} class=" activate" {{/if}} style="float:left;" class="li-paginate" >
+                {{!-- <a href="?{{../query}}p={{n}}">{{n}}</a> --}}
+                <a  href="#"onclick="return commentPagination({{json n}},{{json ../user}})">{{n}}</a>
+            </li>
+        {{/paginate}}
+        {{#paginate pagination type="next"}}
+            <li {{#if disabled}}class="li-paginate"   {{/if}}style="float:left;" class="li-paginate">
+                {{!-- <a href="?{{../query}}p={{n}}">> </a> --}}
+                <a  href="#"onclick="return commentPagination({{json n}},{{json ../user}})">></a>
+            </li>
+        {{/paginate}}
+        {{#paginate pagination type="last"}}
+            <li {{#if disabled}}class="li-paginate"  {{/if}}style="float:left;"class="li-paginate">
+                {{!-- <a  href="?{{../query}}p={{n}}">>></a> --}}
+                <a  href="#" onclick="return commentPagination({{json n}},{{json ../user}})">>></a>
+            </li>
+        {{/paginate}}
+    </ul>
+</div>

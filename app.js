@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const hbs = require('hbs');
+require('dotenv').config();
 
 const flash = require('connect-flash');
 const session = require("express-session"),
@@ -36,7 +37,7 @@ app.use(express.static(path.join(__dirname, '/public/')));
 
 // Login
 
-app.use(session({ secret: "cats" }));
+app.use(session({ secret: process.env.SESSION_SECRET  }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -346,6 +346,8 @@ function onsubmitRecoverPasswordValidation(form, id) {
 
 }
 
+
+
 function replaceTotal(products) {
 	const template = Handlebars.compile($('#count-template').html());
 	const count = { count: products.length };
@@ -387,9 +389,8 @@ function getProductSearchPage(keyword, categoryID, page) {
 	if (categoryID.length > 0) {
 		mydata = { keyword, categoryID, page };
 	}
-	else 
-	{
-		mydata={keyword,page};
+	else {
+		mydata = { keyword, page };
 	}
 	$.ajax({
 		url: '/api/books/search-list',
@@ -400,10 +401,10 @@ function getProductSearchPage(keyword, categoryID, page) {
 			replaceTotal(json);
 			replaceProduct(json);
 		},
-		error : function(e) {
+		error: function (e) {
 			console.info("Error");
 		},
-		done : function(e) {
+		done: function (e) {
 			console.info("DONE");
 		}
 	});
@@ -421,15 +422,13 @@ function countAllProduct(page) {
 
 }
 
-function countSearchProduct(keyword,categoryID,page)
-{
+function countSearchProduct(keyword, categoryID, page) {
 	let mydata;
 	if (categoryID.length > 0) {
 		mydata = { keyword, categoryID, page };
 	}
-	else 
-	{
-		mydata={keyword,page};
+	else {
+		mydata = { keyword, page };
 	}
 	$.ajax({
 		url: '/api/books/search-list-count',
@@ -439,10 +438,10 @@ function countSearchProduct(keyword,categoryID,page)
 		success: function (json) {
 			replacePage(page, json);
 		},
-		error : function(e) {
+		error: function (e) {
 			console.info("Error");
 		},
-		done : function(e) {
+		done: function (e) {
 			console.info("DONE");
 		}
 	});
@@ -507,7 +506,7 @@ function pagination(page) {
 			const categoryID = segment_array.pop();
 			keyword = getParameterByName('keyword', window.location.href);
 			product = getProductSearchPage(keyword, categoryID, page);
-			count = countSearchProduct(keyword,categoryID,page);
+			count = countSearchProduct(keyword, categoryID, page);
 		}
 		else {
 			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
@@ -521,7 +520,7 @@ function pagination(page) {
 		if (window.location.href.indexOf("search") > -1) {
 			keyword = getParameterByName('keyword', window.location.href);
 			product = getProductSearchPage(keyword, "", page);
-			count = countSearchProduct(keyword,"",page);
+			count = countSearchProduct(keyword, "", page);
 		}
 		else {
 			product = getProductPage(page);
@@ -577,4 +576,129 @@ function updateUrlParameter(uri, key, value) {
 		uri = uri + separator + key + "=" + value;
 	}
 	return uri + hash;
+}
+
+function commend(user) {
+	const comment = document.getElementById("comment").value;
+	const nameInput = document.getElementById("username");
+	const type = nameInput.getAttribute('type');
+	let mydata;
+	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+	const segment_array = segment_str.split('/');
+	const bookId = segment_array.pop();
+
+	if (type === 'text') {
+		const name = nameInput.value;
+		mydata = {
+			comment, name, bookId
+		};
+	}
+	else {
+		mydata = {
+			comment, bookId
+		};
+	}
+
+	$.ajax({
+		type: 'get',
+		url: '/api/books/comment',
+		dataType: 'json',
+		data: mydata,
+		success: function (json) {
+			replaceComment(json.comments, user);
+			pageComment(json.page);
+		},
+		error: function () {
+			console.log("error");
+		}
+	});
+
+}
+
+function replaceComment(comments, user) 
+{
+	const template = Handlebars.compile($('#comments-template').html());
+	let replace;
+	if (user)
+		replace = { comments: comments, user: user };
+	else
+		replace = { comments: comments };
+	const productsHtml = template( replace);
+	$('#comment-div').fadeOut("slow", function () {
+		$('#comment-div').html(productsHtml)
+		$('#comment-div').fadeIn("slow");
+
+	});
+}
+
+function pageComment(page) {
+	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+	const segment_array = segment_str.split('/');
+	const bookId = segment_array.pop();
+	$.ajax({
+		type: 'get',
+		url: '/api/books/pagination-comment',
+		dataType: 'json',
+		data: { page, bookId },
+		success: function (html) {
+
+			// $('#pagination').fadeOut("slow", function(){
+			$('#pagination-comment').html(html);
+			// $('#pagination').fadeIn("slow");
+
+		},
+		error: function () {
+			console.log("error");
+		}
+	});
+}
+
+function getCommentPage(page,user) {
+	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+	const segment_array = segment_str.split('/');
+	const bookId = segment_array.pop();
+	const mydata = { bookId, page };
+	$.ajax({
+		url: '/api/books/comments-list',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceComment(json,user);
+		},
+		error: function (e) {
+			console.info("Error");
+		},
+		done: function (e) {
+			console.info("DONE");
+		}
+	});
+}
+
+// function countAllComments()
+// {
+// 	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+// 	const segment_array = segment_str.split( '/' );
+// 	const bookId = segment_array.pop();
+// 	$.ajax({
+// 		url: '/api/books/comments-count',
+// 		dataType: 'json',
+// 		data: bookId,
+// 		cache: true,
+// 		success: function (json) {
+// 			pageComment(json);
+// 		},
+// 		error : function(e) {
+// 			console.info("Error");
+// 		},
+// 		done : function(e) {
+// 			console.info("DONE");
+// 		}
+// 	});
+// }
+
+function commentPagination(page,user) {
+	getCommentPage(page,user);
+	pageComment(page);
+	return false;
 }

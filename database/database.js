@@ -5,7 +5,7 @@ const uri ="mongodb+srv://admin:181204391812044218120452@cluster0.4rak6.mongodb.
 
 let database;
 // Create a new MongoClient
-const client = new MongoClient(uri,{ useUnifiedTopology: true });
+const client = new MongoClient(process.env.MONGODB_URL,{ useUnifiedTopology: true });
 async function run() {
         // Connect the client to the server
         await client.connect();

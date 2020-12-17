@@ -1,7 +1,7 @@
 const bookModel = require('../models/bookModel');
 const toQS = require('querystring').stringify;
 const category=require('../models/categoryModel');
-
+const commentModel=require('../models/commentModel');
 exports.list = async(req, res, next) => {
 
     let currentPage=req.query.p || 1;
@@ -64,7 +64,20 @@ exports.detail=async (req, res, next) =>
     const basePrice=tt.basePrice;
     const detail=tt.detail;
     const cover=tt.cover;
-    res.render('books/detail',{title,basePrice,detail,cover});
+    let currentPage=req.query.p || 1;
+
+
+    // pageCount = await bookModel.pageCountList();
+    // console.log(pageCount);
+    // books=await bookModel.listPerPage(currentPage);
+
+    const pageCount=await commentModel.countCommentsByBookID(req.params.id);
+    console.log(pageCount);
+    const comments=await commentModel.getCommentsByBookID(req.params.id);
+    if(pageCount>0)
+    res.render('books/detail',{title,basePrice,detail,cover,pageCount:Math.ceil(pageCount),comments,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+    else
+    res.render('books/detail',{title,basePrice,detail,cover,comments});
 };
 
 exports.category=async (req,res,next)=>

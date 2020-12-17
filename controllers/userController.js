@@ -5,12 +5,19 @@ const mailer = require('../utils/mailer/mailer');
 const { isBuffer } = require('util');
 
 exports.signup = (req, res, next) => {
-    res.render('index/signup');
+    if (req.user)
+        res.redirect('/');
+    else
+        res.render('index/signup');
 }
 
 exports.login = (req, res, next) => {
-    const message = req.flash('error');
-    res.render('index/login', { message });
+    if (req.user)
+        res.redirect('/');
+    else {
+        const message = req.flash('error');
+        res.render('index/login', { message });
+    }
 }
 
 
@@ -146,36 +153,32 @@ exports.changePassword = async (req, res, next) => {
         res.redirect('/');
 }
 
-exports.recoverPage = async (req, res, next) =>
-{
+exports.recoverPage = async (req, res, next) => {
     res.render("index/recover");
 }
 
-exports.sendRecoverMail = async (req, res, next) =>
-{
+exports.sendRecoverMail = async (req, res, next) => {
     const user = await userModel.getByEmail(req.body.email);
     const url = req.headers.host + "/users/recover/" + user._id;
     const to = req.body.email;
     const subject = "Khôi phục tài khoản";
-    
+
     const htmlfile = await fs.readFileSync(__dirname + "/../utils/mailer/recoverTemplate.html", { encoding: "utf-8" });
     const body = await mailer.readHTML(htmlfile, user.account, user.email, url);
     await mailer.sendMail(to, subject, body);
-    res.render("index/recover",{notification: "Đã gửi email khôi phục thành công"});
+    res.render("index/recover", { notification: "Đã gửi email khôi phục thành công" });
 }
 
-exports.recoverPasswordPage= async (req, res, next) =>
-{
-    const id= req.params.id;
-    const user=await userModel.get(id);
-    res.render("user/recover-password",{id:id,account:user.account});
+exports.recoverPasswordPage = async (req, res, next) => {
+    const id = req.params.id;
+    const user = await userModel.get(id);
+    res.render("user/recover-password", { id: id, account: user.account });
 }
 
-exports.recover= async (req, res, next) =>
-{
-    const id=req.params.id;
-    const password=req.body.newPassword;
-    const newPassword= await userModel.bcryptPassword(password);
+exports.recover = async (req, res, next) => {
+    const id = req.params.id;
+    const password = req.body.newPassword;
+    const newPassword = await userModel.bcryptPassword(password);
     const data =
     {
         password: newPassword
