@@ -75,7 +75,9 @@
                             </div>
                             <div class="media-body">
                                 <p>{{comment}}</p>
-                                <small class="text-muted">Posted by {{account}} {{username}}</small>
+                                <small class="text-muted">Đăng bởi {{account}}{{username}}</small>
+                                <br>
+                                <small class="text-muted">{{date}}</small>
                             </div>
                         </div>
                         <hr >
@@ -95,8 +97,9 @@
                     
                   </div>
             </div>
-{{#if pageCount}}
+
 <div class="paginate-center" id="pagination-comment">
+{{#if pageCount}}
     <ul>
         {{#paginate pagination type="first"}}
             <li {{#if disabled}}class="li-paginate" {{/if}} style="float:left;"class="li-paginate" >
@@ -129,8 +132,9 @@
             </li>
         {{/paginate}}
     </ul>
-</div>
+
 {{/if}}
+</div>
             <div class="row my-5">
                 <div class="col-lg-12">
                     <div class="title-all text-center">
@@ -180,6 +184,8 @@
                             <div class="media-body">
                                 <p>\{{comment}}</p>
                                 <small class="text-muted">Posted by \{{account}} \{{username}}</small>
+                                <br>
+                                 <small class="text-muted">\{{date}}</small>
                             </div>
                         </div>
                         <hr >

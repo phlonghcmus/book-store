@@ -589,15 +589,28 @@ function commend(user) {
 
 	if (type === 'text') {
 		const name = nameInput.value;
-		mydata = {
+		if(name)
+			mydata = {
 			comment, name, bookId
-		};
+			};
+		else
+		{
+			alert("Hãy nhập tên của bạn để bình luận");
+			return false;
+		}
 	}
 	else {
 		mydata = {
 			comment, bookId
 		};
 	}
+	
+	if(comment.length==0)
+	{
+		alert("Hãy nhập bình luận trước khi gửi");
+		return false;
+	}
+	
 
 	$.ajax({
 		type: 'get',

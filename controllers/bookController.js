@@ -74,10 +74,10 @@ exports.detail=async (req, res, next) =>
     const pageCount=await commentModel.countCommentsByBookID(req.params.id);
     console.log(pageCount);
     const comments=await commentModel.getCommentsByBookID(req.params.id);
-    if(pageCount>0)
+    // if(pageCount>0)
     res.render('books/detail',{title,basePrice,detail,cover,pageCount:Math.ceil(pageCount),comments,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
-    else
-    res.render('books/detail',{title,basePrice,detail,cover,comments});
+    // else
+    // res.render('books/detail',{title,basePrice,detail,cover,comments});
 };
 
 exports.category=async (req,res,next)=>

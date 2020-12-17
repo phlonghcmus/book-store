@@ -32,17 +32,17 @@ exports.countCommentsByBookID=async(bookID)=>
     const count =await collection.find({book_id:ObjectId(bookID)}).count();
     return count/3;
 }
-exports.addCommentWithUser=async(booksID,userID,userComment)=>
+exports.addCommentWithUser=async(data)=>
 {
     const collection=db().collection('comments');
-    const add=await collection.insertOne({book_id:ObjectId(booksID),user_id:userID,comment:userComment});
+    const add=await collection.insertOne(data);
     return add;
 }
 
-exports.addCommentWithoutUser=async(booksID,username,userComment)=>
+exports.addCommentWithoutUser=async(data)=>
 {
     const collection=await db().collection('comments');
-    const cover="http://ssl.gstatic.com/accounts/ui/avatar_2x.png";
-    const add=await collection.insertOne({book_id:ObjectId(booksID),username:username,comment:userComment,cover:cover});
+    
+    const add=await collection.insertOne(data);
     return add;
 }

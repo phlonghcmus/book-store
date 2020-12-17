@@ -4,6 +4,7 @@ const category=require('../../models/categoryModel');
 const fs = require('fs');
 const { handlebars } = require('hbs')
 const commentModel=require('../../models/commentModel');
+const ObjectId= require('mongodb').ObjectId;
 exports.list=async(req,res,next)=>
 {
    const books=await bookModel.listPerPage(req.query.page);
@@ -81,17 +82,39 @@ exports.updateComment=async(req,res,next)=>
   let bookID=req.query.bookId;
   let userComment=req.query.comment;
   let page;
+  let mydata;
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let yyyy = today.getFullYear();
+  let hh=today.getHours();
+  let mmmm=today.getMinutes();
 
+today = dd + '/' + mm + '/' + yyyy + ' - ' + hh+ ':' + mmmm; 
   if(req.query.name)
   {
     let username=req.query.name;
-    await commentModel.addCommentWithoutUser(bookID,username,userComment);
+    const cover="http://ssl.gstatic.com/accounts/ui/avatar_2x.png";
+    mydata={
+      book_id: ObjectId(bookID),
+      username:req.query.name,
+      comment: userComment,
+      date: today,
+      cover:cover
+    }
+    await commentModel.addCommentWithoutUser(mydata);
     page=await commentModel.countCommentsByBookID(bookID);
     comments=await commentModel.getCommentsByBookID(bookID,Math.ceil(page));
   }
   else
   {
-    await commentModel.addCommentWithUser(bookID,req.user._id,userComment);
+    mydata={
+      book_id: ObjectId(bookID),
+      user_id:req.user._id,
+      comment: userComment,
+      date: today
+    }
+    await commentModel.addCommentWithUser(mydata);
     page=await commentModel.countCommentsByBookID(bookID);
     comments=await commentModel.getCommentsByBookID(bookID,Math.ceil(page));
   }
@@ -107,9 +130,10 @@ exports.paginationComment=async(req,res,next)=>
     const replacements={
       pagination:{
           page: req.query.page,
-          pageCount: total
+          pageCount: Math.ceil(total)
       },
-      user:req.user
+      user:req.user,
+      pageCount:Math.ceil(total)
     }
     const htmlToSend = template(replacements);
    res.json(htmlToSend);
