@@ -19,8 +19,10 @@ exports.pagination=async(req,res,next)=>
     const replacements={
       pagination:{
           page: req.query.page,
-          pageCount: Math.ceil(req.query.count)
-      }
+          pageCount: Math.ceil(req.query.count),
+          
+      },
+      cart: res.locals.cart
     }
     const htmlToSend = template(replacements);
    res.json(htmlToSend);

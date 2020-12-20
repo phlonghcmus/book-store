@@ -356,20 +356,28 @@ function replaceTotal(products) {
 	return count;
 }
 
-function replaceProduct(products) {
+
+function replaceProduct(products,carts) {
 	const template = Handlebars.compile($('#product-list-template').html());
-	const books = { books: products };
+	Handlebars.registerHelper("json", function (value) {                  
+		return JSON.stringify(value);
+	});
+	const books = { books: products,
+		json: ()=>json,
+		cart:carts	
+	};
 	const productsHtml = template(books);
 	$('#products').fadeOut("slow", function () {
 		$('#products').html(productsHtml)
 		$('#products').fadeIn("slow");
 
 	});
+	
 }
 
 
 
-function getProductPage(page) {
+function getProductPage(page,carts) {
 	$.ajax({
 		url: '/api/books/list',
 
@@ -378,13 +386,13 @@ function getProductPage(page) {
 		cache: true,
 		success: function (json) {
 			replaceTotal(json);
-			replaceProduct(json);
+			replaceProduct(json,carts);
 		}
 	});
 
 }
 
-function getProductSearchPage(keyword, categoryID, page) {
+function getProductSearchPage(keyword, categoryID, page,carts) {
 	let mydata;
 	if (categoryID.length > 0) {
 		mydata = { keyword, categoryID, page };
@@ -399,7 +407,7 @@ function getProductSearchPage(keyword, categoryID, page) {
 		cache: true,
 		success: function (json) {
 			replaceTotal(json);
-			replaceProduct(json);
+			replaceProduct(json,carts);
 		},
 		error: function (e) {
 			console.info("Error");
@@ -458,14 +466,14 @@ function countCategoryProduct(categoryID, page) {
 	});
 
 }
-function getCategoryProductPage(categoryID, page) {
+function getCategoryProductPage(categoryID, page,carts) {
 
 	$.ajax({
 		url: '/api/books/category-list',
 		dataType: 'json',
 		data: { page, categoryID },
 		success: function (json) {
-			replaceProduct(json);
+			replaceProduct(json,carts);
 			replaceTotal(json);
 		}
 
@@ -494,7 +502,7 @@ function replacePage(page, count) {
 	});
 }
 
-function pagination(page) {
+function pagination(page,carts) {
 	let product;
 	let count;
 	let keyword;
@@ -505,25 +513,25 @@ function pagination(page) {
 			const search = segment_array.pop();
 			const categoryID = segment_array.pop();
 			keyword = getParameterByName('keyword', window.location.href);
-			product = getProductSearchPage(keyword, categoryID, page);
+			product = getProductSearchPage(keyword, categoryID, page,carts);
 			count = countSearchProduct(keyword, categoryID, page);
 		}
 		else {
 			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
 			const segment_array = segment_str.split('/');
 			const categoryID = segment_array.pop();
-			product = getCategoryProductPage(categoryID, page);
+			product = getCategoryProductPage(categoryID, page,carts);
 			count = countCategoryProduct(categoryID, page);
 		}
 	}
 	else {
 		if (window.location.href.indexOf("search") > -1) {
 			keyword = getParameterByName('keyword', window.location.href);
-			product = getProductSearchPage(keyword, "", page);
+			product = getProductSearchPage(keyword, "", page,carts);
 			count = countSearchProduct(keyword, "", page);
 		}
 		else {
-			product = getProductPage(page);
+			product = getProductPage(page,carts);
 			count = countAllProduct(page);
 		}
 	}
@@ -713,5 +721,41 @@ function getCommentPage(page,user) {
 function commentPagination(page,user) {
 	getCommentPage(page,user);
 	pageComment(page);
+	return false;
+}
+
+
+function addProductToCart(cart_id,book_id)
+{
+	let mydata={
+		cartID:cart_id,
+		bookID:book_id
+	};
+	$.ajax({
+		url: '/api/carts/add-cart',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceCart(json)
+		},
+	});
+}
+
+function replaceCart(newCart)
+{
+	const template = Handlebars.compile($('#cart-template').html());
+	const quantityTemplate= Handlebars.compile($('#quantity-cart-template').html());
+	const cart={
+		cart:newCart,
+	};
+	const productsHtml = template(cart);
+	const html=quantityTemplate(cart);
+	$('#div-cart').fadeOut("slow", function () {
+		$('#div-cart').html(productsHtml)
+		$('#div-cart').fadeIn("slow");
+
+	});	
+	$('#quantity').html(html)
 	return false;
 }

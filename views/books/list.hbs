@@ -64,12 +64,12 @@
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                         </ul>
-                                                        <a class="cart" href="#">Add to Cart</a>
+                                                        <a class="cart" href="#!" onclick=" return addProductToCart({{json ../cart._id}},{{json _id}})">Add to Cart</a>
                                                     </div>
                                                 </div>
                                                 <div class="why-text">
                                                     <a href="/books/detail/{{_id}}">
-                                                    <h4 class="link" >{{title}}</h4>
+                                                    <h4 name="title-book"class="link" >{{title}}</h4>
                                                     </a>
                                                     <h5>{{basePrice}}</h5>
                                                     <input type="hidden" id="detail" value="{{detail}}">
@@ -179,31 +179,31 @@
         {{#paginate pagination type="first"}}
             <li {{#if disabled}}class="li-paginate" {{/if}} style="float:left;"class="li-paginate" >
                 {{!-- <a  href="?{{../query}}p={{n}}"><<</a> --}}
-                 <a href="#"onclick="return pagination({{json n}})"><<</a>
+                 <a href="#"onclick="return pagination({{json n}},{{json ../cart}})"><<</a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="previous"}}
             <li {{#if disabled}}class="li-paginate" {{/if}}style="float:left;" class="li-paginate">
                 {{!-- <a href="?{{../query}}p={{n}}"><</a> --}}
-                <a  href="#"onclick="return pagination({{json n}})"><</a>
+                <a  href="#"onclick="return pagination({{json n}},{{json ../cart}})"><</a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="middle" limit="5"}}
             <li {{#if active}} class=" activate" {{/if}} style="float:left;" class="li-paginate" >
                 {{!-- <a href="?{{../query}}p={{n}}">{{n}}</a> --}}
-                <a  href="#"onclick="return pagination({{json n}})">{{n}}</a>
+                <a  href="#"onclick="return pagination({{json n}},{{json ../cart}})">{{n}}</a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="next"}}
             <li {{#if disabled}}class="li-paginate"   {{/if}}style="float:left;" class="li-paginate">
                 {{!-- <a href="?{{../query}}p={{n}}">> </a> --}}
-                <a  href="#"onclick="return pagination({{json n}})">></a>
+                <a  href="#"onclick="return pagination({{json n}},{{json ../cart}})">></a>
             </li>
         {{/paginate}}
         {{#paginate pagination type="last"}}
             <li {{#if disabled}}class="li-paginate"  {{/if}}style="float:left;"class="li-paginate">
                 {{!-- <a  href="?{{../query}}p={{n}}">>></a> --}}
-                <a  href="#" onclick="return pagination({{json n}})">>></a>
+                <a  href="#" onclick="return pagination({{json n}},{{json ../cart}})">>></a>
             </li>
         {{/paginate}}
     </ul>
@@ -235,7 +235,7 @@
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                         </ul>
-                                                        <a class="cart" href="#">Add to Cart</a>
+                                                        <a class="cart" href="#" onclick="return addProductToCart(\{{json ../cart._id}},\{{json _id}})">Add to Cart</a>
                                                     </div>
                                                 </div>
                                                 <div class="why-text">

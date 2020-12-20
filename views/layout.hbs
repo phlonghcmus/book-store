@@ -51,7 +51,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="dropdown" style="float:right">
                         {{#if user}}
-                        <button class="dropbtn"style="height:auto!important;font-weight:700;">{{user.account}}</button>
+                        <button class="dropbtn" style="height:auto!important;font-weight:700;">{{user.account}}</button>
                         <div class="dropdown-content" style="margin-right: 20px;">
                             <a href="/users/profile">Tài khoản</a>
                             <a href="/users/change-pasword">Đổi mật khẩu</a>
@@ -111,7 +111,7 @@
                             <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Cửa Hàng</a>
                             <ul class="dropdown-menu">
                                 <li><a href="/books">Danh sách sản phẩm</a></li>
-                                <li><a href="/">Giỏ hàng</a></li>
+                                <li><a href="/">Top sản phẩm</a></li>
                                 <li><a href="/">Thanh toán</a></li>
                                 <li><a href="/">Danh sách yêu thích</a></li>
                             </ul>
@@ -122,45 +122,41 @@
                 <!-- /.navbar-collapse -->
 
                 <!-- Start Atribute Navigation -->
-                <div class="attr-nav">
-                    <ul>
+                <div class="attr-nav"id="quantity">
+                    
+                    <ul >
                         <li class="side-menu">
                             <a href="#">
                                 <i class="fa fa-shopping-bag"></i>
-                                <span class="badge">0</span>
+                                <span class="badge" style="color:#BCC056">{{cart.total_quantity}}</span>
                                 <p>Giỏ hàng</p>
                             </a>
                         </li>
                     </ul>
+                    
                 </div>
                 <!-- End Atribute Navigation -->
             </div>
             <!-- Start Side Menu -->
             <div class="side">
-                <a href="#" class="close-side"><i class="fa fa-times"></i></a>
-                <li class="cart-box">
-                    <ul class="cart-list">
-                        <li>
-                            <a href="#" class="photo"><img src="/images/img-pro-01.jpg" class="cart-thumb" alt="" /></a>
-                            <h6><a href="#">Delica omtantur </a></h6>
-                            <p>1x - <span class="price">$80.00</span></p>
-                        </li>
-                        <li>
-                            <a href="#" class="photo"><img src="/images/img-pro-02.jpg" class="cart-thumb" alt="" /></a>
-                            <h6><a href="#">Omnes ocurreret</a></h6>
-                            <p>1x - <span class="price">$60.00</span></p>
-                        </li>
-                        <li>
-                            <a href="#" class="photo"><img src="/images/img-pro-03.jpg" class="cart-thumb" alt="" /></a>
-                            <h6><a href="#">Agam facilisis</a></h6>
-                            <p>1x - <span class="price">$40.00</span></p>
-                        </li>
-                        <li class="total">
-                            <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
-                            <span class="float-right"><strong>Total</strong>: $180.00</span>
-                        </li>
-                    </ul>
-                </li>
+                 <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+                <div id="div-cart">
+                    <li class="cart-box">
+                        <ul class="cart-list">
+                            {{#each cart.books_detail}}
+                            <li class="list-book">
+                                <a href="#" class="photo"><img src="{{cover}}" class="cart-thumb" alt="" /></a>
+                                <h6><a href="#">{{title}} </a></h6>
+                                <p>{{quantity}} - <span class="price">{{basePrice}}</span></p>
+                            </li>
+                            {{/each}}
+                            <li class="total">
+                                <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                                <span class="float-right"><strong>Total</strong>: {{cart.total_price}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </div>
             </div>
             <!-- End Side Menu -->
         </nav>
@@ -386,6 +382,47 @@
     <script src="/js/custom.js"></script>
     <script src="/js/my-custom.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+
+
+    <script type="text/x-handlebars-template" id="cart-template">
+    <div >
+                    
+                    <li class="cart-box">
+                        <ul class="cart-list">
+                            \{{#each cart.books_detail}}
+                            <li class="list-book">
+                                <a href="#" class="photo"><img src="\{{cover}}" class="cart-thumb" alt="" /></a>
+                                <h6><a href="#">\{{title}} </a></h6>
+                                <p>\{{quantity}} - <span class="price">\{{basePrice}}</span></p>
+                            </li>
+                            \{{/each}}
+                            <li class="total">
+                                <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                                <span class="float-right"><strong>Total</strong>: \{{cart.total_price}}</span>
+                            </li>
+                        </ul>
+                    </li>
+            </div>
+</script>
+
+ <script type="text/x-handlebars-template" id="quantity-cart-template">
+  <div class="attr-nav"id="quantity">
+  <ul >
+                        <li class="side-menu">
+                            <a href="#">
+                                <i class="fa fa-shopping-bag"></i>
+                                <span class="badge" style="color:#BCC056">\{{cart.total_quantity}}</span>
+                                <p>Giỏ hàng</p>
+                            </a>
+                        </li>
+                    </ul>
+                    </div>
+ </script>
 </body>
+
+
+
+
 
 </html>

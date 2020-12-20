@@ -9,7 +9,7 @@ require('dotenv').config();
 const flash = require('connect-flash');
 const session = require("express-session"),
   bodyParser = require("body-parser");
-
+const cookie=require('./middleware/cookie/cookie');
 const passport = require('./middleware/passport/passport');
 // Routes variables
 const indexRouter = require('./routes/index');
@@ -19,7 +19,7 @@ const booksRouter = require('./routes/books');
 // Api routes variables
 const userApiRouter = require('./routes/api/users');
 const bookApiRouter=require('./routes/api/books');
-
+const cartApiRouter=require('./routes/api/carts');
 
 
 const app = express();
@@ -43,9 +43,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(function(req,res,next){
+  if(req.user)
   res.locals.user=req.user;
   next();
 })
+
+
+//Cookies
+app.use(cookie);
+
 //routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -55,7 +61,7 @@ app.use('/books', booksRouter);
 //api routes
 app.use('/api/users', userApiRouter);
 app.use('/api/books',bookApiRouter);
-
+app.use('/api/carts',cartApiRouter);
 
 
 // catch 404 and forward to error handler
