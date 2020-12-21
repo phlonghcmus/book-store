@@ -732,30 +732,140 @@ function addProductToCart(cart_id,book_id)
 		bookID:book_id
 	};
 	$.ajax({
-		url: '/api/carts/add-cart',
+		url: '/api/carts/add-product',
 		dataType: 'json',
 		data: mydata,
 		cache: true,
 		success: function (json) {
 			replaceCart(json)
+			replaceTotalQuantity(json)
 		},
 	});
+	return false;
 }
+function  addProductAndGoToCart(cart_id,book_id)
+{
+	let mydata={
+		cartID:cart_id,
+		bookID:book_id
+	};
+	$.ajax({
+		url: '/api/carts/add-product',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceCart(json)
+			replaceTotalQuantity(json)
+			window.location = "/carts/";
+		},
+	});
 
+}
+function replaceTotalQuantity(newCart)
+{
+	
+
+	
+	$('#quantity').fadeOut("slow", function () {
+		$('#quantity').html(newCart.total_quantity)
+		$('#quantity').fadeIn("slow");
+
+	});	
+}
 function replaceCart(newCart)
 {
 	const template = Handlebars.compile($('#cart-template').html());
-	const quantityTemplate= Handlebars.compile($('#quantity-cart-template').html());
+
 	const cart={
 		cart:newCart,
 	};
 	const productsHtml = template(cart);
-	const html=quantityTemplate(cart);
+	
 	$('#div-cart').fadeOut("slow", function () {
 		$('#div-cart').html(productsHtml)
 		$('#div-cart').fadeIn("slow");
 
 	});	
-	$('#quantity').html(html)
+	
+	
+}
+
+function replaceWishList(newCart)
+{
+	const template = Handlebars.compile($('#checkout-template').html());
+
+	Handlebars.registerHelper("json", function (value) {                  
+		return JSON.stringify(value);
+	});
+	const cart={
+		cart:newCart,
+		json:()=>json
+	};
+	const productsHtml = template(cart);
+	
+	$('#checkout-div').fadeOut("slow", function () {
+		$('#checkout-div').html(productsHtml)
+		$('#checkout-div').fadeIn("slow");
+
+	});	
+}
+function addProductWishList(cart_id,book_id)
+{
+	let mydata={
+		cartID:cart_id,
+		bookID:book_id
+	};
+	$.ajax({
+		url: '/api/carts/add-product',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceCart(json)
+			replaceTotalQuantity(json)
+			replaceWishList(json);
+		},
+	});
+	return false;
+}
+
+function decreaseProductWishList(cart_id,book_id)
+{
+	let mydata={
+		cartID:cart_id,
+		bookID:book_id
+	};
+	$.ajax({
+		url: '/api/carts/decrease-product',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceCart(json)
+			replaceTotalQuantity(json)
+			replaceWishList(json);
+		},
+	});
+	return false;
+}
+
+function removeProductWishList(cart_id,book_id)
+{
+	let mydata={
+		cartID:cart_id,
+		bookID:book_id
+	};
+	$.ajax({
+		url: '/api/carts/remove-product',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceCart(json)
+			replaceTotalQuantity(json)
+			replaceWishList(json);
+		},
+	});
 	return false;
 }

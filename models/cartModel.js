@@ -1,7 +1,7 @@
 const { db } = require('../database/database');
 const ObjectId = require('mongodb').ObjectId;
 
-exports.updateQuantity = async (cart_id, bookId) => {
+exports.addQuantity = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
     console.log(bookId);
 
@@ -19,12 +19,12 @@ exports.updateQuantity = async (cart_id, bookId) => {
     let oldValue = book[0].books.quantity;
     let newValue = parseInt(oldValue) + 1;
     console.log(newValue);
-    let data=
+    let data =
     {
-        book_id:ObjectId(bookId),
-        quantity:parseInt(newValue),
+        book_id: ObjectId(bookId),
+        quantity: parseInt(newValue),
     }
-   console.log(data);
+    console.log(data);
     await cartsCollection.updateOne(
         {
             $and:
@@ -34,36 +34,12 @@ exports.updateQuantity = async (cart_id, bookId) => {
 
                 ]
         },
-        {$set:{'books.$.quantity':newValue}}
+        { $set: { 'books.$.quantity': newValue } }
     )
-    // const bookID = await cartsCollection.aggregate
-    //     (
-    //         [
-    //             { $match: { _id: ObjectId(cart_id) } },
-    //             { "$project": { index: { $indexOfArray: ["$books.book_id",ObjectId(book_id)] } } }
 
-    //         ]
-    //     ).toArray();
-
-    // console.log(bookID);
-    // const index = bookID[0].index;
-    // const element = await { "$project": { "matched": { "$arrayElemAt": ["$quantity", index] } } };
-    // let value = await cartsCollection.aggregate([element]).toArray();
-    // console.log(index);
-    // value = value[0].matched;
-    // let update4 = { "$set": {} };
-    // update4["$set"]["quantity." + index] = parseInt(value) + 1;
-    // await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, update4);
-    // await cartsCollection.updateOne(
-    //     {_id:ObjectId(cart_id),
-    //     books:{$elemMatch:{book_id:ObjectId(books_id)}
-    // }
-    // },
-    // {$set:{'books.$.quantity':1}}
-    // )
 }
 
-exports.updatePrice = async (cart_id, bookId) => {
+exports.addTotalPrice = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
     const booksCollection = db().collection('books');
     const books = await booksCollection.findOne({ _id: ObjectId(bookId) });
@@ -74,9 +50,9 @@ exports.updatePrice = async (cart_id, bookId) => {
     {
         total_price: parseInt(price) + parseInt(oldPrice)
     };
-    cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
 }
-exports.updateCarts = async (cart_id, bookId) => {
+exports.addProduct = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
     const check = await cartsCollection.find(
         {
@@ -88,19 +64,19 @@ exports.updateCarts = async (cart_id, bookId) => {
                 ]
         }).count();
     if (check >= 1) {
-        await this.updateQuantity(cart_id, bookId);
+        await this.addQuantity(cart_id, bookId);
     }
     else {
-        const value=parseInt("1");
-        const data=
+        const value = parseInt("1");
+        const data =
         {
-            book_id:ObjectId(bookId),
-            quantity:value
+            book_id: ObjectId(bookId),
+            quantity: value
         };
-        await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { $push: { books:data } });
+        await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { $push: { books: data } });
     }
-    await this.updatePrice(cart_id, bookId);
-    await this.updateTotalQuantity(cart_id);
+    await this.addTotalPrice(cart_id, bookId);
+    await this.addTotalQuantity(cart_id);
 }
 
 exports.createCarts = async () => {
@@ -115,18 +91,17 @@ exports.createCarts = async () => {
     return cart.ops[0];
 }
 
-exports.updateTotalQuantity=async(cart_id)=>
-{
+exports.addTotalQuantity = async (cart_id) => {
     const cartsCollection = db().collection('carts');
     const carts = await cartsCollection.findOne({ _id: ObjectId(cart_id) });
-    const oldQuantity=carts.total_quantity;
+    const oldQuantity = carts.total_quantity;
     console.log(oldQuantity);
     const data =
     {
         total_quantity: parseInt(oldQuantity) + 1
     };
-    cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
-    
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+
 }
 exports.getCart = async (cart_id) => {
     const cartsCollection = db().collection('carts');
@@ -166,4 +141,198 @@ exports.getCart = async (cart_id) => {
     ).toArray();
 
     return cart[0];
+}
+
+exports.decreaseProduct = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    const check = await cartsCollection.find(
+        {
+            $and:
+                [
+                    { _id: ObjectId(cart_id) },
+                    { books: { $elemMatch: { book_id: ObjectId(bookId) } } }
+
+                ]
+        }).count();
+    if (check >= 1) {
+        await this.decreaseQuantity(cart_id, bookId);
+        await this.decreaseTotalPrice(cart_id, bookId);
+        await this.decreaseTotalQuantity(cart_id);
+    }
+    else {
+        return;
+    }
+
+}
+
+exports.decreaseQuantity = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    console.log(bookId);
+
+    const book = await cartsCollection.aggregate([
+        // Get just the docs that contain a shapes element where color is 'red'
+        { $match: { '_id': ObjectId(cart_id) } },
+        { $unwind: "$books" },
+        {
+            $match: {
+                "books.book_id": ObjectId(bookId)
+            }
+        }
+    ]).toArray();
+    console.log(book[0]);
+    let oldValue = book[0].books.quantity;
+    let newValue = parseInt(oldValue) - 1;
+    console.log(newValue);
+    if (newValue <= 0) {
+        await cartsCollection.updateOne(
+            {
+                $and:
+                    [
+                        { _id: ObjectId(cart_id) },
+                        { books: { $elemMatch: { book_id: ObjectId(bookId) } } }
+
+                    ]
+            },
+            { $pull: { 'books': { book_id: ObjectId(bookId) } } }, { multi: true }
+        )
+    }
+    else {
+        let data =
+        {
+            book_id: ObjectId(bookId),
+            quantity: parseInt(newValue),
+        }
+        console.log(data);
+        await cartsCollection.updateOne(
+            {
+                $and:
+                    [
+                        { _id: ObjectId(cart_id) },
+                        { books: { $elemMatch: { book_id: ObjectId(bookId) } } }
+
+                    ]
+            },
+            { $set: { 'books.$.quantity': newValue } }
+        )
+    }
+}
+
+exports.decreaseTotalQuantity = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    const carts = await cartsCollection.findOne({ _id: ObjectId(cart_id) });
+    const oldQuantity = carts.total_quantity;
+    console.log(oldQuantity);
+    const data =
+    {
+        total_quantity: parseInt(oldQuantity) - 1
+    };
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+}
+
+exports.decreaseTotalPrice = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    const booksCollection = db().collection('books');
+    const books = await booksCollection.findOne({ _id: ObjectId(bookId) });
+    const carts = await cartsCollection.findOne({ _id: ObjectId(cart_id) });
+    const price = books.basePrice;
+    const oldPrice = carts.total_price;
+    const data =
+    {
+        total_price: parseInt(oldPrice) - parseInt(price)
+    };
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+}
+
+exports.removeProduct = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    const check = await cartsCollection.find(
+        {
+            $and:
+                [
+                    { _id: ObjectId(cart_id) },
+                    { books: { $elemMatch: { book_id: ObjectId(bookId) } } }
+
+                ]
+        }).count();
+    if (check >= 1) {
+        await this.removeTotalPrice(cart_id, bookId);
+        await this.removeTotalQuantity(cart_id, bookId);
+        await cartsCollection.updateOne(
+            {
+                $and:
+                    [
+                        { _id: ObjectId(cart_id) },
+                        { books: { $elemMatch: { book_id: ObjectId(bookId) } } }
+
+                    ]
+            },
+            { $pull: { 'books': { book_id: ObjectId(bookId) } } }, { multi: true }
+        )
+    }
+    else {
+        return;
+    }
+}
+
+exports.removeTotalQuantity = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    console.log(bookId);
+
+    const book = await cartsCollection.aggregate([
+        // Get just the docs that contain a shapes element where color is 'red'
+        { $match: { '_id': ObjectId(cart_id) } },
+        { $unwind: "$books" },
+        {
+            $match: {
+                "books.book_id": ObjectId(bookId)
+            }
+        }
+    ]).toArray();
+    console.log(book[0]);
+    let bookQuantity = book[0].books.quantity;
+    const carts = await cartsCollection.findOne({ _id: ObjectId(cart_id) });
+    const totalQuantity = carts.total_quantity;
+    const data =
+    {
+        total_quantity: parseInt(totalQuantity) - parseInt(bookQuantity)
+    };
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+}
+
+exports.removeTotalPrice = async (cart_id, bookId) => {
+    const cartsCollection = db().collection('carts');
+    const booksCollection = db().collection('books');
+    console.log(bookId);
+
+    let book = await cartsCollection.aggregate([
+        // Get just the docs that contain a shapes element where color is 'red'
+        { $match: { '_id': ObjectId(cart_id) } },
+        { $unwind: "$books" },
+        {
+            $match: {
+                "books.book_id": ObjectId(bookId)
+            }
+        }
+    ]).toArray();
+    console.log(book[0]);
+    let bookQuantity = book[0].books.quantity;
+    book = await booksCollection.findOne({ _id: ObjectId(bookId) });
+    let bookPrice = book.basePrice;
+    const totalBookPrice = parseInt(bookPrice) * parseInt(bookQuantity);
+    const carts = await cartsCollection.findOne({ _id: ObjectId(cart_id) });
+    const oldPrice = carts.total_price;
+    const newTotal_price = parseInt(oldPrice) - parseInt(totalBookPrice);
+    let data;
+    if (newTotal_price <= 0)
+        data =
+        {
+            total_price: 0
+        };
+    else {
+        data =
+        {
+            total_price: newTotal_price
+        };
+    }
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
 }

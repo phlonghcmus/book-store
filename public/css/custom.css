@@ -185,3 +185,44 @@ h4.link:hover
 {
     color: #0b2e13;
 }
+
+.mytable{
+    border-collapse: collapse;
+    min-width: 400px;
+}
+
+.mytable td,
+.mytable th{
+    border: 1px solid black;
+    text-align: center;
+}
+
+.mytable th{
+    width: 150px;
+    background-color: #F7F7F7;
+}
+
+.Thanh-toan{
+    font-weight:700; 
+    color:white;
+    margin-top: 10px;
+    padding-left: 37px;
+    padding-right: 37px;
+}
+
+.add-pr a{
+    padding: 10px;
+    width: 50px;
+}
+
+.cus-info input{
+    width: 100%;
+    border-radius: 6px;
+}
+
+#truncateLongTexts {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

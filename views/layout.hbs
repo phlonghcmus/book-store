@@ -122,36 +122,36 @@
                 <!-- /.navbar-collapse -->
 
                 <!-- Start Atribute Navigation -->
-                <div class="attr-nav"id="quantity">
-                    
-                    <ul >
-                        <li class="side-menu">
-                            <a href="#">
-                                <i class="fa fa-shopping-bag"></i>
-                                <span class="badge" style="color:#BCC056">{{cart.total_quantity}}</span>
-                                <p>Giỏ hàng</p>
-                            </a>
-                        </li>
-                    </ul>
-                    
-                </div>
+                    <div class="attr-nav">
+                        <ul>
+                            <li class="side-menu">
+                                <a href="#">
+                                    <i class="fa fa-shopping-bag"></i>
+                                    <span id="quantity"class="badge" style="color:#BCC056">{{cart.total_quantity}}</span>
+                                    <p>Giỏ hàng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                
                 <!-- End Atribute Navigation -->
             </div>
             <!-- Start Side Menu -->
             <div class="side">
-                 <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+                <a href="#" class="close-side"><i class="fa fa-times"></i></a>
                 <div id="div-cart">
                     <li class="cart-box">
                         <ul class="cart-list">
                             {{#each cart.books_detail}}
                             <li class="list-book">
-                                <a href="#" class="photo"><img src="{{cover}}" class="cart-thumb" alt="" /></a>
-                                <h6><a href="#">{{title}} </a></h6>
+                                <a href="/books/detail/{{_id}}" class="photo"><img src="{{cover}}" class="cart-thumb"
+                                        alt="" /></a>
+                                <h6><a href="/books/detail/{{_id}}">{{title}} </a></h6>
                                 <p>{{quantity}} - <span class="price">{{basePrice}}</span></p>
                             </li>
                             {{/each}}
                             <li class="total">
-                                <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                                <a href="/carts/" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                                 <span class="float-right"><strong>Total</strong>: {{cart.total_price}}</span>
                             </li>
                         </ul>
@@ -360,7 +360,7 @@
     </div>
     <!-- End copyright  -->
 
-    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;padding-top: 8px;">&uarr;</a>
 
     <!-- ALL JS FILES -->
     <script src="/js/jquery-3.2.1.min.js"></script>
@@ -392,13 +392,13 @@
                         <ul class="cart-list">
                             \{{#each cart.books_detail}}
                             <li class="list-book">
-                                <a href="#" class="photo"><img src="\{{cover}}" class="cart-thumb" alt="" /></a>
-                                <h6><a href="#">\{{title}} </a></h6>
+                                <a href="/books/detail/{{_id}}" class="photo"><img src="\{{cover}}" class="cart-thumb" alt="" /></a>
+                                <h6><a href="/books/detail/{{_id}}">\{{title}} </a></h6>
                                 <p>\{{quantity}} - <span class="price">\{{basePrice}}</span></p>
                             </li>
                             \{{/each}}
                             <li class="total">
-                                <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                                <a href="/carts/" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                                 <span class="float-right"><strong>Total</strong>: \{{cart.total_price}}</span>
                             </li>
                         </ul>
@@ -406,18 +406,9 @@
             </div>
 </script>
 
- <script type="text/x-handlebars-template" id="quantity-cart-template">
-  <div class="attr-nav"id="quantity">
-  <ul >
-                        <li class="side-menu">
-                            <a href="#">
-                                <i class="fa fa-shopping-bag"></i>
-                                <span class="badge" style="color:#BCC056">\{{cart.total_quantity}}</span>
-                                <p>Giỏ hàng</p>
-                            </a>
-                        </li>
-                    </ul>
-                    </div>
+    <script type="text/x-handlebars-template" id="quantity-cart-template">
+             <span class="badge" style="color:#BCC056">\{{cart.total_quantity}}</span>
+                       
  </script>
 </body>
 

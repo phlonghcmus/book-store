@@ -1,0 +1,110 @@
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Cart</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active">My Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Start Wishlist  -->
+<div class="wishlist-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div id="checkout-div">
+                    <div class="table-main table-responsive">
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th>Ảnh sản phẩm</th>
+                                    <th style="text-align: center;">Tên sản phẩm</th>
+                                    <th style="text-align: center;">Giá sản phẩm </th>
+                                    <th style="text-align: center;" >Số lượng</th>
+                                    
+                                </tr>
+                            </thead>
+                            {{#each cart.books_detail}}
+                            <tbody  ><tr>
+                                <td class="thumbnail-img">
+                                    <a href="#">
+                                        <img class="img-fluid" src={{cover}} alt="" />
+                                    </a>
+                                </td>
+                                <td class="name-pr" style="text-align: center;" >
+                                    <div id="truncateLongTexts">
+                                        <a href="#">
+                                        {{title}}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="price-pr" style="text-align: center;">
+                                    <p>{{basePrice}}</p>
+                                </td>
+                                <td class="quantity-box" style="text-align: center;">{{quantity}}</td>
+                                </tr>
+                                
+                            </tbody>
+                            {{/each}}
+                        </table>
+                        <hr>
+                    </div>
+                </div>
+                <div style="float:right; font-size:16px">
+                    <table class="mytable">
+                        <tr>
+                            <th>Phí ship</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng sản phẩm</th>
+                            <td>{{cart.total_quantity}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng tiền</th>
+                            <td>{{cart.total_price}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="table-main table-responsive cus-info">
+                    <table class="table" >
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Thông tin khách hàng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border-top:0px" ><input type='text' placeholder="Họ và tên" value={{fullname}}></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:0px"><input type='text' placeholder="Địa chỉ" value={{location}}></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:0px"><input type='text' placeholder="Số điện thoại" value={{mobile}}></td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top:0px"><input type='text' placeholder="Ghi chú"></td>
+                                </tr>
+                                <tr>
+                                    <th style="border-top:0px">Phương thức thanh toán | Thanh toán khi nhận hàng</th>
+                                </tr>
+                            </tbody>
+                    </table>
+                     <a href="#" class="Thanh-toan btn hvr-hover" style="float: right;">Đặt hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- End Wishlist -->

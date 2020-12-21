@@ -11,10 +11,14 @@ const session = require("express-session"),
   bodyParser = require("body-parser");
 const cookie=require('./middleware/cookie/cookie');
 const passport = require('./middleware/passport/passport');
+
+
 // Routes variables
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
+const cartsRouter=require('./routes/carts');
+
 
 // Api routes variables
 const userApiRouter = require('./routes/api/users');
@@ -56,7 +60,7 @@ app.use(cookie);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
-
+app.use('/carts',cartsRouter);
 
 //api routes
 app.use('/api/users', userApiRouter);

@@ -1,0 +1,174 @@
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Cart</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active">My Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Start Wishlist  -->
+
+<div class="wishlist-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="checkout-div">
+                    <div class="table-main table-responsive">
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th>Ảnh sản phẩm</th>
+                                    <th style="text-align: center;">Tên sản phẩm</th>
+                                    <th >Giá sản phẩm </th>
+                                    <th >Số lượng</th>
+                                    <th>Thêm</th>
+                                    <th>Giảm</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            {{#each cart.books_detail}}
+                            <tbody >
+                             <tr>
+                                <td class="thumbnail-img">
+                                    <a href="#">
+                                        <img class="img-fluid" src={{cover}} alt="" />
+                                    </a>
+                                </td>
+                                <td class="name-pr">
+                                    <a href="/books/detail/{{_id}}">
+                                        {{title}}
+                                    </a>
+                                </td>
+                                <td class="price-pr" style="text-align: center;">
+                                    <p>{{basePrice}}</p>
+                                </td>
+                                <td class="quantity-box" style="text-align: center;">{{quantity}}</td>
+                                <td class="add-pr">
+                                    <a class="btn hvr-hover" href="#"
+                                        onclick="return addProductWishList({{json ../cart._id}},{{json _id}})">+</a>
+                                </td>
+                                
+                                <td class="add-pr">
+                                    <a class="btn hvr-hover" href="#"
+                                        onclick="return decreaseProductWishList({{json ../cart._id}},{{json _id}})">-</a>
+                                </td>
+
+                                <td class="remove-pr">
+                                    <a href="#" onclick="return removeProductWishList({{json ../cart._id}},{{json _id}})">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div style="float:right; font-size:16px">
+                    <table class="mytable">
+                        <tr>
+                            <th>Phí ship</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng sản phẩm</th>
+                            <td>{{cart.total_quantity}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng tiền</th>
+                            <td>{{cart.total_price}}</td>
+                        </tr>
+                    </table>
+                    <a href="/carts/checkout" class="Thanh-toan btn hvr-hover" >Thanh toán</a>
+                </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-handlebars-template" id="checkout-template">
+    <div id="checkout-div">
+  <div class="table-main table-responsive">
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                   <th>Ảnh sản phẩm</th>
+                                    <th style="text-align: center;">Tên sản phẩm</th>
+                                    <th >Giá sản phẩm </th>
+                                    <th >Số lượng</th>
+                                    <th>Thêm</th>
+                                    <th>Giảm</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+
+                            <tbody \{{#each cart.books_detail}} <tr>
+                                <td class="thumbnail-img">
+                                    <a href="#">
+                                        <img class="img-fluid" src=\{{cover}} alt="" />
+                                    </a>
+                                </td>
+                                <td class="name-pr">
+                                    <a href="/books/detail/\{{_id}}">
+                                        \{{title}}
+                                    </a>
+                                </td>
+                                <td class="price-pr" style="text-align: center;">
+                                    <p>\{{basePrice}}</p>
+                                </td>
+                                <td class="quantity-box" style="text-align: center;">\{{quantity}}</td>
+                                <td class="add-pr">
+                                    <a class="btn hvr-hover" href="#"
+                                        onclick="return addProductWishList(\{{json ../cart._id}},\{{json _id}})">+</a>
+                                </td>
+
+                                <td class="add-pr">
+                                    <a class="btn hvr-hover" href="#"
+                                        onclick="return decreaseProductWishList(\{{json ../cart._id}},\{{json _id}})">-</a>
+                                </td>
+
+                                <td class="remove-pr">
+                                    <a href="#" onclick="return removeProductWishList(\{{json ../cart._id}},\{{json _id}})">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                </td>
+                                </tr>
+                                \{{/each}}
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div style="float:right; font-size:16px">
+                    <table class="mytable">
+                        <tr>
+                            <th>Phí ship</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng sản phẩm</th>
+                            <td>\{{cart.total_quantity}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng tiền</th>
+                            <td>\{{cart.total_price}}</td>
+                        </tr>
+                    </table>
+                    <a href="/carts/checkout" class="Thanh-toan btn hvr-hover" >Thanh toán</a>
+                </div>
+                    </div>
+
+                     
+                            
+</script>
+<!-- End Wishlist -->
