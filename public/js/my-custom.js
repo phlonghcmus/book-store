@@ -47,20 +47,52 @@ function validation(form) {
 	const email = document.getElementById("email-signup").value;
 	const password = document.getElementById("pass-signup").value;
 	const re_password = document.getElementById("re-pass-signup").value;
+	const location=document.getElementById("location-signup").value;
+	const firstname=document.getElementById("firstname-signup").value;
+	const lastname=document.getElementById("lastname-signup").value;
 	if (username.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "Bạn phải nhập tên tài khoản";
 		return false;
 	}
 
+	if(lastname.length==0)
+	{
+		document.getElementById("username-signup-error").innerHTML = "";
+		document.getElementById("lastname-signup-error").innerHTML = "Bạn phải nhập họ và tên đệm của bạn";
+		return false;
+	}
 
+	if(firstname.length==0)
+	{
+		document.getElementById("username-signup-error").innerHTML = "";
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "Bạn phải nhập tên thật của bạn";
+		return false;
+	}
+
+	if(location.length==0)
+	{
+		document.getElementById("username-signup-error").innerHTML = "";
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="Hãy nhập địa chỉ của bạn";
+		return false;
+	}
 	if (phone.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "";
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="";
 		document.getElementById("phone-signup-error").innerHTML = "Bạn phải nhập số điện thoại";
 		return false;
 	}
 
 
 	if (email.length == 0) {
+	
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "Bạn phải nhập email ";
@@ -68,6 +100,10 @@ function validation(form) {
 	}
 
 	if (password.length == 0) {
+	
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -76,6 +112,10 @@ function validation(form) {
 	}
 
 	if (re_password.length == 0) {
+		
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -85,6 +125,10 @@ function validation(form) {
 	}
 
 	if (password.length < 7) {
+	
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -104,6 +148,9 @@ function validation(form) {
 	}
 
 	if (password.localeCompare(re_password) != 0) {
+		document.getElementById("lastname-signup-error").innerHTML = "";
+		document.getElementById("firstname-signup-error").innerHTML = "";
+		document.getElementById('location-signup-error').innerHTML="";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -141,6 +188,35 @@ function checkUserNameExist(username) {
 	}
 }
 
+function checklastName(value)
+{
+	if (value.length==0) {
+		$('#lastname-signup-error').addClass('error').removeClass('success').html('Hãy họ và tên đệm của bạn');
+		return false;
+	}
+	$('#lastname-signup-error').addClass('error').removeClass('success').html('');
+	return true;
+}
+
+function checkfirstName(value)
+{
+	if (value.length==0) {
+		$('#firstname-signup-error').addClass('error').removeClass('success').html('Hãy nhập tên thật của bạn');
+		return false;
+	}
+	$('#firstname-signup-error').addClass('error').removeClass('success').html('');
+	return true;
+}
+
+function checkLocation(value)
+{
+	if (value.length==0) {
+		$('#location-signup-error').addClass('error').removeClass('success').html('Hãy nhập địa chỉ của bạn');
+		return false;
+	}
+	$('#location-signup-error').addClass('error').removeClass('success').html('');
+	return true;
+}
 
 function checkPhone(value) {
 	if (value == "") {
@@ -737,10 +813,18 @@ function addProductToCart(cart_id,book_id)
 		data: mydata,
 		cache: true,
 		success: function (json) {
+			if(json==false)
+			{
+				alert("Sách đã hết hàng");
+			}
+			else{
 			replaceCart(json)
 			replaceTotalQuantity(json)
+			alert("Đã thêm sách vào giỏ hàng")
+			}
 		},
 	});
+	
 	return false;
 }
 function  addProductAndGoToCart(cart_id,book_id)
@@ -755,12 +839,23 @@ function  addProductAndGoToCart(cart_id,book_id)
 		data: mydata,
 		cache: true,
 		success: function (json) {
-			replaceCart(json)
-			replaceTotalQuantity(json)
-			window.location = "/carts/";
+			if(json==false)
+			{
+				alert("Sách đã hết hàng");
+				
+			}
+			else
+			{
+				replaceCart(json);
+				replaceTotalQuantity(json);
+				alert("Đã thêm sách vào giỏ hàng");
+				window.location = "/carts/";
+			}
+			
+			
 		},
 	});
-
+	return false;
 }
 function replaceTotalQuantity(newCart)
 {
@@ -868,4 +963,99 @@ function removeProductWishList(cart_id,book_id)
 		},
 	});
 	return false;
+}
+
+function checkFullName(value)
+{
+	if(value.length==0)
+	{
+		
+		return false;
+	}
+	$('#checkout-error').addClass('error').removeClass('success').html('');
+	return true;
+}
+
+
+function checkLocationCheckOut(value)
+{
+	if(value.length==0)
+	{
+		return false;
+	}
+	$('#checkout-error').addClass('error').removeClass('success').html('');
+	return true;
+}
+
+function checkPhoneCheckOut(value)
+{
+	if(value.length==0)
+	{
+		
+		return -1;
+	}
+	if (value.length != 10 && value.length != 11) {
+		
+		return 0;
+	}
+	$('#checkout-error').addClass('error').removeClass('success').html('');
+	return 1;
+}
+
+function validateCheckOut()
+{
+	const fullname=document.getElementById("fullname-checkout").value;
+	const location=document.getElementById("location-checkout").value;
+	const phone=document.getElementById("phone-checkout").value;
+
+	if(!checkFullName(fullname))
+	{
+		$('#checkout-error').addClass('error').removeClass('success').html('Bạn phải nhập họ và tên của mình');
+		return false;
+	}
+
+	if(!checkLocationCheckOut(location))
+	{
+		$('#checkout-error').addClass('error').removeClass('success').html('Bạn phải nhập địa chỉ nhận hàng của mình');
+		return false;
+	}
+
+	if(checkPhoneCheckOut(phone)==-1)
+	{
+		$('#checkout-error').addClass('error').removeClass('success').html('Số điện thoại không hợp lệ');
+		return false;
+	}
+
+	if(checkPhoneCheckOut(phone)==0)
+	{
+		$('#checkout-error').addClass('error').removeClass('success').html('Bạn phải nhập số điện thoại liên lạc của mình');
+		return false;
+	}
+
+	$('#checkout-error').addClass('error').removeClass('success').html('');
+	return true;
+}
+
+function order()
+{
+	const validate=validateCheckOut();
+	if(validate)
+	{
+		const mydata=
+		{
+			fullname:document.getElementById("fullname-checkout").value,
+			location:document.getElementById("location-checkout").value,
+			phone:document.getElementById("phone-checkout").value
+		}
+		$.ajax({
+			url: '/api/carts/order',
+			dataType: 'json',
+			data: mydata,
+			cache: true,
+			success: function (json) {
+				alert("Đặt hàng thành công");
+				window.location="/";
+			},
+		});
+	}
 }

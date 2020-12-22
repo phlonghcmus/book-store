@@ -91,9 +91,10 @@ exports.profileUpdate = async (req, res, next) => {
 
 exports.signupSuccess = async (req, res, next) => {
     const data = {
-        firstName: "",
-        lastName: "",
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
         account: req.body.username,
+        location:req.body.location,
         password: req.body.password,
         email: req.body.email,
         mobile: req.body.phone,

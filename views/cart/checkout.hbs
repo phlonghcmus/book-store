@@ -82,23 +82,32 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td style="border-top:0px" ><input type='text' placeholder="Họ và tên" value={{fullname}}></td>
+                                    <td style="border-top:0px" ><input type='text' id="fullname-checkout" placeholder="Họ và tên" value="{{fullname}}" onchange="return validateCheckOut()"> 
+                                    </td>
+                                    
+                                </tr>
+                                
+                                
+                                <tr>
+                                    <td style="border-top:0px"><input type='text'  id="location-checkout" placeholder="Địa chỉ" value="{{location}}" onchange="return validateCheckOut()"></td>
                                 </tr>
                                 <tr>
-                                    <td style="border-top:0px"><input type='text' placeholder="Địa chỉ" value={{location}}></td>
-                                </tr>
-                                <tr>
-                                    <td style="border-top:0px"><input type='text' placeholder="Số điện thoại" value={{mobile}}></td>
+                                    <td style="border-top:0px"><input type='text' id="phone-checkout" placeholder="Số điện thoại" value="{{mobile}}"  onchange="return validateCheckOut()"></td>
                                 </tr>
                                 <tr>
                                     <td style="border-top:0px"><input type='text' placeholder="Ghi chú"></td>
                                 </tr>
+
+                                 <tr>
+                                    <th style="border-top:0px" id="checkout-error" class="error"></th>
+                                </tr>
+
                                 <tr>
                                     <th style="border-top:0px">Phương thức thanh toán | Thanh toán khi nhận hàng</th>
                                 </tr>
                             </tbody>
                     </table>
-                     <a href="#" class="Thanh-toan btn hvr-hover" style="float: right;">Đặt hàng</a>
+                     <a href="#" class="Thanh-toan btn hvr-hover" style="float: right;" onclick="return order()">Đặt hàng</a>
                 </div>
             </div>
         </div>

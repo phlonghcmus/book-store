@@ -88,10 +88,9 @@ exports.checkCredential = async (username, password) => {
     if (!isUsername) {
         return false;
     }
-    console.log(isUsername);
+    
     let checkPassword = await bcrypt.compare(password, isUsername.password);
-    console.log(password);
-    console.log(checkPassword);
+    
     if (checkPassword)
         return isUsername;
     return false;

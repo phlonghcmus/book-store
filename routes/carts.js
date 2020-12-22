@@ -4,6 +4,6 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 const cartController = require('../controllers/cartController');
 
 router.get('/',cartController.wishList);
-router.get('/checkout',ensureLoggedIn('/login'),cartController.checkOutPage);
+router.get('/checkout',cartController.isCheckOut,ensureLoggedIn('/login'),cartController.checkOutPage);
 
 module.exports = router;

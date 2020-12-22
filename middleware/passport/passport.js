@@ -3,6 +3,7 @@ const passport = require('passport')
 
 
 const userModel = require('../../models/userModel');
+const cartModel=require('../../models/cartModel');
 passport.use(new LocalStrategy(
     async function (username, password, done) {
         const user = await userModel.checkCredential(username, password);
@@ -10,6 +11,7 @@ passport.use(new LocalStrategy(
             return done(null, false, { message: 'Username hoặc Password không đúng' })
         if (!user.active)
             return done(null, false, { message: 'Email bạn chưa được kích hoạt' })
+       
         return done(null, user);
     }
 ));

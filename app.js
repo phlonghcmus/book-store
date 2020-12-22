@@ -46,9 +46,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(function(req,res,next){
-  if(req.user)
+app.use(async function (req,res,next){
+  if(req.user){
   res.locals.user=req.user;
+  }
   next();
 })
 

@@ -1,10 +1,24 @@
 const { db } = require('../database/database');
 const ObjectId = require('mongodb').ObjectId;
 
+
+exports.stockCheck=async(bookId)=>
+{
+    const booksCollection=db().collection('books');
+    const thisBook=await booksCollection.findOne({_id:ObjectId(bookId)});
+    const stock=thisBook.stock;
+    return stock;
+}
+
+exports.updateBookStock=async(bookId,newStock)=>
+{
+    const booksCollection=db().collection('books');
+    await booksCollection.updateOne({_id:ObjectId(bookId)},{$set:{stock:newStock}});
+}
 exports.addQuantity = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
-    console.log(bookId);
-
+    
+  
     const book = await cartsCollection.aggregate([
         // Get just the docs that contain a shapes element where color is 'red'
         { $match: { '_id': ObjectId(cart_id) } },
@@ -15,10 +29,14 @@ exports.addQuantity = async (cart_id, bookId) => {
             }
         }
     ]).toArray();
-    console.log(book[0]);
+
+
+    
+
     let oldValue = book[0].books.quantity;
     let newValue = parseInt(oldValue) + 1;
     console.log(newValue);
+   
     let data =
     {
         book_id: ObjectId(bookId),
@@ -36,7 +54,7 @@ exports.addQuantity = async (cart_id, bookId) => {
         },
         { $set: { 'books.$.quantity': newValue } }
     )
-
+    return true;
 }
 
 exports.addTotalPrice = async (cart_id, bookId) => {
@@ -54,6 +72,12 @@ exports.addTotalPrice = async (cart_id, bookId) => {
 }
 exports.addProduct = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
+    const stockCheck=await this.stockCheck(bookId);
+    if(stockCheck==0)
+        return false;
+    
+    const newStock=parseInt(stockCheck)-1;
+    await this.updateBookStock(bookId,newStock);
     const check = await cartsCollection.find(
         {
             $and:
@@ -65,6 +89,7 @@ exports.addProduct = async (cart_id, bookId) => {
         }).count();
     if (check >= 1) {
         await this.addQuantity(cart_id, bookId);
+        
     }
     else {
         const value = parseInt("1");
@@ -75,25 +100,118 @@ exports.addProduct = async (cart_id, bookId) => {
         };
         await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { $push: { books: data } });
     }
+    await this.addTotalQuantity(cart_id,bookId);
     await this.addTotalPrice(cart_id, bookId);
-    await this.addTotalQuantity(cart_id);
+    return true;
 }
 
 exports.createCarts = async () => {
     const cartsCollection = db().collection('carts');
     const data = {
         "total_price": 0,
-        "book_id": [],
-        "quantity": []
+        "books": [],
+        "total_quantity": 0,
+        "checkout": false,
+        "createdAt": new Date(),
 
     }
     const cart = await cartsCollection.insertOne(data);
+    await cartsCollection.createIndex({ "createAt": 1 }, { expireAfterSeconds: 172800 });
     return cart.ops[0];
 }
 
-exports.addTotalQuantity = async (cart_id) => {
+exports.addUserToCart = async (cart_id, userId) => {
+    const cartsCollection = db().collection('carts');
+    const data =
+    {
+        user_id: ObjectId(userId)
+    };
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$unset": { 'createdAt': "" } }, false, true);
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { $set: data });
+}
+
+exports.getUserCart = async (userId) => {
+    const cartsCollection = db().collection('carts');
+    const cart = await cartsCollection.aggregate(
+        [
+            { $match: { user_id: ObjectId(userId) } },
+
+            {
+                $lookup: {
+                    "from": "books",
+                    "localField": 'books.book_id',
+                    "foreignField": '_id',
+                    "as": 'book'
+                }
+            },
+            {
+                $addFields: {
+                    books_detail:
+                    {
+                        $map: {
+                            input: "$books",
+                            as: "e",
+                            in: {
+                                $mergeObjects: [
+                                    "$$e",
+                                    { $arrayElemAt: [{ $filter: { input: "$book", as: "j", cond: { $eq: ["$$e.book_id", "$$j._id"] } } }, 0] }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+
+            { $project: { book: 0 } }
+
+        ]
+    ).toArray();
+    return cart[0];
+}
+
+
+exports.checkUserCart = async (user_id) => {
+    const cartsCollection = db().collection('carts');
+    const check = await cartsCollection.find(
+
+        { user_id: ObjectId(user_id) },
+
+    ).count();
+    if (check >= 1)
+        return true;
+    else
+        return false;
+}
+
+exports.isCartCheckOut = async (cart_id) => {
+    const cartsCollection = db().collection('carts');
+    const check = await cartsCollection.find(
+        {
+            $and: [
+                { _id: ObjectId(cart_id) },
+                { checkout: true }
+            ]
+        }).count();
+    if (check >= 1)
+        return true;
+    else
+        return false;
+}
+
+exports.checkOutCart = async (cart_id) => {
+    const cartsCollection = db().collection('carts');
+    const data =
+    {
+        checkout: true,
+    };
+    await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { $set: data });
+}
+
+exports.addTotalQuantity = async (cart_id,bookId) => {
     const cartsCollection = db().collection('carts');
     const carts = await cartsCollection.findOne({ _id: ObjectId(cart_id) });
+
+    
     const oldQuantity = carts.total_quantity;
     console.log(oldQuantity);
     const data =
@@ -101,7 +219,7 @@ exports.addTotalQuantity = async (cart_id) => {
         total_quantity: parseInt(oldQuantity) + 1
     };
     await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
-
+    return true;
 }
 exports.getCart = async (cart_id) => {
     const cartsCollection = db().collection('carts');
@@ -145,6 +263,9 @@ exports.getCart = async (cart_id) => {
 
 exports.decreaseProduct = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
+    const stock=await this.stockCheck(bookId);
+    const newStock=parseInt(stock)+1;
+    await this.updateBookStock(bookId,newStock);
     const check = await cartsCollection.find(
         {
             $and:
@@ -297,6 +418,9 @@ exports.removeTotalQuantity = async (cart_id, bookId) => {
         total_quantity: parseInt(totalQuantity) - parseInt(bookQuantity)
     };
     await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+    const stock=await this.stockCheck(bookId);
+    const newStock=parseInt(stock)+ parseInt(bookQuantity);
+    await this.updateBookStock(bookId,newStock);
 }
 
 exports.removeTotalPrice = async (cart_id, bookId) => {
@@ -335,4 +459,10 @@ exports.removeTotalPrice = async (cart_id, bookId) => {
         };
     }
     await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
+}
+
+exports.removeCart=async(cart_id)=>
+{
+    const cartsCollection = db().collection('carts');
+    await cartsCollection.deleteOne({_id:ObjectId(cart_id)});
 }

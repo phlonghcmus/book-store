@@ -14,22 +14,42 @@
 
 
     <div class="cart-box-main" style="background-color: #111111">
-        <div style="height: 38rem; background-color: #111111;display: flex;justify-content:center">
+        <div style="height: 56rem; background-color: #111111;display: flex;justify-content:center">
           <form action="/signup/success" method="post" onsubmit="return validation(this)">
-            <div style="width: 700px;height: 750px;background-color: #F3F3F3; padding-top: 40px;">
+            <div style="width: 700px;height: 900px;background-color: #F3F3F3; padding-top: 40px;">
                 <div class="login-signup-center"><h1>ĐĂNG KÍ</h1></div>
                 <div class="login-signup-center"><input type="text" name="username" id="username-signup" placeholder="username" style="width: 500px" onchange="checkUserNameExist(this.value)"></div>
 
                 <div class="login-signup-center-error">
                   <p class="error"id="username-signup-error"></p>
                 </div>
+                
 
+                <div class="login-signup-center"><input type="text" name="lastname" id="lastname-signup" placeholder="Họ và tên đệm" style="width: 500px" onchange="checklasttName(this.value)"></div>
+
+                <div class="login-signup-center-error">
+                  <p class="error" id="lastname-signup-error"></p>
+                </div>
+
+                <div class="login-signup-center"><input type="text" name="firstname" id="firstname-signup" placeholder="Tên" style="width: 500px" onchange="checkfirstName(this.value)"></div>
+
+                <div class="login-signup-center-error">
+                  <p class="error" id="firstname-signup-error"></p>
+                </div>
+
+                <div class="login-signup-center"><input type="text" name="location" id="location-signup" placeholder="Địa chỉ" style="width: 500px" onchange="checkLocation(this.value)"></div>
+
+                <div class="login-signup-center-error">
+                  <p class="error" id="location-signup-error"></p>
+                </div>
 
                 <div class="login-signup-center"><input type="text" name="phone" id="phone-signup" placeholder="Số điện thoại" style="width: 500px" onchange="checkPhone(this.value)"></div>
 
                 <div class="login-signup-center-error">
                   <p class="error" id="phone-signup-error"></p>
                 </div>
+
+                
 
 
                 <div class="login-signup-center"><input type="email" name="email" id="email-signup" placeholder="Địa chỉ email" style="width: 500px"onchange="checkEmailExist(this.value)" ></div>

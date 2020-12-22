@@ -26,14 +26,13 @@
                     <div class="single-product-details">
                         <h2>{{title}}</h2>
                         <h5>{{basePrice}}</h5>
-                        <p class="available-stock"><span> More than 20 available / <a href="#">8 sold </a></span><p>
                         <h4>Short Description:</h4>
                         <p>{{detail}}</p>
                         <ul>
                             <li>
                                 <div class="form-group quantity-box">
                                     <label class="control-label">Quantity</label>
-                                    <input class="form-control" value="0" min="0" max="20" type="number">
+                                    <input class="form-control" disabled value="{{stock}}" min="0" max="20" type="number">
                                 </div>
                             </li>
                         </ul>

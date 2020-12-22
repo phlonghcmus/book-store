@@ -67,7 +67,7 @@ exports.detail=async (req, res, next) =>
     const cover=tt.cover;
     let currentPage=req.query.p || 1;
     const _id=tt._id;
-
+    const stock=tt.stock;
     // pageCount = await bookModel.pageCountList();
     // console.log(pageCount);
     // books=await bookModel.listPerPage(currentPage);
@@ -76,9 +76,9 @@ exports.detail=async (req, res, next) =>
     console.log(pageCount);
     const comments=await commentModel.getCommentsByBookID(req.params.id);
     if(pageCount>0)
-    res.render('books/detail',{_id,title,basePrice,detail,cover,pageCount:Math.ceil(pageCount),comments,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+    res.render('books/detail',{_id,title,basePrice,detail,cover,pageCount:Math.ceil(pageCount),stock,comments,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
     else
-    res.render('books/detail',{_id,title,basePrice,detail,cover,comments});
+    res.render('books/detail',{_id,title,basePrice,detail,cover,comments,stock});
 };
 
 exports.category=async (req,res,next)=>
