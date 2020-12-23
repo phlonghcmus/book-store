@@ -22,10 +22,10 @@
                             <div class="col-12 col-sm-8 text-center text-sm-left">
                                 <div class="toolbar-sorter-right">
                                     <span>Sort by </span>
-                                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
-                  <option data-display="Select">Nothing</option>
+                                    <select id="sort" class="selectpicker show-tick form-control" data-placeholder="$ USD" onchange="sortProduct({{json cart}})">
+                  <option data-display="Select" value="0">Nothing</option>
                   <option value="1">Popularity</option>
-                  <option value="2">High Price → High Price</option>
+                  <option value="2">High Price → Low Price</option>
                   <option value="3">Low Price → High Price</option>
                   <option value="4">Best Selling</option>
                 </select>
@@ -57,7 +57,7 @@
                                                     <div class="type-lb">
                                                         <p class="sale">Sale</p>
                                                     </div>
-                                                    <img id="cover" src={{cover}} class="img-fluid" alt="Image">
+                                                    <img id="cover" src={{cover}} style="max-width:100%"alt="Image" width="255" height="255"> 
                                                     <div class="mask-icon">
                                                         <ul>
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -154,18 +154,7 @@
                                 {{/each}}
                             </div>
                         </div>
-                        <div class="filter-price-left">
-                            <div class="title-left">
-                                <h3>Price</h3>
-                            </div>
-                            <div class="price-box-slider">
-                                <div id="slider-range"></div>
-                                <p>
-                                    <input type="text" id="amount" readonly style="border:0; color:#fbb714; font-weight:bold;">
-                                    <button class="btn hvr-hover" type="submit">Filter</button>
-                                </p>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -228,7 +217,7 @@
                                                     <div class="type-lb">
                                                         <p class="sale">Sale</p>
                                                     </div>
-                                                    <img id="cover" src=\{{cover}} class="img-fluid" alt="Image">
+                                                     <img id="cover" src=\{{cover}} style="max-width:100%"alt="Image" width="255" height="255"> 
                                                     <div class="mask-icon">
                                                         <ul>
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>

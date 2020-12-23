@@ -1,5 +1,6 @@
 
 
+
 function formSubmit(form) {
 	let url = window.location.href;
 	if (url.includes("search")) {
@@ -47,52 +48,49 @@ function validation(form) {
 	const email = document.getElementById("email-signup").value;
 	const password = document.getElementById("pass-signup").value;
 	const re_password = document.getElementById("re-pass-signup").value;
-	const location=document.getElementById("location-signup").value;
-	const firstname=document.getElementById("firstname-signup").value;
-	const lastname=document.getElementById("lastname-signup").value;
+	const location = document.getElementById("location-signup").value;
+	const firstname = document.getElementById("firstname-signup").value;
+	const lastname = document.getElementById("lastname-signup").value;
 	if (username.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "Bạn phải nhập tên tài khoản";
 		return false;
 	}
 
-	if(lastname.length==0)
-	{
+	if (lastname.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("lastname-signup-error").innerHTML = "Bạn phải nhập họ và tên đệm của bạn";
 		return false;
 	}
 
-	if(firstname.length==0)
-	{
+	if (firstname.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "Bạn phải nhập tên thật của bạn";
 		return false;
 	}
 
-	if(location.length==0)
-	{
+	if (location.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="Hãy nhập địa chỉ của bạn";
+		document.getElementById('location-signup-error').innerHTML = "Hãy nhập địa chỉ của bạn";
 		return false;
 	}
 	if (phone.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="";
+		document.getElementById('location-signup-error').innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "Bạn phải nhập số điện thoại";
 		return false;
 	}
 
 
 	if (email.length == 0) {
-	
+
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="";
+		document.getElementById('location-signup-error').innerHTML = "";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "Bạn phải nhập email ";
@@ -100,10 +98,10 @@ function validation(form) {
 	}
 
 	if (password.length == 0) {
-	
+
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="";
+		document.getElementById('location-signup-error').innerHTML = "";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -112,10 +110,10 @@ function validation(form) {
 	}
 
 	if (re_password.length == 0) {
-		
+
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="";
+		document.getElementById('location-signup-error').innerHTML = "";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -125,10 +123,10 @@ function validation(form) {
 	}
 
 	if (password.length < 7) {
-	
+
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="";
+		document.getElementById('location-signup-error').innerHTML = "";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -150,7 +148,7 @@ function validation(form) {
 	if (password.localeCompare(re_password) != 0) {
 		document.getElementById("lastname-signup-error").innerHTML = "";
 		document.getElementById("firstname-signup-error").innerHTML = "";
-		document.getElementById('location-signup-error').innerHTML="";
+		document.getElementById('location-signup-error').innerHTML = "";
 		document.getElementById("username-signup-error").innerHTML = "";
 		document.getElementById("phone-signup-error").innerHTML = "";
 		document.getElementById("email-signup-error").innerHTML = "";
@@ -188,9 +186,8 @@ function checkUserNameExist(username) {
 	}
 }
 
-function checklastName(value)
-{
-	if (value.length==0) {
+function checklastName(value) {
+	if (value.length == 0) {
 		$('#lastname-signup-error').addClass('error').removeClass('success').html('Hãy họ và tên đệm của bạn');
 		return false;
 	}
@@ -198,9 +195,8 @@ function checklastName(value)
 	return true;
 }
 
-function checkfirstName(value)
-{
-	if (value.length==0) {
+function checkfirstName(value) {
+	if (value.length == 0) {
 		$('#firstname-signup-error').addClass('error').removeClass('success').html('Hãy nhập tên thật của bạn');
 		return false;
 	}
@@ -208,9 +204,8 @@ function checkfirstName(value)
 	return true;
 }
 
-function checkLocation(value)
-{
-	if (value.length==0) {
+function checkLocation(value) {
+	if (value.length == 0) {
 		$('#location-signup-error').addClass('error').removeClass('success').html('Hãy nhập địa chỉ của bạn');
 		return false;
 	}
@@ -433,14 +428,15 @@ function replaceTotal(products) {
 }
 
 
-function replaceProduct(products,carts) {
+function replaceProduct(products, carts) {
 	const template = Handlebars.compile($('#product-list-template').html());
-	Handlebars.registerHelper("json", function (value) {                  
+	Handlebars.registerHelper("json", function (value) {
 		return JSON.stringify(value);
 	});
-	const books = { books: products,
-		json: ()=>json,
-		cart:carts	
+	const books = {
+		books: products,
+		json: () => json,
+		cart: carts
 	};
 	const productsHtml = template(books);
 	$('#products').fadeOut("slow", function () {
@@ -448,33 +444,130 @@ function replaceProduct(products,carts) {
 		$('#products').fadeIn("slow");
 
 	});
-	
+
 }
 
 
 
-function getProductPage(page,carts) {
+function getProductPage(page, carts, sort) {
+	let mydata;
+	if (sort != 0)
+		mydata = {
+			page, sort
+		}
+	else
+		mydata = {
+			page
+		}
 	$.ajax({
 		url: '/api/books/list',
 
 		dataType: 'json',
-		data: { page },
+		data: mydata,
 		cache: true,
 		success: function (json) {
 			replaceTotal(json);
-			replaceProduct(json,carts);
+			replaceProduct(json, carts);
 		}
 	});
 
 }
 
-function getProductSearchPage(keyword, categoryID, page,carts) {
-	let mydata;
-	if (categoryID.length > 0) {
-		mydata = { keyword, categoryID, page };
+function sortProduct(carts) {
+	let product;
+	let count;
+	let keyword;
+	let sort = parseInt(document.getElementById('sort').value);
+	let sortBy;
+	const page=1;
+	if (sort == 1)
+		sortBy = "&sort=Popularity";
+	if (sort == 2)
+		sortBy = "&sort=High Price → Low Price";
+
+	if (sort == 3)
+		sortBy = "&sort=Low Price → High Price";
+
+	if (sort == 4)
+		sortBy = "&sort=Best-selling";
+
+	if (window.location.href.indexOf("category") > -1) {
+		if (window.location.href.indexOf("search") > -1) {
+			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+			const segment_array = segment_str.split('/');
+			const search = segment_array.pop();
+			const categoryID = segment_array.pop();
+			keyword = getParameterByName('keyword', window.location.href);
+			product = getProductSearchPage(keyword, categoryID, page, carts, sort);
+			count = countSearchProduct(keyword, categoryID, page);
+		}
+		else {
+			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+			const segment_array = segment_str.split('/');
+			const categoryID = segment_array.pop();
+			product = getCategoryProductPage(categoryID, page, carts, sort);
+			count = countCategoryProduct(categoryID, page);
+		}
 	}
 	else {
-		mydata = { keyword, page };
+		if (window.location.href.indexOf("search") > -1) {
+			keyword = getParameterByName('keyword', window.location.href);
+			product = getProductSearchPage(keyword, "", page, carts, sort);
+			count = countSearchProduct(keyword, "", page);
+		}
+		else {
+			product = getProductPage(page, carts, sort);
+			count = countAllProduct(page);
+		}
+	}
+
+
+	if (window.location.href.indexOf("search") > -1) {
+		if (sort != 0) {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?keyword=' + keyword + '&p=' + page + sortBy;
+				window.history.pushState({ path: newurl }, '', newurl);
+			}
+		}
+		else {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?keyword=' + keyword + '&p=' + page;
+				window.history.pushState({ path: newurl }, '', newurl);
+			}
+		}
+	}
+	else {
+		if (sort != 0) {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page + sortBy;
+				window.history.pushState({ path: newurl }, '', newurl);
+			}
+			else {
+				if (history.pushState) {
+					var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
+					window.history.pushState({ path: newurl }, '', newurl);
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+function getProductSearchPage(keyword, categoryID, page, carts, sort) {
+	let mydata;
+	if (categoryID.length > 0) {
+		if (sort != 0)
+			mydata = { keyword, categoryID, page, sort };
+		else
+			mydata = { keyword, categoryID, page };
+
+	}
+	else {
+		if (sort != 0)
+			mydata = { keyword, page, sort };
+		else
+			mydata = { keyword, page };
 	}
 	$.ajax({
 		url: '/api/books/search-list',
@@ -483,7 +576,7 @@ function getProductSearchPage(keyword, categoryID, page,carts) {
 		cache: true,
 		success: function (json) {
 			replaceTotal(json);
-			replaceProduct(json,carts);
+			replaceProduct(json, carts);
 		},
 		error: function (e) {
 			console.info("Error");
@@ -542,14 +635,18 @@ function countCategoryProduct(categoryID, page) {
 	});
 
 }
-function getCategoryProductPage(categoryID, page,carts) {
-
+function getCategoryProductPage(categoryID, page, carts, sort) {
+	let mydata;
+	if (sort != 0)
+		mydata = { page, categoryID, sort };
+	else
+		mydata = { page, categoryID };
 	$.ajax({
 		url: '/api/books/category-list',
 		dataType: 'json',
-		data: { page, categoryID },
+		data: mydata,
 		success: function (json) {
-			replaceProduct(json,carts);
+			replaceProduct(json, carts);
 			replaceTotal(json);
 		}
 
@@ -578,10 +675,23 @@ function replacePage(page, count) {
 	});
 }
 
-function pagination(page,carts) {
+function pagination(page, carts) {
 	let product;
 	let count;
 	let keyword;
+	let sort = parseInt(document.getElementById('sort').value);
+	let sortBy;
+	if (sort == 1)
+		sortBy = "&sort=Popularity";
+	if (sort == 2)
+		sortBy = "&sort=High Price → Low Price";
+
+	if (sort == 3)
+		sortBy = "&sort=Low Price → High Price";
+
+	if (sort == 4)
+		sortBy = "&sort=Best-selling";
+
 	if (window.location.href.indexOf("category") > -1) {
 		if (window.location.href.indexOf("search") > -1) {
 			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
@@ -589,40 +699,56 @@ function pagination(page,carts) {
 			const search = segment_array.pop();
 			const categoryID = segment_array.pop();
 			keyword = getParameterByName('keyword', window.location.href);
-			product = getProductSearchPage(keyword, categoryID, page,carts);
+			product = getProductSearchPage(keyword, categoryID, page, carts, sort);
 			count = countSearchProduct(keyword, categoryID, page);
 		}
 		else {
 			const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
 			const segment_array = segment_str.split('/');
 			const categoryID = segment_array.pop();
-			product = getCategoryProductPage(categoryID, page,carts);
+			product = getCategoryProductPage(categoryID, page, carts, sort);
 			count = countCategoryProduct(categoryID, page);
 		}
 	}
 	else {
 		if (window.location.href.indexOf("search") > -1) {
 			keyword = getParameterByName('keyword', window.location.href);
-			product = getProductSearchPage(keyword, "", page,carts);
+			product = getProductSearchPage(keyword, "", page, carts, sort);
 			count = countSearchProduct(keyword, "", page);
 		}
 		else {
-			product = getProductPage(page,carts);
+			product = getProductPage(page, carts, sort);
 			count = countAllProduct(page);
 		}
 	}
 
 
 	if (window.location.href.indexOf("search") > -1) {
-		if (history.pushState) {
-			var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?keyword=' + keyword + '&p=' + page;
-			window.history.pushState({ path: newurl }, '', newurl);
+		if (sort != 0) {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?keyword=' + keyword + '&p=' + page + sortBy;
+				window.history.pushState({ path: newurl }, '', newurl);
+			}
+		}
+		else {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?keyword=' + keyword + '&p=' + page;
+				window.history.pushState({ path: newurl }, '', newurl);
+			}
 		}
 	}
 	else {
-		if (history.pushState) {
-			var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
-			window.history.pushState({ path: newurl }, '', newurl);
+		if (sort != 0) {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page + sortBy;
+				window.history.pushState({ path: newurl }, '', newurl);
+			}
+			else {
+				if (history.pushState) {
+					var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
+					window.history.pushState({ path: newurl }, '', newurl);
+				}
+			}
 		}
 	}
 	return false;
@@ -673,12 +799,11 @@ function commend(user) {
 
 	if (type === 'text') {
 		const name = nameInput.value;
-		if(name)
+		if (name)
 			mydata = {
-			comment, name, bookId
+				comment, name, bookId
 			};
-		else
-		{
+		else {
 			alert("Hãy nhập tên của bạn để bình luận");
 			return false;
 		}
@@ -688,13 +813,12 @@ function commend(user) {
 			comment, bookId
 		};
 	}
-	
-	if(comment.length==0)
-	{
+
+	if (comment.length == 0) {
 		alert("Hãy nhập bình luận trước khi gửi");
 		return false;
 	}
-	
+
 
 	$.ajax({
 		type: 'get',
@@ -712,15 +836,14 @@ function commend(user) {
 
 }
 
-function replaceComment(comments, user) 
-{
+function replaceComment(comments, user) {
 	const template = Handlebars.compile($('#comments-template').html());
 	let replace;
 	if (user)
 		replace = { comments: comments, user: user };
 	else
 		replace = { comments: comments };
-	const productsHtml = template( replace);
+	const productsHtml = template(replace);
 	$('#comment-div').fadeOut("slow", function () {
 		$('#comment-div').html(productsHtml)
 		$('#comment-div').fadeIn("slow");
@@ -750,7 +873,7 @@ function pageComment(page) {
 	});
 }
 
-function getCommentPage(page,user) {
+function getCommentPage(page, user) {
 	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
 	const segment_array = segment_str.split('/');
 	const bookId = segment_array.pop();
@@ -761,7 +884,7 @@ function getCommentPage(page,user) {
 		data: mydata,
 		cache: true,
 		success: function (json) {
-			replaceComment(json,user);
+			replaceComment(json, user);
 		},
 		error: function (e) {
 			console.info("Error");
@@ -794,18 +917,16 @@ function getCommentPage(page,user) {
 // 	});
 // }
 
-function commentPagination(page,user) {
-	getCommentPage(page,user);
+function commentPagination(page, user) {
+	getCommentPage(page, user);
 	pageComment(page);
 	return false;
 }
 
-
-function addProductToCart(cart_id,book_id)
-{
-	let mydata={
-		cartID:cart_id,
-		bookID:book_id
+function addProductToCartFromDetail(cart_id, book_id) {
+	let mydata = {
+		cartID: cart_id,
+		bookID: book_id
 	};
 	$.ajax({
 		url: '/api/carts/add-product',
@@ -813,25 +934,25 @@ function addProductToCart(cart_id,book_id)
 		data: mydata,
 		cache: true,
 		success: function (json) {
-			if(json==false)
-			{
+			if (json == false) {
 				alert("Sách đã hết hàng");
 			}
-			else{
-			replaceCart(json)
-			replaceTotalQuantity(json)
-			alert("Đã thêm sách vào giỏ hàng")
+			else {
+				replaceCart(json)
+				replaceTotalQuantity(json)
+				alert("Đã thêm sách vào giỏ hàng")
+				document.getElementById('stock').value = parseInt(document.getElementById('stock').value) - 1;
 			}
 		},
 	});
-	
+
 	return false;
 }
-function  addProductAndGoToCart(cart_id,book_id)
-{
-	let mydata={
-		cartID:cart_id,
-		bookID:book_id
+
+function addProductToCart(cart_id, book_id) {
+	let mydata = {
+		cartID: cart_id,
+		bookID: book_id
 	};
 	$.ajax({
 		url: '/api/carts/add-product',
@@ -839,77 +960,95 @@ function  addProductAndGoToCart(cart_id,book_id)
 		data: mydata,
 		cache: true,
 		success: function (json) {
-			if(json==false)
-			{
+			if (json == false) {
 				alert("Sách đã hết hàng");
-				
 			}
-			else
-			{
+			else {
+				replaceCart(json)
+				replaceTotalQuantity(json)
+				alert("Đã thêm sách vào giỏ hàng")
+			}
+		},
+	});
+
+	return false;
+}
+function addProductAndGoToCart(cart_id, book_id) {
+	let mydata = {
+		cartID: cart_id,
+		bookID: book_id
+	};
+	$.ajax({
+		url: '/api/carts/add-product',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			if (json == false) {
+				alert("Sách đã hết hàng");
+
+			}
+			else {
 				replaceCart(json);
 				replaceTotalQuantity(json);
 				alert("Đã thêm sách vào giỏ hàng");
 				window.location = "/carts/";
 			}
-			
-			
+
+
 		},
 	});
 	return false;
 }
-function replaceTotalQuantity(newCart)
-{
-	
+function replaceTotalQuantity(newCart) {
 
-	
+
+
 	$('#quantity').fadeOut("slow", function () {
 		$('#quantity').html(newCart.total_quantity)
 		$('#quantity').fadeIn("slow");
 
-	});	
+	});
 }
-function replaceCart(newCart)
-{
+function replaceCart(newCart) {
 	const template = Handlebars.compile($('#cart-template').html());
 
-	const cart={
-		cart:newCart,
+	const cart = {
+		cart: newCart,
 	};
 	const productsHtml = template(cart);
-	
+
 	$('#div-cart').fadeOut("slow", function () {
 		$('#div-cart').html(productsHtml)
 		$('#div-cart').fadeIn("slow");
 
-	});	
-	
-	
+	});
+
+
 }
 
-function replaceWishList(newCart)
-{
+function replaceWishList(newCart) {
 	const template = Handlebars.compile($('#checkout-template').html());
 
-	Handlebars.registerHelper("json", function (value) {                  
+	Handlebars.registerHelper("json", function (value) {
 		return JSON.stringify(value);
 	});
-	const cart={
-		cart:newCart,
-		json:()=>json
+	const cart = {
+		cart: newCart,
+		json: () => json
 	};
 	const productsHtml = template(cart);
-	
+
 	$('#checkout-div').fadeOut("slow", function () {
 		$('#checkout-div').html(productsHtml)
 		$('#checkout-div').fadeIn("slow");
 
-	});	
+	});
 }
-function addProductWishList(cart_id,book_id)
-{
-	let mydata={
-		cartID:cart_id,
-		bookID:book_id
+function addProductWishList(cart_id, book_id) {
+	let mydata = {
+		cartID: cart_id,
+		bookID: book_id
 	};
 	$.ajax({
 		url: '/api/carts/add-product',
@@ -925,11 +1064,10 @@ function addProductWishList(cart_id,book_id)
 	return false;
 }
 
-function decreaseProductWishList(cart_id,book_id)
-{
-	let mydata={
-		cartID:cart_id,
-		bookID:book_id
+function decreaseProductWishList(cart_id, book_id) {
+	let mydata = {
+		cartID: cart_id,
+		bookID: book_id
 	};
 	$.ajax({
 		url: '/api/carts/decrease-product',
@@ -945,11 +1083,10 @@ function decreaseProductWishList(cart_id,book_id)
 	return false;
 }
 
-function removeProductWishList(cart_id,book_id)
-{
-	let mydata={
-		cartID:cart_id,
-		bookID:book_id
+function removeProductWishList(cart_id, book_id) {
+	let mydata = {
+		cartID: cart_id,
+		bookID: book_id
 	};
 	$.ajax({
 		url: '/api/carts/remove-product',
@@ -965,11 +1102,9 @@ function removeProductWishList(cart_id,book_id)
 	return false;
 }
 
-function checkFullName(value)
-{
-	if(value.length==0)
-	{
-		
+function checkFullName(value) {
+	if (value.length == 0) {
+
 		return false;
 	}
 	$('#checkout-error').addClass('error').removeClass('success').html('');
@@ -977,57 +1112,48 @@ function checkFullName(value)
 }
 
 
-function checkLocationCheckOut(value)
-{
-	if(value.length==0)
-	{
+function checkLocationCheckOut(value) {
+	if (value.length == 0) {
 		return false;
 	}
 	$('#checkout-error').addClass('error').removeClass('success').html('');
 	return true;
 }
 
-function checkPhoneCheckOut(value)
-{
-	if(value.length==0)
-	{
-		
+function checkPhoneCheckOut(value) {
+	if (value.length == 0) {
+
 		return -1;
 	}
 	if (value.length != 10 && value.length != 11) {
-		
+
 		return 0;
 	}
 	$('#checkout-error').addClass('error').removeClass('success').html('');
 	return 1;
 }
 
-function validateCheckOut()
-{
-	const fullname=document.getElementById("fullname-checkout").value;
-	const location=document.getElementById("location-checkout").value;
-	const phone=document.getElementById("phone-checkout").value;
+function validateCheckOut() {
+	const fullname = document.getElementById("fullname-checkout").value;
+	const location = document.getElementById("location-checkout").value;
+	const phone = document.getElementById("phone-checkout").value;
 
-	if(!checkFullName(fullname))
-	{
+	if (!checkFullName(fullname)) {
 		$('#checkout-error').addClass('error').removeClass('success').html('Bạn phải nhập họ và tên của mình');
 		return false;
 	}
 
-	if(!checkLocationCheckOut(location))
-	{
+	if (!checkLocationCheckOut(location)) {
 		$('#checkout-error').addClass('error').removeClass('success').html('Bạn phải nhập địa chỉ nhận hàng của mình');
 		return false;
 	}
 
-	if(checkPhoneCheckOut(phone)==-1)
-	{
+	if (checkPhoneCheckOut(phone) == -1) {
 		$('#checkout-error').addClass('error').removeClass('success').html('Số điện thoại không hợp lệ');
 		return false;
 	}
 
-	if(checkPhoneCheckOut(phone)==0)
-	{
+	if (checkPhoneCheckOut(phone) == 0) {
 		$('#checkout-error').addClass('error').removeClass('success').html('Bạn phải nhập số điện thoại liên lạc của mình');
 		return false;
 	}
@@ -1036,16 +1162,14 @@ function validateCheckOut()
 	return true;
 }
 
-function order()
-{
-	const validate=validateCheckOut();
-	if(validate)
-	{
-		const mydata=
+function order() {
+	const validate = validateCheckOut();
+	if (validate) {
+		const mydata =
 		{
-			fullname:document.getElementById("fullname-checkout").value,
-			location:document.getElementById("location-checkout").value,
-			phone:document.getElementById("phone-checkout").value
+			fullname: document.getElementById("fullname-checkout").value,
+			location: document.getElementById("location-checkout").value,
+			phone: document.getElementById("phone-checkout").value
 		}
 		$.ajax({
 			url: '/api/carts/order',
@@ -1054,7 +1178,7 @@ function order()
 			cache: true,
 			success: function (json) {
 				alert("Đặt hàng thành công");
-				window.location="/";
+				window.location = "/";
 			},
 		});
 	}

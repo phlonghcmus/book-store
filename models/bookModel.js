@@ -17,6 +17,28 @@ exports.get=async(id)=>{
     return books;
 }
 
+exports.listPerPageSort=async(currentPage,sortCon)=>
+{
+    const bookCollection= db().collection('books');
+    let books;
+    if(sortCon==1)
+    {
+        books=await bookCollection.find({"remove":false}).sort({"seen":-1}).limit(6).skip((currentPage-1)*6).toArray();
+    }
+    if(sortCon==2)
+    {
+        books=await bookCollection.find({"remove":false}).sort({"basePrice":-1}).limit(6).skip((currentPage-1)*6).toArray();
+    }
+    if(sortCon==3)
+    {
+        books=await bookCollection.find({"remove":false}).sort({"basePrice":1}).limit(6).skip((currentPage-1)*6).toArray();
+    }
+    if(sortCon==4)
+    {
+        books=await bookCollection.find({"remove":false}).sort({"sold":-1}).limit(6).skip((currentPage-1)*6).toArray();
+    }
+    return books;
+}
 
 //Lấy danh sách các quyển sách trong 1 trang thỏa điều kiện tìm kiếm
 exports.searchPerPage=async(str,page)=>
@@ -39,6 +61,83 @@ exports.searchPerPage=async(str,page)=>
     return books;
 }
 
+exports.searchPerPageSort=async(str,page,sortCon)=>
+{
+    const bookCollection= db().collection('books');
+    let books;
+    if(sortCon==1)
+    {
+        books=await bookCollection.find(
+            {$and:[
+                {"remove": false},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({"seen":-1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+             books=await bookCollection.find(
+                 {$and:[
+                    {"remove": false},
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                         
+                 ]}).sort({"seen":-1}).limit(6).skip((page-1)*6).toArray();
+    }
+
+    if(sortCon==2)
+    {
+        books=await bookCollection.find(
+            {$and:[
+                {"remove": false},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({"basePrice":-1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+             books=await bookCollection.find(
+                 {$and:[
+                    {"remove": false},
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                         
+                 ]}).sort({"basePrice":-1}).limit(6).skip((page-1)*6).toArray();
+    }
+
+    if(sortCon==3)
+    {
+        books=await bookCollection.find(
+            {$and:[
+                {"remove": false},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({"basePrice":1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+             books=await bookCollection.find(
+                 {$and:[
+                    {"remove": false},
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                         
+                 ]}).sort({"basePrice":1}).limit(6).skip((page-1)*6).toArray();
+    }
+
+    if(sortCon==4)
+    {
+        books=await bookCollection.find(
+            {$and:[
+                {"remove": false},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({"sold":-1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+             books=await bookCollection.find(
+                 {$and:[
+                    {"remove": false},
+                    {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                         
+                 ]}).sort({"sold":-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    return books;
+}
 // Đếm số cuốn sách trong 1 trang
 exports.pageCountList= async()=>
 {
@@ -91,6 +190,32 @@ exports.categoryPerPage=async(id,page)=>
     return books;
 }
 
+exports.categoryPerPageSort=async(id,page,sortCon)=>
+{
+    const bookCollection= db().collection('books');
+    let books;
+    if(sortCon==1)
+    {
+        books=await bookCollection.find(
+            {$and:[{"remove": false},{"categoryID": ObjectId(id)}]}).sort({seen:-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    if(sortCon==2)
+    {
+        books=await bookCollection.find(
+            {$and:[{"remove": false},{"categoryID": ObjectId(id)}]}).sort({basePrice:-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    if(sortCon==3)
+    {
+        books=await bookCollection.find(
+            {$and:[{"remove": false},{"categoryID": ObjectId(id)}]}).sort({basePrice:1}).limit(6).skip((page-1)*6).toArray();
+    }
+    if(sortCon==4)
+    {
+        books=await bookCollection.find(
+            {$and:[{"remove": false},{"categoryID": ObjectId(id)}]}).sort({sold:-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    return books;
+}
 //Đếm danh sách các quyển sách tìm kiếm được thỏa điều kiện filter
 exports.pageCountCategorySearch=async(id,str,page)=>
 {
@@ -137,3 +262,85 @@ exports.categorySearchPerPage=async(id,str,page)=>
     return books;
 }
 
+exports.categorySearchPerPageSort=async(id,str,page,sortCon)=>
+{
+    const bookCollection= db().collection('books');
+    let books;
+    if(sortCon==1)
+    {
+        books=await bookCollection.find({
+            $and:[
+                {"remove": false},
+                {"categoryID": ObjectId(id)},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({seen:-1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+            books=await bookCollection.find(
+                {$and:[
+                        {"remove": false},
+                        {"categoryID": ObjectId(id)},
+                        {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                        
+                    ]}).sort({seen:-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    if(sortCon==2)
+    {
+        books=await bookCollection.find({
+            $and:[
+                {"remove": false},
+                {"categoryID": ObjectId(id)},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({basePrice:-1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+            books=await bookCollection.find(
+                {$and:[
+                        {"remove": false},
+                        {"categoryID": ObjectId(id)},
+                        {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                        
+                    ]}).sort({basePrice:-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    if(sortCon==3)
+    {
+        books=await bookCollection.find({
+            $and:[
+                {"remove": false},
+                {"categoryID": ObjectId(id)},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({basePrice:1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+            books=await bookCollection.find(
+                {$and:[
+                        {"remove": false},
+                        {"categoryID": ObjectId(id)},
+                        {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                        
+                    ]}).sort({basePrice:1}).limit(6).skip((page-1)*6).toArray();
+    }
+    if(sortCon==4)
+    {
+        books=await bookCollection.find({
+            $and:[
+                {"remove": false},
+                {"categoryID": ObjectId(id)},
+                {"title": {"$regex": str, "$options": "i"}}
+                
+            ]}).sort({sold:-1}).limit(6).skip((page-1)*6).toArray();
+    
+        if(books.length===0)
+            books=await bookCollection.find(
+                {$and:[
+                        {"remove": false},
+                        {"categoryID": ObjectId(id)},
+                        {"nonAccentTitle": {"$regex": str, "$options": "i"}}
+                        
+                    ]}).sort({sold:-1}).limit(6).skip((page-1)*6).toArray();
+    }
+    return books;
+}

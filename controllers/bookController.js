@@ -8,11 +8,25 @@ exports.list = async(req, res, next) => {
     let currentPage=req.query.p || 1;
     let books;
     let pageCount;
-
+    let sortCon;
+    if(req.query.sort)
+    {
+        if(req.query.sort==="Popularity")
+            sortCon=1;
+        if(req.query.sort==="High Price → Low Price")
+            sortCon=2;
+        if(req.query.sort==="Low Price → High Price")
+            sortCon=3;
+        if(req.query.sort==="Best-selling")
+            sortCon=4;
+        books=await bookModel.listPerPageSort(currentPage,sortCon);
+    }
+    else
+        books=await bookModel.listPerPage(currentPage);
     // Get books from model
     pageCount = await bookModel.pageCountList();
     console.log(pageCount);
-    books=await bookModel.listPerPage(currentPage);
+    
 
     if(currentPage>Math.ceil(pageCount))
     {
@@ -33,8 +47,23 @@ exports.searchList=async (req,res,next)=>
     let books;
     let pageCount;
     let newQuery;
+    let sortCon;
+    
     pageCount= await bookModel.pageCountSearch(keyword);
-    books=await bookModel.searchPerPage(keyword,currentPage);
+    if(req.query.sort)
+    {
+        if(req.query.sort==="Popularity")
+            sortCon=1;
+        if(req.query.sort==="High Price → Low Price")
+            sortCon=2;
+        if(req.query.sort==="Low Price → High Price")
+            sortCon=3;
+        if(req.query.sort==="Best-selling")
+            sortCon=4;
+        books=await bookModel.searchPerPageSort(keyword,currentPage,sortCon);
+    }
+    else
+        books=await bookModel.searchPerPage(keyword,currentPage);
     const query=req.query;
     newQuery=toQS(query);
     if(req.query.p)
@@ -87,8 +116,26 @@ exports.category=async (req,res,next)=>
     let id=req.params.id;
     let books;
     let pageCount;
+    let sortCon;
+    if(req.query.sort)
+    {
+
+        if(req.query.sort==="Popularity")
+            sortCon=1;
+        if(req.query.sort==="High Price → Low Price")
+            sortCon=2;
+        if(req.query.sort==="Low Price → High Price")
+            sortCon=3;
+        if(req.query.sort==="Best-selling")
+            sortCon=4;
+        books=await bookModel.categoryPerPageSort(id,currentPage,sortCon);
+    }
+    else
+        books=await bookModel.categoryPerPage(id,currentPage);
+
+    
     pageCount= await bookModel.pageCountCategory(id);
-    books=await bookModel.categoryPerPage(id,currentPage);
+   
     const count=books.length;
     // Pass data to view to display list of books
     const categories=await category.categoryList();
@@ -103,8 +150,23 @@ exports.categorySearch=async(req,res,next)=>
     let books;
     let pageCount;
     let newQuery;
+    let sortCon;
+    if(req.query.sort)
+    {
+        if(req.query.sort==="Popularity")
+            sortCon=1;
+        if(req.query.sort==="High Price → Low Price")
+            sortCon=2;
+        if(req.query.sort==="Low Price → High Price")
+            sortCon=3;
+        if(req.query.sort==="Best-selling")
+            sortCon=4;
+        books=await bookModel.categorySearchPerPageSort(id,keyword,currentPage,sortCon);
+    }
+    else
+        books=await bookModel.categorySearchPerPage(id,keyword,currentPage);
     pageCount= await bookModel.pageCountCategorySearch(id,keyword,currentPage);
-    books=await bookModel.categorySearchPerPage(id,keyword,currentPage);
+    
     const query=req.query;
     newQuery=toQS(query);
     if(req.query.p)
