@@ -1183,3 +1183,47 @@ function order() {
 		});
 	}
 }
+
+function cancelOrder()
+{
+	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+	const segment_array = segment_str.split('/');
+	const orderId = segment_array.pop();
+	const mydata=
+	{
+		id:orderId,
+	}
+	$.ajax({
+		url: '/api/users/order-cancel',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			alert("Hủy đơn hàng thành công");
+			window.location = "/users/history-order/detail/"+orderId;
+		},
+	});
+	return false;
+}
+
+function reOrder()
+{
+	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
+	const segment_array = segment_str.split('/');
+	const orderId = segment_array.pop();
+	const mydata=
+	{
+		id:orderId,
+	}
+	$.ajax({
+		url: '/api/users/order-re',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			alert("Đặt lại đơn hàng thành công");
+			window.location = "/users/history-order/detail/"+orderId;
+		},
+	});
+	return false;
+}

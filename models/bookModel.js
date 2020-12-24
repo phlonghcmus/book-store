@@ -3,6 +3,28 @@ const ObjectId= require('mongodb').ObjectId;
 
 //Lấy danh sách các quyển sách trong 1 trang
 
+exports.increasePopularity=async(book_id)=>
+{
+    const bookCollection= db().collection('books');
+    const book=await bookCollection.findOne({_id:ObjectId(book_id)});
+    const oldSeen=book.seen;
+    const newSeen=parseInt(oldSeen)+1;
+    await bookCollection.updateOne({_id:ObjectId(book_id)},{$set:{seen:newSeen}});
+}
+
+exports.getSoldById=async(book_id)=>
+{
+    const bookCollection= db().collection('books');
+    const book=await bookCollection.findOne({_id:ObjectId(book_id)});
+    return book.sold;
+}
+
+exports.updateSoldById=async(book_id,newSold)=>
+{
+    const bookCollection= db().collection('books');
+    const book=await bookCollection.updateOne({_id:ObjectId(book_id)},{$set:{sold:newSold}});
+}
+
 exports.listPerPage = async (currentPage) => {
    const bookCollection= db().collection('books');
     bookCollection.createIndex({"remove":1,"categoryID":1,"title":1});

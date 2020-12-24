@@ -8,10 +8,11 @@ passport.use(new LocalStrategy(
     async function (username, password, done) {
         const user = await userModel.checkCredential(username, password);
         if (!user)
-            return done(null, false, { message: 'Username hoặc Password không đúng' })
+            return done(null, false, { message: 'Username hoặc Password không đúng' });
         if (!user.active)
-            return done(null, false, { message: 'Email bạn chưa được kích hoạt' })
-       
+            return done(null, false, { message: 'Email bạn chưa được kích hoạt' });
+        if(user.block)
+            return done(null, false, { message: 'Tài khoản của bạn đã bị khóa' });
         return done(null, user);
     }
 ));

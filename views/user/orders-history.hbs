@@ -1,0 +1,84 @@
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>History</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">User</a></li>
+                    <li class="breadcrumb-item active">My Orders</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wishlist-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div >
+                    <div class="table-main table-responsive">
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Mã đơn hàng</th>
+                                    <th style="text-align: center;">Ngày mua</th>
+                                    <th style="text-align: center;">Người nhận </th>
+                                    <th style="text-align: center;" >Tổng tiền</th>
+                                    <th style="text-align: center;">Trạng thái</th>
+                                    <th style="text-align: center;"></th>
+                                    
+                                </tr>
+                            </thead>
+                            {{#each orders}}
+                            <tbody >
+                             <tr>
+                                <td class="thumbnail-img">
+                                   <p>{{_id}}</p>
+                                </td>
+                                <td class="name-pr" style="text-align: center;">
+                                    <p>{{order_date}}</p>
+                                </td>
+                                <td class="price-pr" style="text-align: center;">
+                                    <p>{{fullname}}</p>
+                                </td>
+                                <td class="quantity-box" style="text-align: center;">{{total}}</td>
+                                <td class="add-pr" style="text-align: center;">
+                                    {{#ifeq status 1}}
+                                   <p>Đã xác nhận</p>
+                                   {{/ifeq}}
+
+                                    {{#ifeq status 2}}
+                                   <p>Đang xử lí</p>
+                                   {{/ifeq}}
+
+                                    {{#ifeq status 3}}
+                                   <p>Đang xử lí</p>
+                                   {{/ifeq}}
+
+
+                                    {{#ifeq status 4}}
+                                   <p>Đã hoàn tất</p>
+                                   {{/ifeq}}
+
+                                     {{#ifeq status 5}}
+                                   <p>Đã hủy</p>
+                                   {{/ifeq}}
+                                </td>
+                                
+                                <td style="text-align: right;">
+                                    <a class="btn hvr-hover" href="/users/history-order/detail/{{_id}}" style="color:white">Xem chi tiết</a>
+                                </td>
+                            {{/each}}
+                                
+                                </tr>
+                               
+                            </tbody>
+
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

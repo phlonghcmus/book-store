@@ -8,4 +8,6 @@ router.get("/email-is-exist", userApiController.emailIsExist);
 
 router.get("/password-is-exist", userApiController.passwordIsExist);
 router.get("/recover-password-is-exist",userApiController.recoverPasswordIsExist)
+router.get("/order-cancel",userApiController.cancelOrder);
+router.get("/order-re",userApiController.reOrder)
 module.exports = router;

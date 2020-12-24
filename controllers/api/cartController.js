@@ -54,7 +54,9 @@ exports.order=async(req,res,next)=>
         user_id: ObjectId(req.user._id),
         status:1,
         books:res.locals.cart.books,
-        total_quantity:res.locals.cart.total_quantity
+        total_quantity:res.locals.cart.total_quantity,
+        fullname: req.query.fullname,
+        phone: req.query.phone,
     }
     await orderModel.insertOrder(data);
     await cartModel.removeCart(res.locals.cart._id);

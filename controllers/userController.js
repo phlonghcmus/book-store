@@ -3,6 +3,7 @@ const fs = require('fs');
 const url = require('url');
 const mailer = require('../utils/mailer/mailer');
 const { isBuffer } = require('util');
+const orderModel=require('../models/orderModel');
 
 exports.signup = (req, res, next) => {
     if (req.user)
@@ -100,7 +101,8 @@ exports.signupSuccess = async (req, res, next) => {
         mobile: req.body.phone,
         gender: req.body.gender,
         cover: "http://ssl.gstatic.com/accounts/ui/avatar_2x.png",
-        active: false
+        active: false,
+        block:false
     };
     await userModel.add(data);
     const user = await userModel.getByUserName(req.body.username);
@@ -186,5 +188,20 @@ exports.recover = async (req, res, next) => {
     };
     await userModel.update(id, data);
     res.redirect('/login');
+}
+
+exports.historyOrderPage=async(req,res,next)=>
+{
+    const orders=await orderModel.getByUserId(req.user._id);
+    console.log(orders);
+    res.render('user/orders-history',{orders});
+}
+
+exports.historyOrderDetail=async(req,res,next)=>
+{
+    const id=req.params.id;
+    const order=await orderModel.getOrderDetailById(id);
+    console.log(order);
+    res.render('user/order-detail',{order});
 }
 

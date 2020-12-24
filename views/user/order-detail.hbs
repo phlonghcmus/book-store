@@ -1,0 +1,174 @@
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Detail</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">User</a></li>
+                    <li class="breadcrumb-item active">My Orders</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="wishlist-box-main">
+    <div class="container">
+        <header class="card-header"> My Orders / Tracking </header>
+        <div class="card-body">
+            <h6>Order ID: {{order._id}}</h6>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Người nhận:</strong> <br>{{order.fullname}} </div>
+                    <div class="col"> <strong>Số điện thoại liên lạc:</strong> <br><i class="fa fa-phone"></i>
+                        {{order.phone}} </div>
+                    <div class="col"> <strong>Trạng thái:</strong> <br>
+                        {{#ifeq order.status 1}}
+                        Đã xác nhận
+                        {{/ifeq}}
+
+                        {{#ifeq order.status 2}}
+                        Đang xử lí
+                        {{/ifeq}}
+
+                        {{#ifeq order.status 3}}
+                        Đang xử lí
+                        {{/ifeq}}
+
+
+                        {{#ifeq order.status 4}}
+                        Đã hoàn tất
+                        {{/ifeq}}
+
+                        {{#ifeq order.status 5}}
+                        Đã hủy
+                        {{/ifeq}} </div>
+                    <div class="col"> <strong>Địa chỉ:</strong> <br> {{order.place}} </div>
+                </div>
+            </article>
+            <div class="track">
+                {{#ifeq order.status 1}}
+                <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Đã
+                        tiếp nhận đơn hàng</span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Người giao
+                        đã lấy hàng </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Đang giao
+                    </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Đơn hàng đã
+                        được nhận</span> </div>
+                {{/ifeq}}
+
+                {{#ifeq order.status 2}}
+                <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Đã
+                        tiếp nhận đơn hàng</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
+                        Người giao đã lấy hàng </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Đang giao
+                    </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Đơn hàng đã
+                        được nhận</span> </div>
+                {{/ifeq}}
+
+                {{#ifeq order.status 3}}
+                <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Đã
+                        tiếp nhận đơn hàng</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
+                        Người giao đã lấy hàng </span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
+                        Đang giao </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Đơn hàng đã
+                        được nhận</span> </div>
+                {{/ifeq}}
+
+                {{#ifeq order.status 4}}
+                <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Đã
+                        tiếp nhận đơn hàng</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
+                        Người giao đã lấy hàng </span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
+                        Đang giao </span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Đơn
+                        hàng đã được nhận</span> </div>
+                {{/ifeq}}
+
+                {{#ifeq order.status 5}}
+                <div class="step cancel"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Đã
+                        tiếp nhận đơn hàng</span> </div>
+                <div class="step cancel"> <span class="icon"> <i class="fa fa-times"></i> </span> <span class="text">Đã
+                        hủy đơn hàng</span> </div>
+                {{/ifeq}}
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="checkout-div">
+                        <div class="table-main table-responsive">
+                            <table class="table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Ảnh sản phẩm</th>
+                                        <th style="text-align: center;">Tên sản phẩm</th>
+                                        <th style="text-align: center;">Giá sản phẩm </th>
+                                        <th style="text-align: center;">Số lượng</th>
+                                    </tr>
+                                </thead>
+                                {{#each order.books_detail}}
+                                <tbody>
+                                    <tr>
+                                        <td class="thumbnail-img">
+                                            <a href="#">
+                                                <img class="img-fluid" src={{cover}} alt="" />
+                                            </a>
+                                        </td>
+                                        <td class="name-pr" style="text-align: center;">
+                                            <a href="/books/detail/{{_id}}">
+                                                {{title}}
+                                            </a>
+                                        </td>
+                                        <td class="price-pr" style="text-align: center;">
+                                            <p>{{basePrice}}</p>
+                                        </td>
+                                        <td class="quantity-box" style="text-align: center;">{{quantity}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div style="float:left; font-size:16px">
+                            <table class="mytable">
+                                <tr>
+                                    <th>Phí ship</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th>Tổng sản phẩm</th>
+                                    <td>{{order.total_quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tổng tiền</th>
+                                    <td>{{order.total}}</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    {{#ifeq order.status 1}}
+                    <div style="float:right; margin-top:30px">
+                        <a class="btn hvr-hover" href="#" style="color:white" onclick="return cancelOrder()">Hủy đơn hàng</a>
+                    </div>
+                    {{/ifeq}}
+
+
+                    {{#ifeq order.status 5}}
+                    <div style="float:right; margin-top:30px">
+                        <a class="btn hvr-hover" href="#" style="color:white" onclick="return reOrder()">Đặt lại đơn hàng</a>
+                    </div>
+                    {{/ifeq}}
+                </div>
+            </div>
+        </div>
+    </div>

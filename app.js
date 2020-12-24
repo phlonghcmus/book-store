@@ -91,4 +91,27 @@ hbs.handlebars.registerHelper('paginate', paginate);
 hbs.registerHelper('json', function (context) {
   return JSON.stringify(context);
 });
+
+hbs.registerHelper("ifeq",function(v1,v2, options){
+  if(v1 === v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+})
+
+hbs.registerHelper("ifeg",function(v1,v2, options){
+  if(v1 >= v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+})
+
+
+hbs.registerHelper("iflt",function(v1,v2, options){
+  if(v1 < v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+})
+
 module.exports = app;

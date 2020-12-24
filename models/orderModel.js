@@ -7,3 +7,63 @@ exports.insertOrder=async(data)=>
     const order = await collection.insertOne(data);
     return order.ops[0];
 }
+
+exports.getByUserId=async(user_id)=>
+{
+    const collection=db().collection('orders');
+    const orders=await collection.find({user_id:ObjectId(user_id)}).sort({_id:-1}).toArray();
+    console.log(orders);
+    return orders;
+}
+
+exports.cancelOrder=async(order_id)=>
+{
+    const newStatus=parseInt(5);
+    const collection=db().collection('orders');
+    await collection.updateOne({_id:ObjectId(order_id)},{$set:{status:newStatus}});
+}
+
+exports.reOrder=async(order_id)=>
+{
+    const newStatus=parseInt(1);
+    const collection=db().collection('orders');
+    await collection.updateOne({_id:ObjectId(order_id)},{$set:{status:newStatus}});
+}
+exports.getOrderDetailById=async(order_id)=>
+{
+    const collection=db().collection('orders');
+    const order=await  collection.aggregate([
+        { $match: { _id: ObjectId(order_id) } },
+
+        {
+            $lookup: {
+                "from": "books",
+                "localField": 'books.book_id',
+                "foreignField": '_id',
+                "as": 'book'
+            }
+        },
+        {
+            $addFields: {
+                books_detail:
+                {
+                    $map: {
+                        input: "$books",
+                        as: "e",
+                        in: {
+                            $mergeObjects: [
+                                "$$e",
+                                { $arrayElemAt: [{ $filter: { input: "$book", as: "j", cond: { $eq: ["$$e.book_id", "$$j._id"] } } }, 0] }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+
+        { $project: { book: 0 } }
+
+    ]
+).toArray();
+    return order[0];
+}

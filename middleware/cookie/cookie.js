@@ -14,14 +14,14 @@ module.exports= async(req, res, next) => {
                 cart=await cartModel.createCarts();
                 res.clearCookie('cart');
                 console.log('clear old cookie created successfully');
-                res.cookie('cart', cart._id, { maxAge: 900000, httpOnly: true });
+                res.cookie('cart', cart._id, { maxAge: 999999999, httpOnly: true });
                 res.locals.cart = cart;
                 console.log('cookie created successfully');
             }
         }
         else {
             const cart = await cartModel.createCarts();
-            res.cookie('cart', cart._id, { maxAge: 900000, httpOnly: true });
+            res.cookie('cart', cart._id, { maxAge: 999999999, httpOnly: true });
             res.locals.cart = cart;
             console.log('cookie created successfully');
 
@@ -49,7 +49,7 @@ module.exports= async(req, res, next) => {
         else
         {
             await cartModel.addUserToCart(res.locals.cart._id,user._id);
-            res.clearCookie('cart');
+           
         }
     }
 

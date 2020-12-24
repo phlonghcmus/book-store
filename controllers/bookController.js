@@ -100,7 +100,7 @@ exports.detail=async (req, res, next) =>
     // pageCount = await bookModel.pageCountList();
     // console.log(pageCount);
     // books=await bookModel.listPerPage(currentPage);
-
+    await bookModel.increasePopularity(_id);
     const pageCount=await commentModel.countCommentsByBookID(req.params.id);
     console.log(pageCount);
     const comments=await commentModel.getCommentsByBookID(req.params.id);

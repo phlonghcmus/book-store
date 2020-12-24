@@ -1,6 +1,6 @@
 const { db } = require('../database/database');
 const ObjectId = require('mongodb').ObjectId;
-
+const bookModel=require('./bookModel');
 
 exports.stockCheck=async(bookId)=>
 {
@@ -78,6 +78,9 @@ exports.addProduct = async (cart_id, bookId) => {
     
     const newStock=parseInt(stockCheck)-1;
     await this.updateBookStock(bookId,newStock);
+    const soldBook=await bookModel.getSoldById(bookId);
+    const newSold=parseInt(soldBook)+1;
+    await bookModel.updateSoldById(bookId,newSold);
     const check = await cartsCollection.find(
         {
             $and:
@@ -266,6 +269,11 @@ exports.decreaseProduct = async (cart_id, bookId) => {
     const stock=await this.stockCheck(bookId);
     const newStock=parseInt(stock)+1;
     await this.updateBookStock(bookId,newStock);
+    const soldBook=await bookModel.getSoldById(bookId);
+    const newSold=parseInt(soldBook)-1;
+    if(newSold<=0)
+        newSold=0;
+    await bookModel.updateSoldById(bookId,newSold);
     const check = await cartsCollection.find(
         {
             $and:
@@ -421,6 +429,11 @@ exports.removeTotalQuantity = async (cart_id, bookId) => {
     const stock=await this.stockCheck(bookId);
     const newStock=parseInt(stock)+ parseInt(bookQuantity);
     await this.updateBookStock(bookId,newStock);
+    const soldBook=await bookModel.getSoldById(bookId);
+    let newSold=parseInt(soldBook)-parseInt(bookQuantity);
+    if(newSold<=0)
+        newSold=0;
+    await bookModel.updateSoldById(bookId,newSold);
 }
 
 exports.removeTotalPrice = async (cart_id, bookId) => {

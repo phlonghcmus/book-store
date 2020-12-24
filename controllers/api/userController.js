@@ -1,4 +1,5 @@
 const userModel=require("../../models/userModel");
+const orderModel=require("../../models/orderModel");
 
 exports.usernameIsExist=async(req,res,next)=>
 {
@@ -26,3 +27,14 @@ exports.recoverPasswordIsExist=async(req,res,next)=>
    res.json(checkPassword);
 }
 
+exports.cancelOrder=async(req,res,next)=>
+{
+   const newStatus=await orderModel.cancelOrder(req.query.id);
+   res.json(true);
+}
+
+exports.reOrder=async(req,res,next)=>
+{
+   const newStatus=await orderModel.reOrder(req.query.id);
+   res.json(true);
+}
