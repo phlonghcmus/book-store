@@ -10,4 +10,5 @@ router.get("/password-is-exist", userApiController.passwordIsExist);
 router.get("/recover-password-is-exist",userApiController.recoverPasswordIsExist)
 router.get("/order-cancel",userApiController.cancelOrder);
 router.get("/order-re",userApiController.reOrder)
+router.get("/order-status",userApiController.getOrderStatus);
 module.exports = router;

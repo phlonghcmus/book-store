@@ -349,3 +349,19 @@ ul.row-sm {
     border-color: #ff2b00;
     border-radius: 1px
 }
+
+.customtab{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.customtab li{
+    min-width: 20%;
+}
+
+.customtab a{
+    text-align: center;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}

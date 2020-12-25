@@ -38,3 +38,15 @@ exports.reOrder=async(req,res,next)=>
    const newStatus=await orderModel.reOrder(req.query.id);
    res.json(true);
 }
+
+exports.getOrderStatus=async(req,res,next)=>
+{
+   let orders;
+   let status=parseInt(req.query.status);
+   const user=req.user._id;
+   if(status==0)
+      orders=await orderModel.getByUserId(user);
+   else
+      orders=await orderModel.getOrderByStatus(user,status);
+   res.json(orders);
+}

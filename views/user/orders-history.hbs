@@ -16,7 +16,29 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div >
+                <div style="border: 1px solid #DEE2E6; border-radius: 3px; padding:0px; margin-bottom: 20px;">
+                    <p style="font-size: 25px; font-weight: 700; color:black; padding:10px">ĐƠN HÀNG CỦA TÔI</p>
+                    <ul class="nav nav-tabs customtab" role="tablist" style="padding: 7px">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" role="tab" data-toggle="tab" onclick="return orderStatus(0)">{{all}} <br>Tất cả</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" role="tab" data-toggle="tab" onclick="return orderStatus(1)">{{confirmed}} <br>Đã xác nhận</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" role="tab" data-toggle="tab" onclick="return orderStatus(2)">{{process}} <br>Đang xử lí</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" role="tab" data-toggle="tab" onclick="return orderStatus(4)">{{finish}} <br>Đã hoàn tất</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" role="tab" data-toggle="tab" onclick="return orderStatus(5)">{{cancel}} <br>Bị hủy</a>
+                                </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div id="order-list-div">
                     <div class="table-main table-responsive">
                         <table class="table">
 
@@ -33,7 +55,7 @@
                             </thead>
                             {{#each orders}}
                             <tbody >
-                             <tr>
+                             <tr style="color: black;">
                                 <td class="thumbnail-img">
                                    <p>{{_id}}</p>
                                 </td>
@@ -75,10 +97,76 @@
                                 </tr>
                                
                             </tbody>
-
+                            
                         </table>
+                        <hr style="padding-bottom: 50px; margin-top: -15px; border-top: 2px solid #DEE2E6;">
                     </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/x-handlebars-template" id="order-template">
+    <div class="table-main table-responsive">
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Mã đơn hàng</th>
+                                    <th style="text-align: center;">Ngày mua</th>
+                                    <th style="text-align: center;">Người nhận </th>
+                                    <th style="text-align: center;" >Tổng tiền</th>
+                                    <th style="text-align: center;">Trạng thái</th>
+                                    <th style="text-align: center;"></th>
+                                    
+                                </tr>
+                            </thead>
+                            \{{#each orders}}
+                            <tbody >
+                             <tr style="color: black;">
+                                <td class="thumbnail-img">
+                                   <p>\{{_id}}</p>
+                                </td>
+                                <td class="name-pr" style="text-align: center;">
+                                    <p>\{{order_date}}</p>
+                                </td>
+                                <td class="price-pr" style="text-align: center;">
+                                    <p>\{{fullname}}</p>
+                                </td>
+                                <td class="quantity-box" style="text-align: center;">\{{total}}</td>
+                                <td class="add-pr" style="text-align: center;">
+                                    \{{#ifeq status 1}}
+                                   <p>Đã xác nhận</p>
+                                   \{{/ifeq}}
+
+                                    \{{#ifeq status 2}}
+                                   <p>Đang xử lí</p>
+                                   \{{/ifeq}}
+
+                                    \{{#ifeq status 3}}
+                                   <p>Đang xử lí</p>
+                                   \{{/ifeq}}
+
+
+                                    \{{#ifeq status 4}}
+                                   <p>Đã hoàn tất</p>
+                                   \{{/ifeq}}
+
+                                     \{{#ifeq status 5}}
+                                   <p>Đã hủy</p>
+                                   \{{/ifeq}}
+                                </td>
+                                
+                                <td style="text-align: right;">
+                                    <a class="btn hvr-hover" href="/users/history-order/detail/\{{_id}}" style="color:white">Xem chi tiết</a>
+                                </td>
+                            \{{/each}}
+                                
+                                </tr>
+                               
+                            </tbody>
+                            
+                        </table>
+                        <hr style="padding-bottom: 50px; margin-top: -15px; border-top: 2px solid #DEE2E6;">
+                    </div>
+</script>

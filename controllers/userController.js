@@ -193,8 +193,15 @@ exports.recover = async (req, res, next) => {
 exports.historyOrderPage=async(req,res,next)=>
 {
     const orders=await orderModel.getByUserId(req.user._id);
+    const all=await orderModel.countUserOrder(req.user._id);
+    const confirmed=await orderModel.countUserOrderByStatus(req.user._id,1);
+    const temp1=await orderModel.countUserOrderByStatus(req.user._id,2);
+    const temp2=await orderModel.countUserOrderByStatus(req.user._id,3);
+    const process=temp1+temp2;
+    const finish=await orderModel.countUserOrderByStatus(req.user._id,4);
+    const cancel=await orderModel.countUserOrderByStatus(req.user._id,5);
     console.log(orders);
-    res.render('user/orders-history',{orders});
+    res.render('user/orders-history',{orders,all,confirmed,process,finish,cancel});
 }
 
 exports.historyOrderDetail=async(req,res,next)=>

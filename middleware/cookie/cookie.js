@@ -36,8 +36,6 @@ module.exports= async(req, res, next) => {
         {
             const isCheckOutLocal=await cartModel.isCartCheckOut(res.locals.cart._id);
             const isCheckOutUser=await cartModel.isCartCheckOut(userCart._id);
-            console.log(isCheckOutLocal);
-            console.log(isCheckOutUser);
             if(isCheckOutUser)
                 res.locals.cart=userCart;
             else{

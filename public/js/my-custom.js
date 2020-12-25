@@ -743,13 +743,13 @@ function pagination(page, carts) {
 				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page + sortBy;
 				window.history.pushState({ path: newurl }, '', newurl);
 			}
+		}
 			else {
 				if (history.pushState) {
 					var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
 					window.history.pushState({ path: newurl }, '', newurl);
 				}
 			}
-		}
 	}
 	return false;
 }
@@ -1226,4 +1226,43 @@ function reOrder()
 		},
 	});
 	return false;
+}
+
+function orderStatus(value)
+{
+	let mydata={
+		status:value
+	}
+	$.ajax({
+		url: '/api/users/order-status',
+		dataType: 'json',
+		data: mydata,
+		cache: true,
+		success: function (json) {
+			replaceOrder(json);
+		},
+	});
+}
+
+function replaceOrder(myOrders)
+{
+	Handlebars.registerHelper("ifeq",function(v1,v2, options){
+		if(v1 === v2) {
+		  return options.fn(this);
+		}
+		return options.inverse(this);
+	  }) 
+
+	const template = Handlebars.compile($('#order-template').html());
+	const orders = { 
+		orders: myOrders,
+		ifeq:()=>ifeq,
+	 };
+	const productsHtml = template(orders);
+	
+	$('#order-list-div').fadeOut("slow", function () {
+		$('#order-list-div').html(productsHtml)
+		$('#order-list-div').fadeIn("slow");
+
+	});
 }

@@ -30,7 +30,7 @@ exports.list = async(req, res, next) => {
 
     if(currentPage>Math.ceil(pageCount))
     {
-        req.query.p= 5 ||1;
+        req.query.p= Math.ceil(pageCount) ||1;
     }
 
     const count=books.length;
