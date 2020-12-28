@@ -4,6 +4,8 @@ const url = require('url');
 const mailer = require('../utils/mailer/mailer');
 const { isBuffer } = require('util');
 const orderModel=require('../models/orderModel');
+const cloudinary = require('cloudinary');
+require('../handlers/cloudinary')
 
 exports.signup = (req, res, next) => {
     if (req.user)
@@ -49,18 +51,16 @@ exports.profileUpdate = async (req, res, next) => {
         console.log(req.body);
         if (req.file) {
 
-            let oldCover = user.cover;
-            if (oldCover) {
-                oldCover = oldCover.split('/').slice(2);
-                const path = '/';
-                const oldCoverPath = req.file.destination + oldCover;
-                if (fs.existsSync(oldCoverPath))
-                    fs.unlinkSync(oldCoverPath);
+            cover = await cloudinary.v2.uploader.upload(req.file.path);
+            let oldCoverId = user.cover_id;
+            if(oldCoverId){
+                let result = await cloudinary.v2.uploader.destroy(oldCoverId);
+                console.log(result);
             }
-            cover = req.file.destination + req.file.filename;
-            const path = cover.split('/').slice(1).join('/');
-            const path2 = "/";
-            cover = path2.concat(path);
+            coverPath = req.file.destination + req.file.filename;
+            if(fs.existsSync(coverPath))
+        	    fs.unlinkSync(coverPath);
+            console.log(req.file);
             data = {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
@@ -68,7 +68,8 @@ exports.profileUpdate = async (req, res, next) => {
                 phone: req.body.phone,
                 location: req.body.location,
                 email: req.body.email,
-                cover: cover
+                cover: cover.secure_url,
+                cover_id: cover.public_id,
             };
         }
         else {

@@ -366,3 +366,32 @@ exports.categorySearchPerPageSort=async(id,str,page,sortCon)=>
     }
     return books;
 }
+
+exports.getBestSelling=async()=>{
+    const bookCollection= db().collection('books');
+    const books= await bookCollection.find().sort({sold: -1}).limit(3).toArray();
+    return books;
+}
+
+exports.getMostSeen=async()=>{
+    const bookCollection= db().collection('books');
+    const books= await bookCollection.find().sort({seen: -1}).limit(10).toArray();
+    return books;
+}
+
+exports.getNewBooks=async()=>{
+    const bookCollection= db().collection('books');
+    const books= await bookCollection.find().sort({_id: -1}).limit(10).toArray();
+    return books;
+}
+
+exports.getFeaturedBooks=async(id)=>{
+    const bookCollection= db().collection('books');
+    const book= await bookCollection.findOne({_id: ObjectId(id)});
+    const books = await bookCollection.find({categoryID: ObjectId(book.categoryID)},).limit(10).toArray();
+    const index = books.findIndex(obj => obj.title === book.title);
+    if (index > -1) {
+        books.splice(index, 1);
+      }
+    return books;
+}

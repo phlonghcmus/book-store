@@ -121,43 +121,25 @@
     </ul>
 
 {{/if}}
-</div>
-            <div class="row my-5">
-                <div class="col-lg-12">
-                    <div class="title-all text-center">
-                        <h1>Featured Products</h1>
-                        <p>Sách bạn có thể thích</p>
-                    </div>
-                    <div class="featured-products-box owl-carousel owl-theme">
-                    {{#each books}}
-                        <div class="item">
-                            <div class="products-single fix">
-                                <div class="box-img-hover">
-                                    <img src={{cover}} class="img-fluid" alt="Image">
-                                    <div class="mask-icon">
-                                        <ul>
-                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
-                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                        </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
-                                    </div>
-                                </div>
-                                <div class="why-text">
-                                    <a href="/books/{{_id}}">
-                                        <h4 class="link" >{{title}}</h4>
-                                    </a>
-                                    <h5>{{basePrice}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    {{/each}}
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
+
+<div class="row my-5">
+        <div class="col-lg-12">
+            <div class="title-all text-center">
+                <h1>Sách Đề Cử</h1>
+                <p>Sách bạn có thể thích</p>
+            </div>
+            <div class="featured-products-box owl-carousel owl-theme">
+                {{#each featuredBooks}}
+                <div class="shop-cat-box">
+                    <img class="img-fluid" src="{{cover}}" alt="" style="width: 400px; height: 400px;"/>
+                    <a class="btn hvr-hover" href="/books/detail/{{_id}}">{{title}}</a>
+                 </div>
+                {{/each}}
+            </div>
+        </div>
+</div>
 
 
 

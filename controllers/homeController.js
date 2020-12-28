@@ -1,8 +1,11 @@
-//const bookModel = require('../models/bookModel');
+const bookModel = require('../models/bookModel');
 
 
 exports.index = async(req, res, next) => {
-    res.render('index/body', {});
+    const books = await bookModel.getBestSelling();
+    const mostSeen = await bookModel.getMostSeen();
+    const newBooks = await bookModel.getNewBooks();
+    res.render('index/body', {books, mostSeen, newBooks});
 };
 
 exports.contact = (req, res, next) => {

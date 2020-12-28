@@ -101,13 +101,14 @@ exports.detail=async (req, res, next) =>
     // console.log(pageCount);
     // books=await bookModel.listPerPage(currentPage);
     await bookModel.increasePopularity(_id);
+    const featuredBooks = await bookModel.getFeaturedBooks(req.params.id);
     const pageCount=await commentModel.countCommentsByBookID(req.params.id);
     console.log(pageCount);
     const comments=await commentModel.getCommentsByBookID(req.params.id);
     if(pageCount>0)
-    res.render('books/detail',{_id,title,basePrice,detail,cover,pageCount:Math.ceil(pageCount),stock,comments,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+    res.render('books/detail',{_id,title,basePrice,detail,cover,featuredBooks,pageCount:Math.ceil(pageCount),stock,comments,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
     else
-    res.render('books/detail',{_id,title,basePrice,detail,cover,comments,stock});
+    res.render('books/detail',{_id,title,basePrice,detail,cover,comments,stock,featuredBooks});
 };
 
 exports.category=async (req,res,next)=>
