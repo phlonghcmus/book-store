@@ -30,13 +30,13 @@ exports.recoverPasswordIsExist=async(req,res,next)=>
 exports.cancelOrder=async(req,res,next)=>
 {
    const newStatus=await orderModel.cancelOrder(req.query.id);
-   res.json(true);
+   res.json(newStatus);
 }
 
 exports.reOrder=async(req,res,next)=>
 {
    const newStatus=await orderModel.reOrder(req.query.id);
-   res.json(true);
+   res.json(newStatus);
 }
 
 exports.getOrderStatus=async(req,res,next)=>

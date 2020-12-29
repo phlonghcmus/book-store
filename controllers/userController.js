@@ -201,7 +201,7 @@ exports.historyOrderPage=async(req,res,next)=>
     const process=temp1+temp2;
     const finish=await orderModel.countUserOrderByStatus(req.user._id,4);
     const cancel=await orderModel.countUserOrderByStatus(req.user._id,5);
-    console.log(orders);
+  
     res.render('user/orders-history',{orders,all,confirmed,process,finish,cancel});
 }
 
@@ -209,7 +209,7 @@ exports.historyOrderDetail=async(req,res,next)=>
 {
     const id=req.params.id;
     const order=await orderModel.getOrderDetailById(id);
-    console.log(order);
+   
     res.render('user/order-detail',{order});
 }
 

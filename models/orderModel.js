@@ -1,6 +1,6 @@
 const { db } = require('../database/database');
 const ObjectId = require('mongodb').ObjectId;
-
+const bookModel=require('./bookModel');
 exports.insertOrder = async (data) => {
     const collection = db().collection('orders');
     const order = await collection.insertOne(data);
@@ -10,7 +10,6 @@ exports.insertOrder = async (data) => {
 exports.getByUserId = async (user_id) => {
     const collection = db().collection('orders');
     const orders = await collection.find({ user_id: ObjectId(user_id) }).sort({ _id: -1 }).toArray();
-    console.log(orders);
     return orders;
 }
 
@@ -55,12 +54,49 @@ exports.cancelOrder = async (order_id) => {
     const newStatus = parseInt(5);
     const collection = db().collection('orders');
     await collection.updateOne({ _id: ObjectId(order_id) }, { $set: { status: newStatus } });
+    const orders=await collection.findOne({_id:ObjectId(order_id)});
+    const books=orders.books;
+    
+    const bookCollection=db().collection('books');
+    for(let i=0;i<books.length;i++)
+    {
+        
+        const oldQuantity=books[i].quantity;
+        
+        const book=await bookCollection.findOne({_id:ObjectId(books[i].book_id)});
+        const newQuantity=parseInt(book.stock)+parseInt(oldQuantity);
+        
+        await bookModel.updateBookStock(books[i].book_id,newQuantity);
+        const newSold=parseInt(book.sold)-parseInt(oldQuantity);
+        await bookModel.updateSoldById(books[i].book_id,newSold);
+    }
+    return true;
 }
 
 exports.reOrder = async (order_id) => {
-    const newStatus = parseInt(1);
+
     const collection = db().collection('orders');
+    const orders=await collection.findOne({_id:ObjectId(order_id)});
+    const books=orders.books;
+    
+    const bookCollection=db().collection('books');
+    for(let i=0;i<books.length;i++)
+    {
+        
+        const oldQuantity=books[i].quantity;
+        const book=await bookCollection.findOne({_id:ObjectId(books[i].book_id)});
+        const newQuantity=parseInt(book.stock)-parseInt(oldQuantity);
+        if(newQuantity<0)
+            return false;
+        await bookModel.updateBookStock(books[i].book_id,newQuantity);
+        const newSold=parseInt(book.sold)+parseInt(oldQuantity);
+        await bookModel.updateSoldById(books[i].book_id,newSold);
+    }
+
+    const newStatus = parseInt(1);
+   
     await collection.updateOne({ _id: ObjectId(order_id) }, { $set: { status: newStatus } });
+   return true;
 }
 
 
@@ -81,7 +117,7 @@ exports.countUserOrderByStatus = async (user_id, status) => {
 exports.countUserOrder = async (user_id) => {
     const collection = db().collection('orders');
     const orders = await collection.find({ user_id: ObjectId(user_id) }).count();
-    console.log(orders);
+   
     return orders;
 }
 

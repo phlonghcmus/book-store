@@ -479,7 +479,7 @@ function sortProduct(carts) {
 	let keyword;
 	let sort = parseInt(document.getElementById('sort').value);
 	let sortBy;
-	const page=1;
+	const page = 1;
 	if (sort == 1)
 		sortBy = "&sort=Popularity";
 	if (sort == 2)
@@ -744,12 +744,12 @@ function pagination(page, carts) {
 				window.history.pushState({ path: newurl }, '', newurl);
 			}
 		}
-			else {
-				if (history.pushState) {
-					var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
-					window.history.pushState({ path: newurl }, '', newurl);
-				}
+		else {
+			if (history.pushState) {
+				var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + page;
+				window.history.pushState({ path: newurl }, '', newurl);
 			}
+		}
 	}
 	return false;
 }
@@ -1178,20 +1178,19 @@ function order() {
 			cache: true,
 			success: function (json) {
 				alert("Đặt hàng thành công");
-				window.location = "/";
+				window.location = "/users/history-order";
 			},
 		});
 	}
 }
 
-function cancelOrder()
-{
+function cancelOrder() {
 	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
 	const segment_array = segment_str.split('/');
 	const orderId = segment_array.pop();
-	const mydata=
+	const mydata =
 	{
-		id:orderId,
+		id: orderId,
 	}
 	$.ajax({
 		url: '/api/users/order-cancel',
@@ -1200,20 +1199,19 @@ function cancelOrder()
 		cache: true,
 		success: function (json) {
 			alert("Hủy đơn hàng thành công");
-			window.location = "/users/history-order/detail/"+orderId;
+			window.location = "/users/history-order/detail/" + orderId;
 		},
 	});
 	return false;
 }
 
-function reOrder()
-{
+function reOrder() {
 	const segment_str = window.location.pathname; // return segment1/segment2/segment3/segment4
 	const segment_array = segment_str.split('/');
 	const orderId = segment_array.pop();
-	const mydata=
+	const mydata =
 	{
-		id:orderId,
+		id: orderId,
 	}
 	$.ajax({
 		url: '/api/users/order-re',
@@ -1221,17 +1219,21 @@ function reOrder()
 		data: mydata,
 		cache: true,
 		success: function (json) {
-			alert("Đặt lại đơn hàng thành công");
-			window.location = "/users/history-order/detail/"+orderId;
+			if (json === false)
+				alert("Đặt lại đơn hàng không thành công do có sản phẩm đã hết hàng");
+			else {
+				alert("Đặt lại đơn hàng thành công");
+			}
+			window.location = "/users/history-order/detail/" + orderId;
+
 		},
 	});
 	return false;
 }
 
-function orderStatus(value)
-{
-	let mydata={
-		status:value
+function orderStatus(value) {
+	let mydata = {
+		status: value
 	}
 	$.ajax({
 		url: '/api/users/order-status',
@@ -1244,22 +1246,21 @@ function orderStatus(value)
 	});
 }
 
-function replaceOrder(myOrders)
-{
-	Handlebars.registerHelper("ifeq",function(v1,v2, options){
-		if(v1 === v2) {
-		  return options.fn(this);
+function replaceOrder(myOrders) {
+	Handlebars.registerHelper("ifeq", function (v1, v2, options) {
+		if (v1 === v2) {
+			return options.fn(this);
 		}
 		return options.inverse(this);
-	  }) 
+	})
 
 	const template = Handlebars.compile($('#order-template').html());
-	const orders = { 
+	const orders = {
 		orders: myOrders,
-		ifeq:()=>ifeq,
-	 };
+		ifeq: () => ifeq,
+	};
 	const productsHtml = template(orders);
-	
+
 	$('#order-list-div').fadeOut("slow", function () {
 		$('#order-list-div').html(productsHtml)
 		$('#order-list-div').fadeIn("slow");

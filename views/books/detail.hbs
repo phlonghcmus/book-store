@@ -28,15 +28,17 @@
                         <h5>{{basePrice}}</h5>
                         <h4>Short Description:</h4>
                         <p>{{detail}}</p>
+
                         <ul>
                             <li>
                                 <div class="form-group quantity-box">
-                                    <label class="control-label">Quantity</label>
+                                    <label class="control-label">Số lượng sản phẩm có sẵn</label>
                                     <input class="form-control" disabled value="{{stock}}" min="0" max="20" type="number" id="stock">
                                 </div>
                             </li>
+                        
                         </ul>
-
+                       
                         <div class="price-box-bar">
                             <div class="cart-and-bay-btn">
                                 <a class="btn hvr-hover" data-fancybox-close="" href="#" onclick="return addProductAndGoToCart({{json cart._id}},{{json _id}})">Mua hàng</a>
@@ -128,7 +130,7 @@
         <div class="col-lg-12">
             <div class="title-all text-center">
                 <h1>Sách Đề Cử</h1>
-                <p>Sách bạn có thể thích</p>
+                <p>Sách cùng thể loại</p>
             </div>
             <div class="featured-products-box owl-carousel owl-theme">
                 {{#each featuredBooks}}

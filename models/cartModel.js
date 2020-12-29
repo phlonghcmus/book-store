@@ -2,19 +2,9 @@ const { db } = require('../database/database');
 const ObjectId = require('mongodb').ObjectId;
 const bookModel=require('./bookModel');
 
-exports.stockCheck=async(bookId)=>
-{
-    const booksCollection=db().collection('books');
-    const thisBook=await booksCollection.findOne({_id:ObjectId(bookId)});
-    const stock=thisBook.stock;
-    return stock;
-}
 
-exports.updateBookStock=async(bookId,newStock)=>
-{
-    const booksCollection=db().collection('books');
-    await booksCollection.updateOne({_id:ObjectId(bookId)},{$set:{stock:newStock}});
-}
+
+
 exports.addQuantity = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
     
@@ -72,12 +62,12 @@ exports.addTotalPrice = async (cart_id, bookId) => {
 }
 exports.addProduct = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
-    const stockCheck=await this.stockCheck(bookId);
+    const stockCheck=await bookModel.stockCheck(bookId);
     if(stockCheck==0)
         return false;
     
     const newStock=parseInt(stockCheck)-1;
-    await this.updateBookStock(bookId,newStock);
+    await bookModel.updateBookStock(bookId,newStock);
     const soldBook=await bookModel.getSoldById(bookId);
     const newSold=parseInt(soldBook)+1;
     await bookModel.updateSoldById(bookId,newSold);
@@ -266,9 +256,9 @@ exports.getCart = async (cart_id) => {
 
 exports.decreaseProduct = async (cart_id, bookId) => {
     const cartsCollection = db().collection('carts');
-    const stock=await this.stockCheck(bookId);
+    const stock=await bookModel.stockCheck(bookId);
     const newStock=parseInt(stock)+1;
-    await this.updateBookStock(bookId,newStock);
+    await bookModel.updateBookStock(bookId,newStock);
     const soldBook=await bookModel.getSoldById(bookId);
     const newSold=parseInt(soldBook)-1;
     if(newSold<=0)
@@ -426,9 +416,9 @@ exports.removeTotalQuantity = async (cart_id, bookId) => {
         total_quantity: parseInt(totalQuantity) - parseInt(bookQuantity)
     };
     await cartsCollection.updateOne({ _id: ObjectId(cart_id) }, { "$set": data });
-    const stock=await this.stockCheck(bookId);
+    const stock=await bookModel.stockCheck(bookId);
     const newStock=parseInt(stock)+ parseInt(bookQuantity);
-    await this.updateBookStock(bookId,newStock);
+    await bookModel.updateBookStock(bookId,newStock);
     const soldBook=await bookModel.getSoldById(bookId);
     let newSold=parseInt(soldBook)-parseInt(bookQuantity);
     if(newSold<=0)

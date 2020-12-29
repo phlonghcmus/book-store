@@ -2,7 +2,19 @@ const {db}=require('../database/database');
 const ObjectId= require('mongodb').ObjectId;
 
 //Lấy danh sách các quyển sách trong 1 trang
+exports.stockCheck=async(bookId)=>
+{
+    const booksCollection=db().collection('books');
+    const thisBook=await booksCollection.findOne({_id:ObjectId(bookId)});
+    const stock=thisBook.stock;
+    return stock;
+}
 
+exports.updateBookStock=async(bookId,newStock)=>
+{
+    const booksCollection=db().collection('books');
+    await booksCollection.updateOne({_id:ObjectId(bookId)},{$set:{stock:newStock}});
+}
 exports.increasePopularity=async(book_id)=>
 {
     const bookCollection= db().collection('books');
@@ -24,6 +36,7 @@ exports.updateSoldById=async(book_id,newSold)=>
     const bookCollection= db().collection('books');
     const book=await bookCollection.updateOne({_id:ObjectId(book_id)},{$set:{sold:newSold}});
 }
+
 
 exports.listPerPage = async (currentPage) => {
    const bookCollection= db().collection('books');
