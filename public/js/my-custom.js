@@ -1,5 +1,8 @@
 
-
+$('.owl-carousel').find('.owl-nav').removeClass('disabled');
+$('.owl-carousel').on('changed.owl.carousel', function(event) {
+	$(this).find('.owl-nav').removeClass('disabled');
+});
 
 function formSubmit(form) {
 	let url = window.location.href;
