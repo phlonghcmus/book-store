@@ -43,7 +43,10 @@ exports.order=async(req,res,next)=>
     let yyyy = today.getFullYear();
     let hh=today.getHours();
     let mmmm=today.getMinutes();
-  
+    if(parseInt(hh)<10)
+        hh="0"+hh;
+     if(parseInt(mmmm)<10)
+        mmmm="0"+mmmm;
   today = dd + '/' + mm + '/' + yyyy + ' - ' + hh+ ':' + mmmm; 
 
     const data={
