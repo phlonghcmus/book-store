@@ -401,7 +401,11 @@ exports.getNewBooks=async()=>{
 exports.getFeaturedBooks=async(id)=>{
     const bookCollection= db().collection('books');
     const book= await bookCollection.findOne({_id: ObjectId(id)});
-    const books = await bookCollection.find({categoryID: ObjectId(book.categoryID)},{"remove": false}).limit(10).toArray();
+    const books = await bookCollection.find(
+        {$and:[
+        {"remove": false},
+        {"categoryID": ObjectId(book.categoryID)},        
+    ]}).limit(10).toArray();
     const index = books.findIndex(obj => obj.title === book.title);
     if (index > -1) {
         books.splice(index, 1);
