@@ -1165,7 +1165,11 @@ function validateCheckOut() {
 	return true;
 }
 
-function order() {
+function order(books) {
+	if(books.length==0){
+		alert("Hãy thêm sản phẩm vào giỏ hàng trước khi thanh toán");
+		return;
+	}
 	const validate = validateCheckOut();
 	if (validate) {
 		const mydata =
@@ -1174,6 +1178,7 @@ function order() {
 			location: document.getElementById("location-checkout").value,
 			phone: document.getElementById("phone-checkout").value
 		}
+		
 		$.ajax({
 			url: '/api/carts/order',
 			dataType: 'json',

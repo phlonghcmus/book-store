@@ -5,7 +5,7 @@ exports.index = async(req, res, next) => {
     const books = await bookModel.getBestSelling();
     const mostSeen = await bookModel.getMostSeen();
     const newBooks = await bookModel.getNewBooks();
-    res.render('index/body', {books, mostSeen, newBooks});
+    res.render('index/index', {books, mostSeen, newBooks});
 };
 
 exports.contact = (req, res, next) => {
