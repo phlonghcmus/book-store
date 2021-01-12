@@ -352,7 +352,7 @@ function checkPasswordChangeForm(form) {
 		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu mới không hợp lệ');
 		return false;
 	}
-
+	alert("Đổi mật khẩu thành công");
 	return true;
 }
 
