@@ -415,15 +415,8 @@ function recoverPasswordValidation(id, password) {
 	}
 }
 
-function onsubmitRecoverPasswordValidation(form, id) {
-	const oldPassword = document.getElementById("old-pass").value;
+function onsubmitRecoverPasswordValidation(form) {
 	const newPassword = document.getElementById("new-pass").value;
-	if (!recoverPasswordValidation(id, oldPassword)) {
-
-		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu cũ không đúng');
-		return false;
-	}
-
 	const check = checkPasswordChange(newPassword);
 	if (!check) {
 		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu mới không hợp lệ');
