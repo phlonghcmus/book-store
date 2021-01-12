@@ -1,6 +1,6 @@
 
 $('.owl-carousel').find('.owl-nav').removeClass('disabled');
-$('.owl-carousel').on('changed.owl.carousel', function(event) {
+$('.owl-carousel').on('changed.owl.carousel', function (event) {
 	$(this).find('.owl-nav').removeClass('disabled');
 });
 
@@ -56,6 +56,7 @@ function validation(form) {
 	const lastname = document.getElementById("lastname-signup").value;
 	if (username.length == 0) {
 		document.getElementById("username-signup-error").innerHTML = "Bạn phải nhập tên tài khoản";
+		document.getElementById("signup-error").innerHTML = "Hãy nhập một tên đăng nhập";
 		return false;
 	}
 
@@ -167,7 +168,10 @@ function validation(form) {
 }
 
 function checkUserNameExist(username) {
-
+	if (username.length == 0) {
+		$('#username-signup-error').addClass('error').removeClass('success').html('Bạn buộc phải nhập tên đăng nhập');
+		return true;
+	}
 	let mydata;
 	$.ajax({
 		url: '/api/users/username-is-exist',
@@ -230,6 +234,15 @@ function checkPhone(value) {
 }
 
 function checkEmailExist(email) {
+	if (email.length == 0) {
+		$('#email-signup-error').addClass('error').removeClass('success').html('Vui lòng nhập email');
+		return true;
+	}
+	const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if (!re.test(email)) {
+		$('#email-signup-error').addClass('error').removeClass('success').html('Email bạn nhập không đúng định dạng xxx@abc.com');
+		return true;
+	}
 	let mydata;
 	$.ajax({
 		url: '/api/users/email-is-exist',
@@ -345,6 +358,7 @@ function checkPasswordChangeForm(form) {
 
 
 function validateEmail(email) {
+
 	let mydata;
 	$.ajax({
 		url: '/api/users/email-is-exist',
@@ -1166,7 +1180,7 @@ function validateCheckOut() {
 }
 
 function order(books) {
-	if(books.length==0){
+	if (books.length == 0) {
 		alert("Hãy thêm sản phẩm vào giỏ hàng trước khi thanh toán");
 		return;
 	}
@@ -1178,7 +1192,7 @@ function order(books) {
 			location: document.getElementById("location-checkout").value,
 			phone: document.getElementById("phone-checkout").value
 		}
-		
+
 		$.ajax({
 			url: '/api/carts/order',
 			dataType: 'json',
