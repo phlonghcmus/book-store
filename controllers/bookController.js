@@ -8,7 +8,7 @@ exports.list = async(req, res, next) => {
     let currentPage=req.query.p || 1;
     let books;
     let pageCount;
-    let sortCon;
+    let sortCon=0;
     if(req.query.sort)
     {
         if(req.query.sort==="Popularity")
@@ -33,10 +33,11 @@ exports.list = async(req, res, next) => {
         req.query.p= Math.ceil(pageCount) ||1;
     }
 
+    
     const count=books.length;
     const categories=await category.categoryList();
     // Pass data to view to display list of books
-        res.render('books/list', {books,count,categories,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+        res.render('books/list', {sortCon,books,count,categories,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
 };
 
 exports.searchList=async (req,res,next)=>
@@ -47,7 +48,7 @@ exports.searchList=async (req,res,next)=>
     let books;
     let pageCount;
     let newQuery;
-    let sortCon;
+    let sortCon=0;
     
     pageCount= await bookModel.pageCountSearch(keyword);
     if(req.query.sort)
@@ -79,9 +80,9 @@ exports.searchList=async (req,res,next)=>
     // Pass data to view to display list of books
     const categories=await category.categoryList();
     if(count===0)
-        res.render('books/noList',{count,categories});
+        res.render('books/noList',{sortCon,count,categories});
     else
-        res.render('books/list', {books,count,categories,query:newQuery,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+        res.render('books/list', {sortCon,books,count,categories,query:newQuery,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
 }
 
 
@@ -117,7 +118,7 @@ exports.category=async (req,res,next)=>
     let id=req.params.id;
     let books;
     let pageCount;
-    let sortCon;
+    let sortCon=0;
     if(req.query.sort)
     {
 
@@ -140,7 +141,7 @@ exports.category=async (req,res,next)=>
     const count=books.length;
     // Pass data to view to display list of books
     const categories=await category.categoryList();
-    res.render('books/list', {books,count,categories,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+    res.render('books/list', {sortCon,books,count,categories,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
 }
 
 exports.categorySearch=async(req,res,next)=>
@@ -151,7 +152,7 @@ exports.categorySearch=async(req,res,next)=>
     let books;
     let pageCount;
     let newQuery;
-    let sortCon;
+    let sortCon=0;
     if(req.query.sort)
     {
         if(req.query.sort==="Popularity")
@@ -186,5 +187,5 @@ exports.categorySearch=async(req,res,next)=>
     if(count===0)
         res.render('books/noList',{count,categories});
     else
-        res.render('books/list', {books,count,categories,query:newQuery,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
+        res.render('books/list', {sortCon,books,count,categories,query:newQuery,pagination:{page:currentPage,pageCount:Math.ceil(pageCount)}});
 }

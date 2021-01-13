@@ -20,7 +20,14 @@ exports.increasePopularity=async(book_id)=>
     const bookCollection= db().collection('books');
     const book=await bookCollection.findOne({_id:ObjectId(book_id)});
     const oldSeen=book.seen;
-    const newSeen=parseInt(oldSeen)+1;
+    let newSeen;
+    if(oldSeen){
+         newSeen=parseInt(oldSeen)+1;
+    }
+    else
+    {
+         newSeen=1;
+    }
     await bookCollection.updateOne({_id:ObjectId(book_id)},{$set:{seen:newSeen}});
 }
 

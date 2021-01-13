@@ -23,11 +23,47 @@
                                 <div class="toolbar-sorter-right">
                                     <span>Sort by </span>
                                     <select id="sort" class="selectpicker show-tick form-control" data-placeholder="$ USD" onchange="sortProduct({{json cart}})">
-                  <option data-display="Select" value="0">Nothing</option>
+                  
+                  
+                  {{#ifeq sortCon 1}}
+                  <option value="0">Nothing</option>
+                  <option selected="selected" value="1">Popularity</option>
+                  <option value="2">High Price → Low Price</option>
+                  <option value="3">Low Price → High Price</option>
+                  <option value="4">Best Selling</option>
+                  {{/ifeq}}
+
+                  {{#ifeq sortCon 2}}
+                  <option value="0">Nothing</option>
+                  <option value="1">Popularity</option>
+                  <option selected="selected" value="2">High Price → Low Price</option>
+                  <option value="3">Low Price → High Price</option>
+                  <option value="4">Best Selling</option>
+                  {{/ifeq}}
+
+                  {{#ifeq sortCon 3}}
+                  <option value="0">Nothing</option>
+                  <option value="1">Popularity</option>
+                  <option value="2">High Price → Low Price</option>
+                  <option selected="selected" value="3">Low Price → High Price</option>
+                  <option value="4">Best Selling</option>
+                  {{/ifeq}}
+
+                  {{#ifeq sortCon 4}}
+                  <option value="0">Nothing</option>
+                  <option value="1">Popularity</option>
+                  <option value="2">High Price → Low Price</option>
+                  <option value="3">Low Price → High Price</option>
+                  <option selected="selected" value="4">Best Selling</option>
+                  {{/ifeq}}
+
+                  {{#ifeq sortCon 0}}
+                  <option selected="selected" value="0">Nothing</option>
                   <option value="1">Popularity</option>
                   <option value="2">High Price → Low Price</option>
                   <option value="3">Low Price → High Price</option>
                   <option value="4">Best Selling</option>
+                  {{/ifeq}}
                 </select>
                                 </div>
                                 <div id="count">
