@@ -278,7 +278,7 @@ function checkPassword(value) {
 	}
 
 	if (!value.match(passw)) {
-		$('#password-signup-error').addClass('error').removeClass('success').html('Mật khẩu chứa ít nhất 1 kí tự thường, 1 kí tự hoa và 1 kí tự số');
+		$('#password-signup-error').addClass('error').removeClass('success').html('Mật khẩu phải chứa ít nhất 1 kí tự thường, 1 kí tự hoa và 1 kí tự số');
 		return false;
 	}
 	$('#password-signup-error').addClass('success').removeClass('error').html('');
@@ -330,7 +330,19 @@ function checkPasswordChange(value) {
 	}
 
 	if (!value.match(passw)) {
-		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu chứa ít nhất 1 kí tự thường, 1 kí tự hoa và 1 kí tự số');
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu phải chứa ít nhất 1 kí tự thường, 1 kí tự hoa và 1 kí tự số');
+		return false;
+	}
+	$('#change-error').addClass('success').removeClass('error').html('');
+	return true;
+}
+
+function checkRePasswordChange(value)
+{
+	const password=document.getElementById("new-pass").value;
+	if(value!=password)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu nhập lại không khớp');
 		return false;
 	}
 	$('#change-error').addClass('success').removeClass('error').html('');
@@ -340,7 +352,7 @@ function checkPasswordChange(value) {
 function checkPasswordChangeForm(form) {
 	const password = document.getElementById("old-pass").value;
 	const newPassword = document.getElementById("new-pass").value;
-
+	const reNewPassword=document.getElementById("re-new-pass").value;
 	if (!checkPasswordExist(password)) {
 
 		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu cũ không đúng');
@@ -350,6 +362,13 @@ function checkPasswordChangeForm(form) {
 	const check = checkPasswordChange(newPassword);
 	if (!check) {
 		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu mới không hợp lệ');
+		return false;
+	}
+
+	const reCheck=checkRePasswordChange(reNewPassword);
+	if(!reCheck)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu nhập lại không khớp');
 		return false;
 	}
 	alert("Đổi mật khẩu thành công");
@@ -417,12 +436,20 @@ function recoverPasswordValidation(id, password) {
 
 function onsubmitRecoverPasswordValidation(form) {
 	const newPassword = document.getElementById("new-pass").value;
+	const reNewPassword=document.getElementById("re-new-pass").value;
 	const check = checkPasswordChange(newPassword);
 	if (!check) {
 		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu mới không hợp lệ');
 		return false;
 	}
+	const reCheck=checkRePasswordChange(reNewPassword);
+	if(!reCheck)
+	{
+		$('#change-error').addClass('error').removeClass('success').html('Mật khẩu nhập lại không khớp');
+		return false;
+	}
 
+	alert("Đổi mật khẩu thành công");
 	return true;
 
 }

@@ -94,8 +94,17 @@ exports.reOrder = async (order_id) => {
     }
 
     const newStatus = parseInt(1);
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    let hh=today.getHours();
+    let mmmm=today.getMinutes();
    
-    await collection.updateOne({ _id: ObjectId(order_id) }, { $set: { status: newStatus } });
+     if(parseInt(mmmm)<10)
+        mmmm="0"+mmmm;
+    today = dd + '/' + mm + '/' + yyyy + ' - ' + hh+ ':' + mmmm; 
+    await collection.updateOne({ _id: ObjectId(order_id) }, { $set: { status: newStatus,order_date:today } });
    return true;
 }
 
