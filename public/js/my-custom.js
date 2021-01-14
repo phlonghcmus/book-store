@@ -979,6 +979,12 @@ function addProductToCartFromDetail(cart_id, book_id) {
 				replaceTotalQuantity(json)
 				alert("Đã thêm sách vào giỏ hàng")
 				document.getElementById('stock').value = parseInt(document.getElementById('stock').value) - 1;
+				let sold=document.getElementById('sold').innerHTML;
+				let num = sold.slice(8)
+				sold=sold.slice(0,8);
+				num=parseInt(num)+1;
+				sold=sold+num;
+				document.getElementById('sold').innerHTML=sold;
 			}
 		},
 	});
